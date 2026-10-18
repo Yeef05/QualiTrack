@@ -1,0 +1,33 @@
+{
+  "name": "qualitrack",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "QualiTrack: centro de control de SQA para proyectos de software (Calidad de Software, SQA26).",
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev -w apps/api\" \"npm run dev -w apps/web\"",
+    "build": "npm run build -w apps/web",
+    "start": "npm run start -w apps/api",
+    "lint": "eslint .",
+    "typecheck": "npm run typecheck -w apps/api && npm run typecheck -w apps/web",
+    "test": "npm run test -w apps/api && npm run test -w apps/web",
+    "test:coverage": "npm run test:coverage -w apps/api && npm run test:coverage -w apps/web",
+    "check": "npm run lint && npm run typecheck && npm run test:coverage && npm run build"
+  },
+  "engines": {
+    "node": ">=20.19"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "concurrently": "^10.0.6",
+    "eslint": "^10.13.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.2"
+  }
+}
