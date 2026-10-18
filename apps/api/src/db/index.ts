@@ -1,3 +1,4 @@
+import { mkdir } from 'node:fs/promises';
 import { PGlite } from '@electric-sql/pglite';
 import pg from 'pg';
 
@@ -15,6 +16,10 @@ export interface Db {
 
 /** dataDir vacío = base de datos en memoria (se usa en las pruebas). */
 export async function createPgliteDb(dataDir?: string): Promise<Db> {
+  if (dataDir && !dataDir.includes('://')) {
+    // DEF-002: PGlite no crea las carpetas intermedias; en un clon nuevo .data/ no existe.
+    await mkdir(dataDir, { recursive: true });
+  }
   const client = new PGlite(dataDir);
   await client.waitReady;
   return {

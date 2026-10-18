@@ -1,5 +1,10 @@
+import { mkdtemp } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { loadConfig } from '../src/config';
+import { createPgliteDb } from '../src/db';
+import { migrate } from '../src/db/migrate';
 import { computeHealth, levelFor } from '../src/modules/health/healthIndex';
 import { evaluate } from '../src/modules/metrics/status';
 import { isUpToDate, planCompliance } from '../src/modules/techniques/compliance';
@@ -91,6 +96,14 @@ describe('utilidades', () => {
     expect(todayIso(now)).toBe('2026-10-18');
     expect(isoDaysAgo(7, now)).toBe('2026-10-11');
     expect(daysBetween('2026-10-11', '2026-10-18')).toBe(7);
+  });
+
+  it('DEF-002: crea la carpeta de datos de PGlite si no existe y aplica migraciones una sola vez', async () => {
+    const dir = path.join(await mkdtemp(path.join(tmpdir(), 'qualitrack-db-')), 'anidada', 'datos');
+    const db = await createPgliteDb(dir);
+    expect(await migrate(db)).toEqual(['001_init.sql']);
+    expect(await migrate(db)).toEqual([]);
+    await db.close();
   });
 
   it('configuración por defecto y validación en producción', () => {
