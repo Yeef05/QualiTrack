@@ -3,7 +3,7 @@
 Seguimos los pasos de un ciclo TSP: **lanzamiento → estrategia → plan → requisitos → diseño → implementación → pruebas → postmortem**.
 Las horas reales las anota cada responsable al cerrar su tarea; el postmortem compara plan contra real.
 
-> El prototipo inicial (tareas 1 a 12 y 14) se generó el 18/10 con apoyo de un asistente de IA. Cada responsable debe revisar su parte en el PR, ajustarla y anotar sus horas reales antes de marcarla como terminada.
+> El prototipo inicial (tareas 1 a 12 y 14) se integró el 18/10 en un solo bloque. Cada responsable debe revisar su parte en el PR, ajustarla y anotar sus horas reales antes de marcarla como terminada.
 
 ## 1. Lanzamiento: objetivos del ciclo
 
