@@ -1,6 +1,6 @@
 # ADR-004 · Modelo de métricas para proyectos chicos (peor / mejor)
 
-- **Estado:** propuesta (rama `feature/HU-04-modelo-metricas`, pendiente de revisión)
+- **Estado:** aceptada; integrada a `main` el 20/10/2026 (rama `feature/HU-04-modelo-metricas`)
 - **Fecha:** 19 de octubre de 2026
 - **Reemplaza:** el catálogo y el semáforo del prototipo del check-in 2, y la ponderación 50/30/20 del índice
 

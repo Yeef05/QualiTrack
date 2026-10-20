@@ -66,8 +66,8 @@ Registro cronológico de las actividades de aseguramiento y control de la calida
 | --- | --- | --- |
 | Integración a `main` | `fix/DEF-003-…`, `fix/DEF-004-…`, `feature/HU-04-modelo-metricas` y `feature/casos-de-uso` integradas con merge sin fast-forward | DEF-004 pasa a Cerrado. Etiqueta `v0.3-checkin2`. La revisión cruzada en PR sigue pendiente y no se cuenta como hecha |
 | Chequeo completo (`npm run check`) en la rama integrada | Lint y tipos sin errores; 84 pruebas en verde (51 API + 33 web); cobertura de líneas 97.5 % API y 99.2 % web; build correcto | Listo para la demo |
-| Orden de la documentación | `docs/` separado por carpetas: requisitos, diseño, planeación TSP, SQA, entregas y manuales ([índice](../README.md)) | Enlaces relativos verificados: 0 rotos |
+| Orden de la documentación | `docs/` separado por carpetas: requisitos, diseño, planeación TSP, SQA y entregas ([índice](../README.md)); los documentos internos del equipo (manual y guion de la demo) quedan en el Drive | Enlaces relativos verificados: 0 rotos |
 | Diseño | Diagramas de clases general y de CU-03, CU-10 y CU-11 ([DiagramasClases](../02-diseno/DiagramasClases.md)) | El revisor de cada PR de la Beta compara el código contra la página de su caso de uso |
-| Revisión del prototipo para el manual del equipo | 4 detalles menores: título del reporte pegado al semáforo, barra de críticos que se lee al revés, "Responsable de QA" como texto libre y nombres distintos en ejecuciones | Se registran como defectos al iniciar el ciclo 3 ([manual](../06-manuales/ManualEquipo.pdf), §10) |
+| Revisión del prototipo al preparar el manual del equipo | 4 detalles menores: título del reporte pegado al semáforo, barra de críticos que se lee al revés, "Responsable de QA" como texto libre y nombres distintos en ejecuciones | Se registran como defectos al iniciar el ciclo 3 |
 | Reporte de calidad | [Reporte SQA del check-in 2](../05-entregas/checkin2/ReporteSQA_Checkin2.pdf) con actividades, métricas, índice de salud y autoevaluación con la rúbrica | Se entrega junto con la demo |
-
+| CI en GitHub | La corrida #4 de GitHub Actions sobre `main` (commit `65d201f`) pasó lint, tipos, pruebas con cobertura y build | Primer corrido verificado en GitHub; cierra el pendiente del 18/10 |
