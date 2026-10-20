@@ -2,14 +2,135 @@ import bcrypt from 'bcryptjs';
 import { isoDaysAgo } from '../validation';
 import type { Db } from './index';
 
-// Métricas de ejemplo del Entregable 1 (cada equipo puede agregar las suyas).
-const METRICS = [
-  ['funciones_terminadas', '% de funciones terminadas', '%', 100, 'mayor', 'Funciones terminadas contra las pedidas'],
-  ['defectos_criticos', 'Defectos críticos abiertos', 'defectos', 0, 'menor', 'Errores graves sin resolver'],
-  ['defectos_abiertos', 'Defectos abiertos', 'defectos', 5, 'menor', 'Errores abiertos de cualquier gravedad'],
-  ['cobertura', 'Cobertura de pruebas', '%', 70, 'mayor', 'Porcentaje del código ejecutado por las pruebas'],
-  ['complejidad', 'Complejidad ciclomática máxima', 'por función', 10, 'menor', 'Medida por ESLint/SonarCloud'],
-] as const;
+// Modelo de métricas para proyectos chicos (ADR-004). Todas se cuentan a mano con la lista de historias,
+// los casos de prueba y el registro de defectos. Cada equipo puede ajustar peor y mejor o agregar las suyas.
+interface CatalogMetric {
+  code: string;
+  name: string;
+  unit: string;
+  worst: number;
+  best: number;
+  direction: 'mayor' | 'menor';
+  description: string;
+  criterion: string;
+  source: string;
+  active: boolean;
+}
+
+const METRICS: CatalogMetric[] = [
+  {
+    code: 'funciones_terminadas',
+    name: 'Capacidad funcional (%E)',
+    unit: '%',
+    worst: 70,
+    best: 100,
+    direction: 'mayor',
+    description: 'Funcionalidades entregadas ÷ comprometidas para la entrega × 100',
+    criterion: 'Adecuación funcional · completitud',
+    source: 'Rúbrica SQA26: "Suficiente" = 70 %, "Excelente" = 100 %. Fórmula de la lámina 43.',
+    active: true,
+  },
+  {
+    code: 'criterios_aceptacion',
+    name: 'Criterios de aceptación cumplidos',
+    unit: '%',
+    worst: 90,
+    best: 100,
+    direction: 'mayor',
+    description: 'Criterios de aceptación que pasan ÷ criterios probados × 100',
+    criterion: 'Adecuación funcional · corrección',
+    source: 'Definición de terminado del Plan SQA: una historia está lista si cumple sus criterios.',
+    active: true,
+  },
+  {
+    code: 'densidad_defectos',
+    name: 'Densidad de defectos',
+    unit: 'por funcionalidad',
+    worst: 1,
+    best: 0.5,
+    direction: 'menor',
+    description: 'Defectos conocidos ÷ funcionalidades entregadas',
+    criterion: 'Fiabilidad · madurez',
+    source:
+      'Fórmula de la lámina 42, con el tamaño en funcionalidades para no depender de una herramienta (lámina 40). Peor y mejor: acuerdo del equipo.',
+    active: true,
+  },
+  {
+    code: 'defectos_criticos',
+    name: 'Defectos críticos abiertos',
+    unit: 'defectos',
+    worst: 0,
+    best: 0,
+    direction: 'menor',
+    description: 'Defectos de gravedad crítica sin cerrar',
+    criterion: 'Fiabilidad · tolerancia a fallos',
+    source: 'Plan SQA: un defecto crítico bloquea la entrega. Rúbrica: "Insuficiente" si hay defectos críticos.',
+    active: true,
+  },
+  {
+    code: 'eficiencia_qa',
+    name: 'Eficiencia de QA',
+    unit: '%',
+    worst: 85,
+    best: 95,
+    direction: 'mayor',
+    description:
+      'A ÷ (A + B + C) × 100. A: los encontró el equipo; B: en la revisión con el cliente; C: después de entregar',
+    criterion: 'Proceso SQA · eficacia de la verificación',
+    source:
+      'Fórmula de la lámina 47; el ejemplo de la lámina 48 da 96.7 %. Bajo 85 %, más de 1 de cada 7 defectos se escapa.',
+    active: true,
+  },
+  {
+    code: 'tiempo_correccion',
+    name: 'Tiempo medio de corrección',
+    unit: 'días',
+    worst: 7,
+    best: 2,
+    direction: 'menor',
+    description: 'Promedio de días entre el registro y el cierre de cada defecto',
+    criterion: 'Mantenibilidad · modificabilidad',
+    source:
+      'Acuerdo del equipo: con check-ins cada 2 semanas, un defecto de más de una semana llega abierto a la siguiente entrega.',
+    active: true,
+  },
+  {
+    code: 'cobertura',
+    name: 'Cobertura de pruebas',
+    unit: '%',
+    worst: 50,
+    best: 70,
+    direction: 'mayor',
+    description: 'Líneas que ejecutan las pruebas ÷ líneas totales × 100',
+    criterion: 'Mantenibilidad · facilidad de prueba',
+    source: 'Opcional: requiere pruebas automáticas. Valores peor y mejor del Entregable 1.',
+    active: false,
+  },
+  {
+    code: 'funcionalidades_con_prueba',
+    name: 'Funcionalidades con prueba',
+    unit: '%',
+    worst: 70,
+    best: 100,
+    direction: 'mayor',
+    description: 'Funcionalidades con al menos un caso de prueba ÷ total × 100',
+    criterion: 'Mantenibilidad · facilidad de prueba',
+    source: 'Opcional: alternativa a la cobertura sin herramientas. Peor = "Suficiente" de la rúbrica.',
+    active: false,
+  },
+  {
+    code: 'tareas_sin_ayuda',
+    name: 'Tareas completadas sin ayuda',
+    unit: '%',
+    worst: 70,
+    best: 90,
+    direction: 'mayor',
+    description: 'Tareas logradas ÷ tareas intentadas × 100 (3 usuarios, 5 tareas)',
+    criterion: 'Usabilidad · facilidad de aprendizaje',
+    source: 'Opcional: si el producto lo usan personas fuera del equipo. Modelo definido, lámina 33.',
+    active: false,
+  },
+];
 
 const TECHNIQUES = [
   ['Revisión de código', 'estatica', 'Otro integrante revisa y aprueba cada pull request'],
@@ -33,11 +154,13 @@ async function count(db: Db, table: string): Promise<number> {
 }
 
 async function seedCatalogs(db: Db) {
-  for (const [code, name, unit, target, direction, description] of METRICS) {
+  // DO NOTHING: no se pisan los valores que un equipo ya ajustó.
+  for (const m of METRICS) {
     await db.query(
-      `INSERT INTO metrics (code, name, unit, target, direction, description) VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO metrics (code, name, unit, worst, best, direction, description, criterion, source, active)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
        ON CONFLICT (code) DO NOTHING`,
-      [code, name, unit, target, direction, description],
+      [m.code, m.name, m.unit, m.worst, m.best, m.direction, m.description, m.criterion, m.source, m.active],
     );
   }
   for (const [name, kind, description] of TECHNIQUES) {
@@ -69,25 +192,30 @@ async function seedUsers(db: Db, adminPassword: string) {
 
 // Serie semanal de 5 mediciones (de hace 4 semanas a hoy) por métrica.
 type Series = Record<string, number[]>;
+// Técnica, frecuencia y hace cuántos días fue la última ejecución (null: nunca se ha hecho).
+type PlanEntry = [string, string, number | null];
 
-const DEMO_PROJECTS: { name: string; description: string; team: string; qaLead: string; series: Series; plan: [string, string, number][] }[] = [
+const DEMO_PROJECTS: { name: string; description: string; team: string; qaLead: string; series: Series; plan: PlanEntry[] }[] = [
   {
     name: 'QualiTrack',
     description: 'La propia herramienta, monitoreada con QualiTrack desde el primer sprint.',
     team: 'Equipo QualiTrack',
     qaLead: 'Flavio Uriel Huizar González',
+    // Valores reales al check-in 2: 10 de 10 historias, 3 defectos, 0 críticos, todos encontrados por el equipo.
     series: {
-      funciones_terminadas: [10, 22, 35, 48, 60],
-      defectos_criticos: [1, 1, 0, 0, 0],
-      defectos_abiertos: [6, 5, 4, 3, 2],
-      cobertura: [40, 55, 66, 72, 78],
-      complejidad: [12, 11, 10, 9, 8],
+      funciones_terminadas: [20, 40, 60, 80, 100],
+      criterios_aceptacion: [80, 90, 95, 100, 100],
+      densidad_defectos: [0, 0, 0, 0.2, 0.3],
+      defectos_criticos: [0, 0, 0, 1, 0],
+      eficiencia_qa: [100, 100, 100, 100, 100],
+      tiempo_correccion: [0, 0, 0, 0, 0],
     },
+    // La revisión de código por otro integrante aún no se hace: el plan queda en 75 % (amarillo).
     plan: [
-      ['Revisión de código', 'por_pr', 1],
-      ['Pruebas unitarias', 'por_pr', 2],
+      ['Revisión de código', 'por_pr', null],
+      ['Pruebas unitarias', 'por_pr', 1],
       ['Análisis estático', 'por_pr', 1],
-      ['Auditoría interna', 'por_checkin', 5],
+      ['Auditoría interna', 'por_checkin', 4],
     ],
   },
   {
@@ -96,11 +224,12 @@ const DEMO_PROJECTS: { name: string; description: string; team: string; qaLead: 
     team: 'Equipo Æsir',
     qaLead: 'Flavio Uriel Huizar González',
     series: {
-      funciones_terminadas: [55, 62, 70, 78, 92],
+      funciones_terminadas: [55, 62, 70, 78, 85],
+      criterios_aceptacion: [80, 85, 88, 90, 92],
+      densidad_defectos: [1.4, 1.2, 1.1, 0.9, 0.8],
       defectos_criticos: [2, 1, 1, 0, 0],
-      defectos_abiertos: [9, 8, 7, 6, 5],
-      cobertura: [40, 48, 55, 60, 64],
-      complejidad: [14, 13, 12, 11, 11],
+      eficiencia_qa: [70, 75, 80, 86, 88],
+      tiempo_correccion: [9, 8, 6, 5, 4],
     },
     plan: [
       ['Revisión de código', 'semanal', 3],
@@ -115,10 +244,11 @@ const DEMO_PROJECTS: { name: string; description: string; team: string; qaLead: 
     qaLead: 'Responsable QA',
     series: {
       funciones_terminadas: [5, 8, 12, 15, 18],
+      criterios_aceptacion: [50, 55, 60, 62, 65],
+      densidad_defectos: [2, 2.5, 3, 3, 3.2],
       defectos_criticos: [3, 3, 4, 3, 3],
-      defectos_abiertos: [12, 14, 15, 15, 16],
-      cobertura: [10, 10, 12, 12, 15],
-      complejidad: [18, 18, 19, 17, 17],
+      eficiencia_qa: [60, 55, 50, 52, 50],
+      tiempo_correccion: [8, 7, 7, 6, 6],
     },
     plan: [
       ['Revisión de código', 'por_pr', 25],
@@ -148,6 +278,7 @@ async function seedDemoProject(db: Db, demo: (typeof DEMO_PROJECTS)[number], per
        SELECT $1, id, $2, $3 FROM techniques WHERE name = $4 RETURNING id`,
       [projectId, frequency, demo.qaLead, technique],
     );
+    if (lastDaysAgo === null) continue;
     await db.query(
       `INSERT INTO technique_executions (plan_id, executed_on, responsible, result, findings)
        VALUES ($1, $2, $3, $4, $5)`,

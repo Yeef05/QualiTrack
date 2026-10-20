@@ -1,57 +1,74 @@
-import { mkdtemp } from 'node:fs/promises';
+import { mkdtemp, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { loadConfig } from '../src/config';
 import { createPgliteDb } from '../src/db';
 import { migrate } from '../src/db/migrate';
-import { computeHealth, levelFor } from '../src/modules/health/healthIndex';
-import { evaluate } from '../src/modules/metrics/status';
+import { computeHealth, CRITICAL_CAP, levelFor } from '../src/modules/health/healthIndex';
+import { coherent, evaluate } from '../src/modules/metrics/status';
 import { isUpToDate, planCompliance } from '../src/modules/techniques/compliance';
 import { daysBetween, isoDaysAgo, todayIso } from '../src/validation';
 
-describe('semáforo de métricas (evaluate)', () => {
-  it('mayor es mejor: verde si alcanza la meta', () => {
-    expect(evaluate(70, 70, 'mayor')).toBe('verde');
-    expect(evaluate(85, 70, 'mayor')).toBe('verde');
-  });
+describe('semáforo de métricas con peor y mejor (evaluate)', () => {
+  const capacidad = { worst: 70, best: 100, direction: 'mayor' as const };
+  const densidad = { worst: 1, best: 0.5, direction: 'menor' as const };
 
-  it('mayor es mejor: amarillo dentro del 10 % de tolerancia, rojo fuera', () => {
-    expect(evaluate(63, 70, 'mayor')).toBe('amarillo');
-    expect(evaluate(62.9, 70, 'mayor')).toBe('rojo');
+  it('mayor es mejor: verde al llegar al mejor, amarillo entre peor y mejor, rojo bajo el peor', () => {
+    expect(evaluate(100, capacidad)).toBe('verde');
+    expect(evaluate(85, capacidad)).toBe('amarillo');
+    expect(evaluate(70, capacidad)).toBe('amarillo');
+    expect(evaluate(69.9, capacidad)).toBe('rojo');
   });
 
   it('menor es mejor: verde, amarillo y rojo', () => {
-    expect(evaluate(10, 10, 'menor')).toBe('verde');
-    expect(evaluate(11, 10, 'menor')).toBe('amarillo');
-    expect(evaluate(12, 10, 'menor')).toBe('rojo');
+    expect(evaluate(0.3, densidad)).toBe('verde');
+    expect(evaluate(0.5, densidad)).toBe('verde');
+    expect(evaluate(0.8, densidad)).toBe('amarillo');
+    expect(evaluate(1.2, densidad)).toBe('rojo');
   });
 
-  it('meta en 0 usa tolerancia mínima de 1', () => {
-    expect(evaluate(0, 0, 'menor')).toBe('verde');
-    expect(evaluate(1, 0, 'menor')).toBe('amarillo');
-    expect(evaluate(2, 0, 'menor')).toBe('rojo');
+  it('si peor y mejor son iguales no hay amarillo (defectos críticos = 0)', () => {
+    const criticos = { worst: 0, best: 0, direction: 'menor' as const };
+    expect(evaluate(0, criticos)).toBe('verde');
+    expect(evaluate(1, criticos)).toBe('rojo');
+  });
+
+  it('el valor peor no puede ser mejor que el mejor', () => {
+    expect(coherent(capacidad)).toBe(true);
+    expect(coherent({ worst: 100, best: 70, direction: 'mayor' })).toBe(false);
+    expect(coherent(densidad)).toBe(true);
+    expect(coherent({ worst: 0.5, best: 1, direction: 'menor' })).toBe(false);
   });
 });
 
 describe('índice de salud (computeHealth)', () => {
-  it('pondera métricas 50 %, plan 30 % y defectos 20 %', () => {
+  it('promedia los indicadores: verde 100, amarillo 50, rojo 0, con el plan como un indicador más', () => {
+    // métricas verde y rojo, plan al 100 % (verde) -> (100 + 0 + 100) / 3 = 67
     const h = computeHealth({ statuses: ['verde', 'rojo'], planCompliance: 1, criticalOpen: 0 });
-    // métricas 50, plan 100, defectos 100 -> 25 + 30 + 20 = 75
-    expect(h.index).toBe(75);
+    expect(h.index).toBe(67);
     expect(h.level).toBe('amarillo');
-    expect(h.metricsScore).toBe(50);
+    expect(h.indicators).toEqual({ verde: 2, amarillo: 0, rojo: 1 });
+    expect(h.planStatus).toBe('verde');
   });
 
-  it('reparte el peso cuando falta un componente', () => {
-    const h = computeHealth({ statuses: ['verde'], planCompliance: null, criticalOpen: null });
-    expect(h.index).toBe(100);
-    expect(h.planScore).toBeNull();
+  it('el plan es verde desde 90 %, amarillo desde 70 % y rojo abajo', () => {
+    expect(computeHealth({ statuses: [], planCompliance: 0.9, criticalOpen: null }).planStatus).toBe('verde');
+    expect(computeHealth({ statuses: [], planCompliance: 0.75, criticalOpen: null }).planStatus).toBe('amarillo');
+    expect(computeHealth({ statuses: [], planCompliance: 0.5, criticalOpen: null }).planStatus).toBe('rojo');
   });
 
-  it('resta 25 puntos por defecto crítico sin bajar de 0', () => {
-    expect(computeHealth({ statuses: [], planCompliance: null, criticalOpen: 2 }).index).toBe(50);
-    expect(computeHealth({ statuses: [], planCompliance: null, criticalOpen: 9 }).index).toBe(0);
+  it('QualiTrack al check-in 2: 6 métricas en verde y el plan al 75 % dan 93', () => {
+    const h = computeHealth({ statuses: Array(6).fill('verde'), planCompliance: 0.75, criticalOpen: 0 });
+    expect(h.index).toBe(93);
+    expect(h.level).toBe('verde');
+  });
+
+  it('con defectos críticos abiertos el índice no pasa de 79', () => {
+    const h = computeHealth({ statuses: [...Array(5).fill('verde'), 'rojo'], planCompliance: 1, criticalOpen: 1 });
+    // (6 × 100 + 0) / 7 = 86, limitado a 79
+    expect(h).toMatchObject({ index: CRITICAL_CAP, level: 'amarillo', cappedByCritical: true });
+    expect(computeHealth({ statuses: ['rojo'], planCompliance: null, criticalOpen: 2 }).cappedByCritical).toBe(false);
   });
 
   it('sin datos devuelve índice nulo', () => {
@@ -61,11 +78,11 @@ describe('índice de salud (computeHealth)', () => {
     });
   });
 
-  it('clasifica el nivel por umbrales 80 y 60', () => {
+  it('clasifica el nivel por umbrales 80 y 50', () => {
     expect(levelFor(80)).toBe('verde');
     expect(levelFor(79)).toBe('amarillo');
-    expect(levelFor(60)).toBe('amarillo');
-    expect(levelFor(59)).toBe('rojo');
+    expect(levelFor(50)).toBe('amarillo');
+    expect(levelFor(49)).toBe('rojo');
   });
 });
 
@@ -109,8 +126,39 @@ describe('utilidades', () => {
   it('DEF-002: crea la carpeta de datos de PGlite si no existe y aplica migraciones una sola vez', async () => {
     const dir = path.join(await mkdtemp(path.join(tmpdir(), 'qualitrack-db-')), 'anidada', 'datos');
     const db = await createPgliteDb(dir);
-    expect(await migrate(db)).toEqual(['001_init.sql']);
+    expect(await migrate(db)).toEqual(['001_init.sql', '002_modelo_definido.sql']);
     expect(await migrate(db)).toEqual([]);
+    await db.close();
+  });
+
+  it('ADR-004: una base del check-in 1 se actualiza al modelo peor/mejor sin perder mediciones', async () => {
+    const db = await createPgliteDb();
+    // Base como quedó antes de este cambio: solo 001 aplicada y el catálogo anterior con una medición.
+    const init = await readFile(new URL('../src/db/migrations/001_init.sql', import.meta.url), 'utf8');
+    await db.exec(init);
+    await db.exec(
+      `CREATE TABLE schema_migrations (name TEXT PRIMARY KEY, applied_at TIMESTAMPTZ NOT NULL DEFAULT now());
+       INSERT INTO schema_migrations (name) VALUES ('001_init.sql');
+       INSERT INTO metrics (code, name, unit, target, direction) VALUES
+         ('funciones_terminadas', '% de funciones terminadas', '%', 100, 'mayor'),
+         ('cobertura', 'Cobertura de pruebas', '%', 70, 'mayor'),
+         ('complejidad', 'Complejidad ciclomática máxima', 'por función', 10, 'menor'),
+         ('mi_metrica', 'Métrica de un equipo', 'ms', 300, 'menor');
+       INSERT INTO projects (name, period) VALUES ('Viejo', '2026-2');
+       INSERT INTO measurements (project_id, metric_id, value, measured_on) VALUES (1, 3, 12, '2026-10-01');`,
+    );
+    expect(await migrate(db)).toEqual(['002_modelo_definido.sql']);
+    const { rows } = await db.query<{ code: string; worst: number; best: number; active: boolean }>(
+      'SELECT code, worst, best, active FROM metrics ORDER BY id',
+    );
+    expect(rows).toEqual([
+      { code: 'funciones_terminadas', worst: 70, best: 100, active: true },
+      { code: 'cobertura', worst: 50, best: 70, active: false },
+      { code: 'complejidad', worst: 10, best: 10, active: false },
+      { code: 'mi_metrica', worst: 300, best: 300, active: true },
+    ]);
+    const kept = await db.query<{ n: number }>('SELECT COUNT(*)::int AS n FROM measurements');
+    expect(kept.rows[0].n).toBe(1);
     await db.close();
   });
 

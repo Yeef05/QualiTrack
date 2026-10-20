@@ -13,7 +13,7 @@ import { formatDate } from '../lib/format';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
 
-/** Tendencia de una métrica con su línea de meta punteada (wireframe 2). */
+/** Tendencia de una métrica con las líneas punteadas de sus valores mejor y peor (wireframe 2). */
 export function TrendChart({ metric, measurements }: { metric: Metric; measurements: Measurement[] }) {
   if (measurements.length === 0) {
     return <div className="empty">Todavía no hay mediciones de {metric.name}.</div>;
@@ -30,10 +30,17 @@ export function TrendChart({ metric, measurements }: { metric: Metric; measureme
         tension: 0.25,
       },
       {
-        label: 'Meta',
-        data: measurements.map(() => metric.target),
-        borderColor: '#9aa4b2',
+        label: 'Mejor',
+        data: measurements.map(() => metric.best),
+        borderColor: '#16a34a',
         borderDash: [6, 6],
+        pointRadius: 0,
+      },
+      {
+        label: 'Peor',
+        data: measurements.map(() => metric.worst),
+        borderColor: '#dc2626',
+        borderDash: [2, 4],
         pointRadius: 0,
       },
     ],

@@ -4,7 +4,8 @@ import {
   canManage,
   formatDate,
   formatPercent,
-  formatTarget,
+  formatBest,
+  formatWorst,
   formatValue,
   projectsQuery,
   sum,
@@ -18,9 +19,11 @@ describe('formato de valores', () => {
     expect(formatValue(8, '')).toBe('8');
   });
 
-  it('muestra la meta con su dirección', () => {
-    expect(formatTarget({ direction: 'mayor', target: 70, unit: '%' })).toBe('≥ 70 %');
-    expect(formatTarget({ direction: 'menor', target: 10, unit: 'por función' })).toBe('≤ 10 por función');
+  it('muestra los valores peor y mejor con su dirección', () => {
+    expect(formatBest({ direction: 'mayor', best: 100, unit: '%' })).toBe('≥ 100 %');
+    expect(formatWorst({ direction: 'mayor', worst: 70, unit: '%' })).toBe('≥ 70 %');
+    expect(formatBest({ direction: 'menor', best: 0.5, unit: 'por funcionalidad' })).toBe('≤ 0.5 por funcionalidad');
+    expect(formatWorst({ direction: 'menor', worst: 7, unit: 'días' })).toBe('≤ 7 días');
   });
 
   it('convierte fechas ISO a dd/mm/aaaa', () => {

@@ -18,9 +18,9 @@ Proyecto de la materia **Calidad de Software** (SQA26) · Docente: Mtra. María 
 | Módulo | Qué permite | Estado (check-in 2) |
 | --- | --- | --- |
 | M1. Proyectos y periodos | Alta, edición y archivo; un proyecto por periodo | Prototipo funcional |
-| M2. Métricas de calidad | Catálogo con umbral meta, mediciones, tendencia y semáforo | Prototipo funcional |
+| M2. Métricas de calidad | Modelo definido: cada métrica con valor peor y mejor, criterio de ISO/IEC 25010 y fuente; mediciones, tendencia y semáforo | Prototipo funcional |
 | M3. Técnicas SQA | Catálogo, plan por proyecto, ejecuciones y cumplimiento | Prototipo funcional |
-| M4. Reportes de salud | Índice 0-100, historial y exportación a PDF | Prototipo funcional |
+| M4. Reportes de salud | Índice 0-100 (promedio de indicadores, tope 79 con defectos críticos), historial y exportación a PDF | Prototipo funcional |
 | M5. Usuarios y acceso | Inicio de sesión con JWT; roles Administrador, Líder QA y Miembro | Básico (sin pantalla de usuarios) |
 
 ## Cómo correrlo
@@ -43,7 +43,7 @@ La primera vez se crean el esquema, los catálogos y tres proyectos de ejemplo. 
 | qa@qualitrack.local | Líder QA |
 | miembro@qualitrack.local | Miembro |
 
-Para borrar los datos locales y empezar de cero, elimina la carpeta `apps/api/.data/`.
+Para borrar los datos locales y empezar de cero, elimina la carpeta `apps/api/.data/`. Hazlo también después de actualizar a la migración `002_modelo_definido.sql` si quieres ver los datos de ejemplo con el modelo de métricas nuevo.
 
 ### Producción
 
@@ -67,7 +67,8 @@ El pipeline de GitHub Actions (`.github/workflows/ci.yml`) corre `lint`, `typech
 
 ## Documentación
 
-- [Plan de SQA](docs/sqa/PlanSQA.md) (IEEE 730 + ISO/IEC 25010)
+- [Plan de SQA](docs/sqa/PlanSQA.md) (ISO/IEC 29110, perfil de entrada, y material de la clase)
+- [Modelo de métricas para proyectos chicos](docs/decisiones/ADR-004-modelo-metricas.md): de dónde sale cada criterio
 - [Bitácora de SQA](docs/sqa/BitacoraSQA.md) · [Registro de defectos](docs/sqa/RegistroDefectos.md) · [Mediciones](docs/sqa/Mediciones.md) · [Lista de revisión](docs/sqa/ListaRevision.md)
 - [Historias de usuario](docs/HistoriasUsuario.md)
 - [Decisiones de arquitectura (ADR)](docs/decisiones/)

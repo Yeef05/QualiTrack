@@ -19,15 +19,25 @@ function Bar({ label, value, text }: { label: string; value: number | null; text
 }
 
 function HealthBars({ health }: { health: Health }) {
-  const { met, total } = health.metricsInTarget;
+  const { verde, amarillo, rojo } = health.indicators;
+  const total = verde + amarillo + rojo;
+  const critical = health.criticalOpen;
   return (
     <div style={{ flex: 1, minWidth: 260 }}>
-      <Bar label="Métricas en meta" value={total ? (met / total) * 100 : null} text={`${met} de ${total}`} />
-      <Bar label="Cumplimiento plan SQA" value={health.planScore} text={formatPercent(health.planCompliance)} />
+      <Bar
+        label="Indicadores en verde"
+        value={total ? (verde / total) * 100 : null}
+        text={`${verde} de ${total} (${amarillo} amarillo, ${rojo} rojo)`}
+      />
+      <Bar
+        label="Cumplimiento plan SQA"
+        value={health.planCompliance === null ? null : health.planCompliance * 100}
+        text={formatPercent(health.planCompliance)}
+      />
       <Bar
         label="Defectos críticos"
-        value={health.defectsScore}
-        text={health.criticalOpen === null ? 'Sin datos' : `${health.criticalOpen} abiertos`}
+        value={critical === null ? null : critical === 0 ? 100 : 0}
+        text={critical === null ? 'Sin datos' : `${critical} abiertos`}
       />
     </div>
   );
@@ -35,8 +45,9 @@ function HealthBars({ health }: { health: Health }) {
 
 function OffTarget({ health }: { health: Health }) {
   const off = health.metrics.filter((m) => m.status === 'rojo' || m.status === 'amarillo');
-  if (off.length === 0) {
-    return <p className="muted">Todas las métricas con datos están en meta.</p>;
+  const planOff = health.planStatus !== null && health.planStatus !== 'verde';
+  if (off.length === 0 && !planOff) {
+    return <p className="muted">Todos los indicadores con datos están en meta.</p>;
   }
   return (
     <ul>
@@ -45,6 +56,14 @@ function OffTarget({ health }: { health: Health }) {
           <StatusDot status={status} label={`${metric.name}: ${formatValue(latest?.value ?? 0, metric.unit)}`} />
         </li>
       ))}
+      {planOff && (
+        <li>
+          <StatusDot
+            status={health.planStatus}
+            label={`Cumplimiento del plan de técnicas: ${formatPercent(health.planCompliance)}`}
+          />
+        </li>
+      )}
     </ul>
   );
 }
@@ -86,8 +105,10 @@ export function ReportTab({ project }: { project: Project }) {
         <h3>Métricas que requieren atención</h3>
         <OffTarget health={h} />
         <p className="muted small">
-          Generado: {formatDate(todayIso())} · Periodo {project.period} · Ponderación: métricas 50 %, plan SQA 30 %,
-          defectos críticos 20 %.
+          Generado: {formatDate(todayIso())} · Periodo {project.period} · Cálculo: cada indicador vale verde 100,
+          amarillo 50 y rojo 0, y se promedian (métricas activas y plan de técnicas). Con defectos críticos abiertos
+          el índice no pasa de 79.
+          {h.cappedByCritical && <strong> Este proyecto está limitado a 79 por defectos críticos.</strong>}
         </p>
         <div className="actions no-print">
           <button className="secondary" onClick={generate}>

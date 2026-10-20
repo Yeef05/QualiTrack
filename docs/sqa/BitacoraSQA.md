@@ -32,3 +32,30 @@ Registro cronológico de las actividades de aseguramiento y control de la calida
 | Plantillas de PR e Issues | Sí, en `.github/` |
 
 **Acciones antes de la demo:** subir el repositorio a GitHub, proteger `main`, abrir el PR del prototipo para revisión cruzada y confirmar CI en verde.
+
+## 19/10/2026 · Revisión previa al check-in 2
+
+| Actividad SQA | Resultado | Decisión / acción |
+| --- | --- | --- |
+| Revisión del producto contra el enunciado, la rúbrica y el Entregable 1 | Los 4 mínimos funcionan. El semáforo, el índice y el catálogo de métricas no coinciden con la hoja del Entregable 1; el código decía "del Entregable 1" sin serlo | Modelo de métricas con peor/mejor y fuente por criterio ([ADR-004](../decisiones/ADR-004-modelo-metricas.md)) |
+| Revisión de las métricas para proyectos chicos | La complejidad ciclomática es "métrica en desuso" según el curso y necesita una herramienta; "defectos abiertos ≤ 5" y la tolerancia de 10 % no tienen fuente | Se retiran del catálogo. Complejidad y cobertura quedan como controles automáticos de CI |
+| Revisión de las fuentes del plan | IEEE 730 y el texto completo de ISO/IEC 25010 son de pago | Plan SQA 2.0 sobre ISO/IEC 29110 y la adaptación de la maestra ([ADR-005](../decisiones/ADR-005-iso29110.md)) |
+| Prueba manual después de las 18:00 | Las mediciones de ejemplo salían con fecha de mañana: la API usaba UTC (DEF-003, mayor) | Corrección y pruebas de regresión en `fix/DEF-003-fecha-zona-horaria` |
+| Prueba manual del encabezado | "Líder QA · Líder QA" (DEF-004, cosmético) | Corrección en `fix/DEF-004-nombres-usuarios-demo` |
+| Chequeo completo (`npm run check`) en cada rama | Lint y tipos sin errores; pruebas en verde; build correcto | Las tres ramas quedan listas para revisión cruzada |
+
+### Auditoría interna previa al check-in 2 (actualizada)
+
+| Punto | Estado |
+| --- | --- |
+| CI en verde | Local: sí en las tres ramas. En GitHub: confirmar en Actions al subir las ramas |
+| Métricas capturadas | Sí, con el modelo nuevo ([Mediciones](Mediciones.md)) |
+| Registro de defectos al día | Sí: 4 registrados, 0 críticos abiertos |
+| Historias terminadas según la definición | **No todavía**: falta que otro integrante apruebe los PR de `feature/HU-04-modelo-metricas`, `fix/DEF-003-…` y `fix/DEF-004-…` |
+| `main` protegida y etiqueta por entrega | **No**: pendiente del responsable de colaboración o del técnico |
+
+**Acciones antes de la demo:**
+1. Cada PR lo revisa y aprueba otro integrante con la lista de revisión.
+2. Integrar los tres PR a `main`.
+3. Etiquetar `v0.3-checkin2`.
+4. Borrar `apps/api/.data/` para cargar los datos de ejemplo nuevos.

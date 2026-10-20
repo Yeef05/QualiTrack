@@ -102,7 +102,7 @@ describe('M4. Reportes de salud', () => {
   });
   afterAll(() => ctx.close());
 
-  it('calcula el índice con métricas, plan y defectos críticos', async () => {
+  it('calcula el índice como promedio de indicadores, con el plan y el tope por defectos críticos', async () => {
     const { id } = await createProject(ctx, { name: 'Con datos' });
     const add = (code: string, value: number) =>
       metricId(ctx, code).then((metric) =>
@@ -111,8 +111,10 @@ describe('M4. Reportes de salud', () => {
           .set(bearer(ctx.tokens.qa))
           .send({ metricId: metric, value, measuredOn: todayIso() }),
       );
-    await add('cobertura', 80); // verde
-    await add('defectos_criticos', 1); // amarillo, y 75 puntos en defectos
+    await add('funciones_terminadas', 100); // verde
+    await add('criterios_aceptacion', 100); // verde
+    await add('eficiencia_qa', 100); // verde
+    await add('defectos_criticos', 1); // rojo (peor = mejor = 0)
     const technique = await techniqueId(ctx, 'Pruebas unitarias');
     const plan = await request(ctx.app)
       .post(`/api/projects/${id}/plan`)
@@ -124,9 +126,19 @@ describe('M4. Reportes de salud', () => {
       .send({ executedOn: isoDaysAgo(2), responsible: 'QA', result: 'aprobada' });
 
     const health = await request(ctx.app).get(`/api/projects/${id}/health`).set(bearer(ctx.tokens.miembro));
-    // métricas (100 + 60) / 2 = 80 -> 40; plan 100 -> 30; defectos 75 -> 15; total 85
-    expect(health.body).toMatchObject({ index: 85, level: 'verde', criticalOpen: 1, planCompliance: 1 });
-    expect(health.body.metricsInTarget).toEqual({ met: 1, total: 2 });
+    // 3 métricas verdes + 1 roja + plan verde = (4 × 100 + 0) / 5 = 80, limitado a 79 por el defecto crítico
+    expect(health.body).toMatchObject({
+      index: 79,
+      level: 'amarillo',
+      criticalOpen: 1,
+      planCompliance: 1,
+      planStatus: 'verde',
+      cappedByCritical: true,
+      indicators: { verde: 4, amarillo: 0, rojo: 1 },
+    });
+    expect(health.body.metricsInTarget).toEqual({ met: 3, total: 4 });
+    const report = await request(ctx.app).post(`/api/projects/${id}/reports`).set(bearer(ctx.tokens.qa));
+    expect(report.body.report.summary).toContain('se limita a 79');
   });
 
   it('genera reportes y guarda su historial', async () => {
@@ -148,7 +160,11 @@ describe('M4. Reportes de salud', () => {
       'Portal de Servicio Social': 'rojo',
       QualiTrack: 'verde',
     });
-    const report = await request(demo.app).post(`/api/projects/${res.body[2].id}/reports`).set(bearer(demo.tokens.qa));
+    const byName = (name: string) => res.body.find((p: { name: string }) => p.name === name);
+    expect(byName('QualiTrack')).toMatchObject({ health: { index: 93 }, criticalOpen: 0 });
+    const report = await request(demo.app)
+      .post(`/api/projects/${byName('Portal de Servicio Social').id}/reports`)
+      .set(bearer(demo.tokens.qa));
     expect(report.body.report.summary).toContain('fuera de meta');
     await demo.close();
   });

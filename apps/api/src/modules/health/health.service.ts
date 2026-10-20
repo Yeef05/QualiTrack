@@ -6,13 +6,11 @@ import { listPlan } from '../techniques/techniques.repo';
 import { computeHealth, type HealthResult } from './healthIndex';
 
 export const CRITICAL_DEFECTS_CODE = 'defectos_criticos';
-export const OPEN_DEFECTS_CODE = 'defectos_abiertos';
 
 export interface ProjectHealth extends HealthResult {
   metrics: MetricStatus[];
   planCompliance: number | null;
   criticalOpen: number | null;
-  openDefects: number | null;
   metricsInTarget: { met: number; total: number };
 }
 
@@ -29,7 +27,6 @@ export async function projectHealth(db: Db, projectId: number, today: string = t
     metrics,
     planCompliance: compliance,
     criticalOpen,
-    openDefects: latestOf(metrics, OPEN_DEFECTS_CODE),
     metricsInTarget: { met: statuses.filter((s) => s === 'verde').length, total: statuses.length },
   };
 }
@@ -42,10 +39,13 @@ export function summarize(projectName: string, h: ProjectHealth): string {
   const red = h.metrics.filter((m) => m.status === 'rojo').map((m) => m.metric.name);
   const lines = [
     `Proyecto ${projectName}: índice de salud ${index}.`,
-    `Métricas en meta: ${h.metricsInTarget.met} de ${h.metricsInTarget.total}.`,
+    `Indicadores: ${h.indicators.verde} en verde, ${h.indicators.amarillo} en amarillo y ${h.indicators.rojo} en rojo.`,
     `Cumplimiento del plan de SQA: ${pct(h.planCompliance === null ? null : h.planCompliance * 100)}.`,
     `Defectos críticos abiertos: ${h.criticalOpen ?? 'sin datos'}.`,
   ];
+  if (h.cappedByCritical) {
+    lines.push('El índice se limita a 79 mientras haya defectos críticos abiertos.');
+  }
   if (red.length) {
     lines.push(`Atención: ${red.join(', ')} fuera de meta.`);
   }

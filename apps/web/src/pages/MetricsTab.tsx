@@ -4,7 +4,7 @@ import type { Measurement, Metric, MetricStatus } from '../api/types';
 import { ErrorAlert, Field } from '../components/Field';
 import { StatusDot } from '../components/Status';
 import { TrendChart } from '../components/TrendChart';
-import { formatDate, formatTarget, formatValue, todayIso } from '../lib/format';
+import { formatBest, formatDate, formatValue, formatWorst, todayIso } from '../lib/format';
 import { useApi } from '../lib/useApi';
 
 function MetricsTable({ statuses }: { statuses: MetricStatus[] }) {
@@ -15,7 +15,8 @@ function MetricsTable({ statuses }: { statuses: MetricStatus[] }) {
           <tr>
             <th>Métrica</th>
             <th>Valor</th>
-            <th>Meta</th>
+            <th>Peor</th>
+            <th>Mejor</th>
             <th>Estado</th>
             <th>Fecha</th>
           </tr>
@@ -23,9 +24,13 @@ function MetricsTable({ statuses }: { statuses: MetricStatus[] }) {
         <tbody>
           {statuses.map(({ metric, latest, status }) => (
             <tr key={metric.id}>
-              <td>{metric.name}</td>
+              <td>
+                {metric.name}
+                <div className="muted small">{metric.criterion}</div>
+              </td>
               <td>{latest ? formatValue(latest.value, metric.unit) : '—'}</td>
-              <td>{formatTarget(metric)}</td>
+              <td>{formatWorst(metric)}</td>
+              <td>{formatBest(metric)}</td>
               <td>
                 <StatusDot status={status} />
               </td>
@@ -34,6 +39,40 @@ function MetricsTable({ statuses }: { statuses: MetricStatus[] }) {
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+/** De dónde sale cada criterio: factor de ISO/IEC 25010, fórmula y fuente de los valores peor y mejor. */
+function QualityModel({ statuses }: { statuses: MetricStatus[] }) {
+  return (
+    <div className="card">
+      <h2>Modelo de calidad</h2>
+      <p className="muted small">
+        Verde si llega al valor mejor, amarillo entre el peor y el mejor, rojo si es peor que el peor (modelo definido).
+      </p>
+      <div className="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Métrica</th>
+              <th>Factor · criterio</th>
+              <th>Cómo se calcula</th>
+              <th>Por qué esos valores</th>
+            </tr>
+          </thead>
+          <tbody>
+            {statuses.map(({ metric }) => (
+              <tr key={metric.id}>
+                <td>{metric.name}</td>
+                <td>{metric.criterion || '—'}</td>
+                <td className="small">{metric.description || '—'}</td>
+                <td className="small">{metric.source || '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -136,7 +175,7 @@ function useMetricsData(projectId: number) {
   const statuses = useApi<MetricStatus[]>(`/projects/${projectId}/metrics-status`);
   const [metricId, setMetricId] = useState<number | null>(null);
   const list = statuses.data ?? [];
-  const selected = list.find((s) => s.metric.id === metricId) ?? list.find((s) => s.metric.code === 'cobertura') ?? list[0];
+  const selected = list.find((s) => s.metric.id === metricId) ?? list[0];
   const history = useApi<Measurement[]>(
     selected ? `/projects/${projectId}/measurements?metricId=${selected.metric.id}` : null,
   );
@@ -169,6 +208,7 @@ export function MetricsTab({ projectId, archived }: { projectId: number; archive
           />
         </div>
       )}
+      <QualityModel statuses={list} />
     </>
   );
 }

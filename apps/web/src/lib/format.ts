@@ -42,9 +42,16 @@ export function formatValue(value: number, unit: string): string {
   return unit ? `${formatNumber(value)} ${unit}` : formatNumber(value);
 }
 
-export function formatTarget(metric: Pick<Metric, 'direction' | 'target' | 'unit'>): string {
+/** Valor "mejor" del modelo definido, con su dirección: "≥ 100 %" o "≤ 0.5 por funcionalidad". */
+export function formatBest(metric: Pick<Metric, 'direction' | 'best' | 'unit'>): string {
   const sign = metric.direction === 'mayor' ? '≥' : '≤';
-  return `${sign} ${formatValue(metric.target, metric.unit)}`;
+  return `${sign} ${formatValue(metric.best, metric.unit)}`;
+}
+
+/** Valor "peor" aceptable: por debajo (o por encima, si menor es mejor) la métrica está en rojo. */
+export function formatWorst(metric: Pick<Metric, 'direction' | 'worst' | 'unit'>): string {
+  const sign = metric.direction === 'mayor' ? '≥' : '≤';
+  return `${sign} ${formatValue(metric.worst, metric.unit)}`;
 }
 
 /**

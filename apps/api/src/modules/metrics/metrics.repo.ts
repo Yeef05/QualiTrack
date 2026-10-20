@@ -1,17 +1,27 @@
 import { z } from 'zod';
 import type { Db } from '../../db';
-import { notFound } from '../../errors';
+import { HttpError, notFound } from '../../errors';
 import { idSchema, isoDate } from '../../validation';
-import { evaluate, type Direction, type Status } from './status';
+import { coherent, evaluate, type Direction, type Status } from './status';
 
 export interface Metric {
   id: number;
   code: string;
   name: string;
   unit: string;
-  target: number;
+  /** Valor peor aceptable (modelo definido). */
+  worst: number;
+  /** Valor mejor esperado (modelo definido). */
+  best: number;
   direction: Direction;
+  /** Fórmula de la métrica. */
   description: string;
+  /** Factor y criterio de ISO/IEC 25010 al que responde. */
+  criterion: string;
+  /** De dónde salen los valores peor y mejor. */
+  source: string;
+  /** Las inactivas conservan su historial, pero no cuentan en el semáforo ni en el índice. */
+  active: boolean;
 }
 
 export interface Measurement {
@@ -30,19 +40,30 @@ export interface MetricStatus {
   status: Status | null;
 }
 
-export const metricInput = z.object({
-  code: z
-    .string()
-    .trim()
-    .regex(/^[a-z0-9_]{2,40}$/, 'El código solo admite minúsculas, números y guion bajo'),
+const metricFields = z.object({
   name: z.string().trim().min(2).max(100),
   unit: z.string().trim().max(30).default(''),
-  target: z.number().finite(),
+  worst: z.number().finite(),
+  best: z.number().finite(),
   direction: z.enum(['mayor', 'menor']),
   description: z.string().trim().max(300).default(''),
+  criterion: z.string().trim().max(120).default(''),
+  source: z.string().trim().max(300).default(''),
+  active: z.boolean().default(true),
 });
 
-export const metricUpdateInput = metricInput.omit({ code: true });
+const WORST_BEST_MESSAGE = 'El valor peor no puede ser mejor que el valor mejor';
+
+export const metricUpdateInput = metricFields.refine(coherent, { message: WORST_BEST_MESSAGE, path: ['worst'] });
+
+export const metricInput = metricFields
+  .extend({
+    code: z
+      .string()
+      .trim()
+      .regex(/^[a-z0-9_]{2,40}$/, 'El código solo admite minúsculas, números y guion bajo'),
+  })
+  .refine(coherent, { message: WORST_BEST_MESSAGE, path: ['worst'] });
 
 export const measurementInput = z.object({
   metricId: idSchema,
@@ -60,10 +81,11 @@ interface MeasurementRow {
   note: string;
 }
 
-const METRIC_COLUMNS = 'id, code, name, unit, target, direction, description';
+const METRIC_COLUMNS = 'id, code, name, unit, worst, best, direction, description, criterion, source, active';
 
-export async function listMetrics(db: Db): Promise<Metric[]> {
-  const { rows } = await db.query<Metric>(`SELECT ${METRIC_COLUMNS} FROM metrics ORDER BY id`);
+export async function listMetrics(db: Db, options: { activeOnly?: boolean } = {}): Promise<Metric[]> {
+  const where = options.activeOnly ? 'WHERE active' : '';
+  const { rows } = await db.query<Metric>(`SELECT ${METRIC_COLUMNS} FROM metrics ${where} ORDER BY id`);
   return rows;
 }
 
@@ -77,18 +99,41 @@ export async function getMetric(db: Db, id: number): Promise<Metric> {
 
 export async function createMetric(db: Db, input: z.infer<typeof metricInput>): Promise<Metric> {
   const { rows } = await db.query<Metric>(
-    `INSERT INTO metrics (code, name, unit, target, direction, description)
-     VALUES ($1, $2, $3, $4, $5, $6) RETURNING ${METRIC_COLUMNS}`,
-    [input.code, input.name, input.unit, input.target, input.direction, input.description],
+    `INSERT INTO metrics (code, name, unit, worst, best, direction, description, criterion, source, active)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING ${METRIC_COLUMNS}`,
+    [
+      input.code,
+      input.name,
+      input.unit,
+      input.worst,
+      input.best,
+      input.direction,
+      input.description,
+      input.criterion,
+      input.source,
+      input.active,
+    ],
   );
   return rows[0];
 }
 
 export async function updateMetric(db: Db, id: number, input: z.infer<typeof metricUpdateInput>): Promise<Metric> {
   const { rows } = await db.query<Metric>(
-    `UPDATE metrics SET name = $2, unit = $3, target = $4, direction = $5, description = $6
+    `UPDATE metrics SET name = $2, unit = $3, worst = $4, best = $5, direction = $6, description = $7,
+       criterion = $8, source = $9, active = $10
      WHERE id = $1 RETURNING ${METRIC_COLUMNS}`,
-    [id, input.name, input.unit, input.target, input.direction, input.description],
+    [
+      id,
+      input.name,
+      input.unit,
+      input.worst,
+      input.best,
+      input.direction,
+      input.description,
+      input.criterion,
+      input.source,
+      input.active,
+    ],
   );
   if (!rows[0]) {
     throw notFound('Métrica');
@@ -104,7 +149,7 @@ function toMeasurement(r: MeasurementRow, metric: Metric): Measurement {
     value: r.value,
     measuredOn: r.measured_on,
     note: r.note,
-    status: evaluate(r.value, metric.target, metric.direction),
+    status: evaluate(r.value, metric),
   };
 }
 
@@ -127,6 +172,9 @@ export async function createMeasurement(
   userId: number,
 ): Promise<Measurement> {
   const metric = await getMetric(db, input.metricId);
+  if (!metric.active) {
+    throw new HttpError(409, 'La métrica no está activa en el catálogo; actívala antes de registrar mediciones');
+  }
   const { rows } = await db.query<MeasurementRow>(
     `INSERT INTO measurements (project_id, metric_id, value, measured_on, note, created_by)
      VALUES ($1, $2, $3, $4, $5, $6)
@@ -136,9 +184,9 @@ export async function createMeasurement(
   return toMeasurement(rows[0], metric);
 }
 
-/** Última medición de cada métrica del catálogo para un proyecto, con su semáforo. */
+/** Última medición de cada métrica activa del catálogo para un proyecto, con su semáforo. */
 export async function metricStatuses(db: Db, projectId: number): Promise<MetricStatus[]> {
-  const metrics = await listMetrics(db);
+  const metrics = await listMetrics(db, { activeOnly: true });
   const { rows } = await db.query<{ metric_id: number; value: number; measured_on: string }>(
     `SELECT DISTINCT ON (metric_id) metric_id, value, measured_on::text AS measured_on
      FROM measurements WHERE project_id = $1
@@ -154,7 +202,7 @@ export async function metricStatuses(db: Db, projectId: number): Promise<MetricS
     return {
       metric,
       latest: { value: row.value, measuredOn: row.measured_on },
-      status: evaluate(row.value, metric.target, metric.direction),
+      status: evaluate(row.value, metric),
     };
   });
 }
