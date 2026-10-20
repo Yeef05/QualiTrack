@@ -1,6 +1,6 @@
 # Historias de usuario
 
-Cada criterio de aceptación está ligado a una o más pruebas automáticas. Estado al check-in 2: implementadas y con pruebas; pendiente la revisión cruzada para darlas por terminadas.
+Cada criterio de aceptación está ligado a una o más pruebas automáticas. Cada historia se rastrea a un [caso de uso](CasosDeUso.md#trazabilidad-cu--historias--pruebas). Estado al check-in 2: implementadas y con pruebas; pendiente la revisión cruzada para darlas por terminadas.
 
 ## M1. Proyectos y periodos
 
@@ -55,3 +55,10 @@ Cada criterio de aceptación está ligado a una o más pruebas automáticas. Est
 **HU-10 · Iniciar sesión con roles.** Como usuario quiero iniciar sesión y que el sistema respete mi rol.
 - Credenciales incorrectas muestran un mensaje que no revela si el correo existe → `auth.test.ts` "rechaza contraseña incorrecta…"
 - Un miembro no puede crear proyectos, métricas ni planes → pruebas 403 de cada módulo
+
+## Beta
+
+**HU-11 · Registrar defectos (CU-11).** Como integrante quiero registrar los defectos del proyecto y cerrarlos al corregirlos, para que QualiTrack calcule solo la densidad, los críticos abiertos, la eficiencia de QA y el tiempo de corrección.
+- Un defecto se registra con descripción, gravedad, tipo TSP, fecha y quién lo encontró (equipo, cliente o después de entregar) → *por escribir*
+- La fecha de cierre no puede ser anterior a la de registro → *por escribir*
+- Las 4 métricas se calculan a partir del registro y coinciden con un cálculo a mano de un caso de ejemplo → *por escribir*
