@@ -40,9 +40,9 @@ Según la adaptación de la maestra. Con 5 integrantes, cada rol de responsabili
 | Producto de trabajo | En QualiTrack | Estado |
 | --- | --- | --- |
 | Acuerdo con el cliente | Enunciado SQA26 de la maestra | Listo |
-| Plan del proyecto | [Plan del ciclo](../tsp/PlanCiclo2.md) y este plan | Listo |
+| Plan del proyecto | [Plan del ciclo 3](../tsp/PlanCiclo3.md) (actividades por caso de uso) y este plan | Listo |
 | Registro de estado de avance | [Reportes de check-in](../checkins/) | Listo |
-| Especificación de requisitos | [Historias de usuario](../HistoriasUsuario.md) con criterios de aceptación | Listo |
+| Especificación de requisitos | [Casos de uso](../CasosDeUso.md) con flujos y RF, e [historias de usuario](../HistoriasUsuario.md) con criterios de aceptación | Listo |
 | Especificación de componentes | [ADR-001](../decisiones/ADR-001-arquitectura.md) y estructura del README | Listo |
 | Casos y procedimientos de prueba | `apps/api/test` y `apps/web/src/**/*.test.ts(x)` | Listo |
 | Resultados de verificación | Ejecuciones de CI, PR revisados con la [lista de revisión](ListaRevision.md), [bitácora](BitacoraSQA.md) | Faltan PR revisados |

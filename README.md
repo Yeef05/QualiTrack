@@ -70,9 +70,9 @@ El pipeline de GitHub Actions (`.github/workflows/ci.yml`) corre `lint`, `typech
 - [Plan de SQA](docs/sqa/PlanSQA.md) (ISO/IEC 29110, perfil de entrada, y material de la clase)
 - [Modelo de métricas para proyectos chicos](docs/decisiones/ADR-004-modelo-metricas.md): de dónde sale cada criterio
 - [Bitácora de SQA](docs/sqa/BitacoraSQA.md) · [Registro de defectos](docs/sqa/RegistroDefectos.md) · [Mediciones](docs/sqa/Mediciones.md) · [Lista de revisión](docs/sqa/ListaRevision.md)
-- [Historias de usuario](docs/HistoriasUsuario.md)
+- [Casos de uso](docs/CasosDeUso.md) · [Historias de usuario](docs/HistoriasUsuario.md)
 - [Decisiones de arquitectura (ADR)](docs/decisiones/)
-- Proceso TSP: [Plan del ciclo 2](docs/tsp/PlanCiclo2.md) · [Postmortem del ciclo 2](docs/tsp/PostmortemCiclo2.md)
+- Proceso TSP: [Plan del ciclo 2](docs/tsp/PlanCiclo2.md) · [Postmortem del ciclo 2](docs/tsp/PostmortemCiclo2.md) · [Plan del ciclo 3 (Beta), por caso de uso](docs/tsp/PlanCiclo3.md)
 - Check-in 2 (20 de octubre): [Reporte de estado](docs/checkins/Checkin2_ReporteEstado.md) · [Guion de la demo](docs/checkins/Checkin2_GuionDemo.md)
 
 ## Estructura
