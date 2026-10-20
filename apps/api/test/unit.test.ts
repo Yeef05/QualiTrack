@@ -98,6 +98,14 @@ describe('utilidades', () => {
     expect(daysBetween('2026-10-11', '2026-10-18')).toBe(7);
   });
 
+  it('DEF-003: "hoy" es el día de Zacatecas, no el de UTC', () => {
+    // 19 oct a las 18:40 en México = 20 oct 00:40 UTC.
+    const evening = new Date('2026-10-20T00:40:00Z');
+    expect(todayIso(evening)).toBe('2026-10-19');
+    expect(isoDaysAgo(1, evening)).toBe('2026-10-18');
+    expect(todayIso(evening, 'UTC')).toBe('2026-10-20');
+  });
+
   it('DEF-002: crea la carpeta de datos de PGlite si no existe y aplica migraciones una sola vez', async () => {
     const dir = path.join(await mkdtemp(path.join(tmpdir(), 'qualitrack-db-')), 'anidada', 'datos');
     const db = await createPgliteDb(dir);

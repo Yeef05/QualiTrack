@@ -47,13 +47,23 @@ export function formatTarget(metric: Pick<Metric, 'direction' | 'target' | 'unit
   return `${sign} ${formatValue(metric.target, metric.unit)}`;
 }
 
-/** AAAA-MM-DD a dd/mm/aaaa sin pasar por la zona horaria. */
-export function formatDate(iso: string | null): string {
+/**
+ * Fecha a dd/mm/aaaa. Una fecha AAAA-MM-DD se muestra tal cual; un instante con hora (por ejemplo,
+ * cuándo se guardó un reporte) se pasa al día local, porque cortar el texto UTC adelanta un día
+ * después de las 18:00 en México (DEF-003).
+ */
+export function formatDate(iso: string | null, timeZone?: string): string {
   if (!iso) {
     return '—';
   }
-  const [y, m, d] = iso.slice(0, 10).split('-');
+  const day = iso.length > 10 ? localDay(new Date(iso), timeZone) : iso;
+  const [y, m, d] = day.split('-');
   return `${d}/${m}/${y}`;
+}
+
+function localDay(date: Date, timeZone?: string): string {
+  // en-CA formatea como AAAA-MM-DD.
+  return new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
 }
 
 export function formatPercent(fraction: number | null): string {
