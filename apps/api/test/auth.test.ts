@@ -46,6 +46,15 @@ describe('M5. Usuarios y acceso', () => {
     expect(res.body.user.role).toBe('lider_qa');
   });
 
+  it('DEF-004: los usuarios de ejemplo tienen nombre de persona, no de rol', async () => {
+    const list = await request(ctx.app).get('/api/users').set(bearer(ctx.tokens.admin));
+    const names = list.body.map((u: { name: string }) => u.name);
+    expect(names).toEqual(expect.arrayContaining(['David Becerra', 'Flavio Huizar', 'Jorge López']));
+    for (const roleName of ['Administrador', 'Líder QA', 'Integrante', 'Miembro']) {
+      expect(names).not.toContain(roleName);
+    }
+  });
+
   it('solo el administrador gestiona usuarios', async () => {
     expect((await request(ctx.app).get('/api/users').set(bearer(ctx.tokens.miembro))).status).toBe(403);
     const list = await request(ctx.app).get('/api/users').set(bearer(ctx.tokens.admin));

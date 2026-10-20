@@ -51,10 +51,11 @@ async function seedCatalogs(db: Db) {
 async function seedUsers(db: Db, adminPassword: string) {
   if ((await count(db, 'users')) > 0) return;
   const hash = await bcrypt.hash(adminPassword, 10);
+  // Nombres de persona: el encabezado muestra "nombre · rol" y con nombres de rol se repetía (DEF-004).
   const users = [
-    ['Administrador', 'admin@qualitrack.local', 'admin'],
-    ['Líder QA', 'qa@qualitrack.local', 'lider_qa'],
-    ['Integrante', 'miembro@qualitrack.local', 'miembro'],
+    ['David Becerra', 'admin@qualitrack.local', 'admin'],
+    ['Flavio Huizar', 'qa@qualitrack.local', 'lider_qa'],
+    ['Jorge López', 'miembro@qualitrack.local', 'miembro'],
   ];
   for (const [name, email, role] of users) {
     await db.query('INSERT INTO users (name, email, password_hash, role) VALUES ($1, $2, $3, $4)', [
