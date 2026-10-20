@@ -2,7 +2,7 @@
 
 Versión 2.0 · 19 de octubre de 2026 · Responsable: Flavio Uriel Huizar González (Responsable de calidad).
 
-Basado en el **perfil de entrada de ISO/IEC 29110** para entidades muy pequeñas, en la adaptación de sus tareas que hizo la maestra para equipos de la carrera y en el material de *Calidad de Software*. La versión 1.1 decía seguir IEEE 730, pero ese estándar es de pago y está pensado para organizaciones grandes; el cambio se explica en el [ADR-005](../decisiones/ADR-005-iso29110.md).
+Basado en el **perfil de entrada de ISO/IEC 29110** para entidades muy pequeñas, en la adaptación de sus tareas que hizo la maestra para equipos de la carrera y en el material de *Calidad de Software*. La versión 1.1 decía seguir IEEE 730, pero ese estándar es de pago y está pensado para organizaciones grandes; el cambio se explica en el [ADR-005](../02-diseno/decisiones/ADR-005-iso29110.md).
 
 ## 1. Propósito y alcance
 
@@ -40,15 +40,15 @@ Según la adaptación de la maestra. Con 5 integrantes, cada rol de responsabili
 | Producto de trabajo | En QualiTrack | Estado |
 | --- | --- | --- |
 | Acuerdo con el cliente | Enunciado SQA26 de la maestra | Listo |
-| Plan del proyecto | [Plan del ciclo 3](../tsp/PlanCiclo3.md) (actividades por caso de uso) y este plan | Listo |
-| Registro de estado de avance | [Reportes de check-in](../checkins/) | Listo |
-| Especificación de requisitos | [Casos de uso](../CasosDeUso.md) con flujos y RF, e [historias de usuario](../HistoriasUsuario.md) con criterios de aceptación | Listo |
-| Especificación de componentes | [ADR-001](../decisiones/ADR-001-arquitectura.md) y estructura del README | Listo |
+| Plan del proyecto | [Plan del ciclo 3](../03-planeacion-tsp/PlanCiclo3.md) (actividades por caso de uso) y este plan | Listo |
+| Registro de estado de avance | [Reportes de check-in](../05-entregas/checkin2/) | Listo |
+| Especificación de requisitos | [Casos de uso](../01-requisitos/CasosDeUso.md) con flujos y RF, e [historias de usuario](../01-requisitos/HistoriasUsuario.md) con criterios de aceptación | Listo |
+| Especificación de componentes | [ADR-001](../02-diseno/decisiones/ADR-001-arquitectura.md) y estructura del README | Listo |
 | Casos y procedimientos de prueba | `apps/api/test` y `apps/web/src/**/*.test.ts(x)` | Listo |
 | Resultados de verificación | Ejecuciones de CI, PR revisados con la [lista de revisión](ListaRevision.md), [bitácora](BitacoraSQA.md) | Faltan PR revisados |
 | Resultados de validación | Demo de cada check-in con la maestra, anotada en la bitácora | Desde el 20 oct |
-| Solicitudes de cambio | [ADR](../decisiones/) e Issues de GitHub | Listo |
-| Registro de reuniones | *Falta*: `docs/tsp/Reuniones.md` con acuerdos y pendientes | Pendiente |
+| Solicitudes de cambio | [ADR](../02-diseno/decisiones/) e Issues de GitHub | Listo |
+| Registro de reuniones | *Falta*: `docs/03-planeacion-tsp/Reuniones.md` con acuerdos y pendientes | Pendiente |
 | Repositorio del proyecto | GitHub `Yeef05/QualiTrack`, `main` protegida y una etiqueta por entrega | Falta proteger `main` |
 | Registro de aceptación | Entrega final del 19 nov | Pendiente |
 
@@ -61,12 +61,12 @@ Factores de ISO/IEC 25010, tomados del resumen `ISO25000_Factors.pdf`:
 | Adecuación funcional | Historias con criterios de aceptación ligados a pruebas | `HistoriasUsuario.md`, pruebas |
 | Fiabilidad | Validación de entradas (zod), restricciones en BD, manejo de errores centralizado | `errors.ts`, migraciones SQL |
 | Seguridad | Contraseñas con bcrypt, JWT con expiración, permisos por rol, SQL parametrizado | `auth/`, pruebas 401/403 |
-| Mantenibilidad | Módulos separados, ADR por decisión, controles automáticos en CI | `docs/decisiones`, CI |
+| Mantenibilidad | Módulos separados, ADR por decisión, controles automáticos en CI | `docs/02-diseno/decisiones`, CI |
 | Usabilidad | Errores en español junto a cada campo, semáforo con texto (no solo color) | Pantallas, pruebas de componentes |
 
 ## 6. Métricas
 
-QualiTrack se mide con su propio modelo ([ADR-004](../decisiones/ADR-004-modelo-metricas.md)). Cada valor peor/mejor tiene fuente, y se capturan en el proyecto "QualiTrack" de la herramienta. Los valores medidos van en [Mediciones](Mediciones.md).
+QualiTrack se mide con su propio modelo ([ADR-004](../02-diseno/decisiones/ADR-004-modelo-metricas.md)). Cada valor peor/mejor tiene fuente, y se capturan en el proyecto "QualiTrack" de la herramienta. Los valores medidos van en [Mediciones](Mediciones.md).
 
 | Métrica | Peor | Mejor | Se cuenta con |
 | --- | --- | --- | --- |
@@ -96,7 +96,7 @@ QualiTrack se mide con su propio modelo ([ADR-004](../decisiones/ADR-004-modelo-
 | Gestión de configuración: ramas `feature/` y `fix/`, PR, `main` protegida y una etiqueta por entrega | Proceso | PM.01.10 · SI.0x.05/07 | Colaboración | Siempre | Historial de Git |
 | Registro de defectos con tipo TSP, gravedad y prueba de regresión | Proceso | SI.04.04 · SI.05.05 | Calidad | Al encontrar un error | [Registro de defectos](RegistroDefectos.md) |
 | Auditoría interna del plan | Proceso | PM.03.01 | Calidad | Antes de cada check-in | Bitácora |
-| Retrospectiva PDCA | Proceso | PM.03.03 · PM.04 | Líder | Al cerrar cada ciclo | `docs/tsp/Postmortem*.md` |
+| Retrospectiva PDCA | Proceso | PM.03.03 · PM.04 | Líder | Al cerrar cada ciclo | `docs/03-planeacion-tsp/Postmortem*.md` |
 
 ## 8. Otras formas de asegurar la calidad para el resto del semestre
 

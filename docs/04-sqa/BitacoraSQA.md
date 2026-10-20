@@ -12,8 +12,8 @@ Registro cronológico de las actividades de aseguramiento y control de la calida
 | Actividad SQA | Resultado | Decisión / acción |
 | --- | --- | --- |
 | Configuración del estándar de código | ESLint con regla `complexity: 10` y TypeScript estricto en ambos workspaces | La meta de complejidad se verifica automáticamente, no a mano |
-| Instalación de dependencias | Falla por incompatibilidad TypeScript 7 / typescript-eslint (DEF-001) | Fijar TypeScript 6.0 ([ADR-003](../decisiones/ADR-003-versiones-herramientas.md)); no usar `--force` |
-| Revisión de la decisión de base de datos | Docker detenido y sin PostgreSQL local; Prisma no se integra con PGlite | Cambiar a PGlite + SQL parametrizado ([ADR-002](../decisiones/ADR-002-base-de-datos.md)) |
+| Instalación de dependencias | Falla por incompatibilidad TypeScript 7 / typescript-eslint (DEF-001) | Fijar TypeScript 6.0 ([ADR-003](../02-diseno/decisiones/ADR-003-versiones-herramientas.md)); no usar `--force` |
+| Revisión de la decisión de base de datos | Docker detenido y sin PostgreSQL local; Prisma no se integra con PGlite | Cambiar a PGlite + SQL parametrizado ([ADR-002](../02-diseno/decisiones/ADR-002-base-de-datos.md)) |
 | Pruebas de integración de la API | 45 pruebas en el primer corrido, 0 fallas; cobertura de líneas 97.4 % | Se agregan casos negativos (400/401/403/404/409) por cada ruta |
 | Análisis estático del frontend | 3 componentes con complejidad 13-17 (HAL-001) | Refactor a hooks + subcomponentes antes de integrar |
 | Prueba de humo del prototipo completo | El servidor no arranca en un clon nuevo (DEF-002, crítico) | Corrección + prueba de regresión; se vuelve a probar el flujo completo |
@@ -37,9 +37,9 @@ Registro cronológico de las actividades de aseguramiento y control de la calida
 
 | Actividad SQA | Resultado | Decisión / acción |
 | --- | --- | --- |
-| Revisión del producto contra el enunciado, la rúbrica y el Entregable 1 | Los 4 mínimos funcionan. El semáforo, el índice y el catálogo de métricas no coinciden con la hoja del Entregable 1; el código decía "del Entregable 1" sin serlo | Modelo de métricas con peor/mejor y fuente por criterio ([ADR-004](../decisiones/ADR-004-modelo-metricas.md)) |
+| Revisión del producto contra el enunciado, la rúbrica y el Entregable 1 | Los 4 mínimos funcionan. El semáforo, el índice y el catálogo de métricas no coinciden con la hoja del Entregable 1; el código decía "del Entregable 1" sin serlo | Modelo de métricas con peor/mejor y fuente por criterio ([ADR-004](../02-diseno/decisiones/ADR-004-modelo-metricas.md)) |
 | Revisión de las métricas para proyectos chicos | La complejidad ciclomática es "métrica en desuso" según el curso y necesita una herramienta; "defectos abiertos ≤ 5" y la tolerancia de 10 % no tienen fuente | Se retiran del catálogo. Complejidad y cobertura quedan como controles automáticos de CI |
-| Revisión de las fuentes del plan | IEEE 730 y el texto completo de ISO/IEC 25010 son de pago | Plan SQA 2.0 sobre ISO/IEC 29110 y la adaptación de la maestra ([ADR-005](../decisiones/ADR-005-iso29110.md)) |
+| Revisión de las fuentes del plan | IEEE 730 y el texto completo de ISO/IEC 25010 son de pago | Plan SQA 2.0 sobre ISO/IEC 29110 y la adaptación de la maestra ([ADR-005](../02-diseno/decisiones/ADR-005-iso29110.md)) |
 | Prueba manual después de las 18:00 | Las mediciones de ejemplo salían con fecha de mañana: la API usaba UTC (DEF-003, mayor) | Corrección y pruebas de regresión en `fix/DEF-003-fecha-zona-horaria` |
 | Prueba manual del encabezado | "Líder QA · Líder QA" (DEF-004, cosmético) | Corrección en `fix/DEF-004-nombres-usuarios-demo` |
 | Chequeo completo (`npm run check`) en cada rama | Lint y tipos sin errores; pruebas en verde; build correcto | Las tres ramas quedan listas para revisión cruzada |
@@ -59,3 +59,15 @@ Registro cronológico de las actividades de aseguramiento y control de la calida
 2. Integrar los tres PR a `main`.
 3. Etiquetar `v0.3-checkin2`.
 4. Borrar `apps/api/.data/` para cargar los datos de ejemplo nuevos.
+
+## 20/10/2026 · Cierre del check-in 2
+
+| Actividad SQA | Resultado | Decisión / acción |
+| --- | --- | --- |
+| Integración a `main` | `fix/DEF-003-…`, `fix/DEF-004-…`, `feature/HU-04-modelo-metricas` y `feature/casos-de-uso` integradas con merge sin fast-forward | DEF-004 pasa a Cerrado. Etiqueta `v0.3-checkin2`. La revisión cruzada en PR sigue pendiente y no se cuenta como hecha |
+| Chequeo completo (`npm run check`) en la rama integrada | Lint y tipos sin errores; 84 pruebas en verde (51 API + 33 web); cobertura de líneas 97.5 % API y 99.2 % web; build correcto | Listo para la demo |
+| Orden de la documentación | `docs/` separado por carpetas: requisitos, diseño, planeación TSP, SQA, entregas y manuales ([índice](../README.md)) | Enlaces relativos verificados: 0 rotos |
+| Diseño | Diagramas de clases general y de CU-03, CU-10 y CU-11 ([DiagramasClases](../02-diseno/DiagramasClases.md)) | El revisor de cada PR de la Beta compara el código contra la página de su caso de uso |
+| Revisión del prototipo para el manual del equipo | 4 detalles menores: título del reporte pegado al semáforo, barra de críticos que se lee al revés, "Responsable de QA" como texto libre y nombres distintos en ejecuciones | Se registran como defectos al iniciar el ciclo 3 ([manual](../06-manuales/ManualEquipo.pdf), §10) |
+| Reporte de calidad | [Reporte SQA del check-in 2](../05-entregas/checkin2/ReporteSQA_Checkin2.pdf) con actividades, métricas, índice de salud y autoevaluación con la rúbrica | Se entrega junto con la demo |
+

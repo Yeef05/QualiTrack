@@ -25,7 +25,7 @@ Proyecto de la materia **Calidad de Software** (SQA26) · Docente: Mtra. María 
 
 ## Cómo correrlo
 
-Requisitos: Node.js 20.19 o superior. **No hace falta instalar PostgreSQL**: en desarrollo se usa PGlite, que es PostgreSQL compilado a WebAssembly ([ADR-002](docs/decisiones/ADR-002-base-de-datos.md)).
+Requisitos: Node.js 20.19 o superior. **No hace falta instalar PostgreSQL**: en desarrollo se usa PGlite, que es PostgreSQL compilado a WebAssembly ([ADR-002](docs/02-diseno/decisiones/ADR-002-base-de-datos.md)).
 
 ```bash
 npm install
@@ -67,13 +67,16 @@ El pipeline de GitHub Actions (`.github/workflows/ci.yml`) corre `lint`, `typech
 
 ## Documentación
 
-- [Plan de SQA](docs/sqa/PlanSQA.md) (ISO/IEC 29110, perfil de entrada, y material de la clase)
-- [Modelo de métricas para proyectos chicos](docs/decisiones/ADR-004-modelo-metricas.md): de dónde sale cada criterio
-- [Bitácora de SQA](docs/sqa/BitacoraSQA.md) · [Registro de defectos](docs/sqa/RegistroDefectos.md) · [Mediciones](docs/sqa/Mediciones.md) · [Lista de revisión](docs/sqa/ListaRevision.md)
-- [Casos de uso](docs/CasosDeUso.md) · [Historias de usuario](docs/HistoriasUsuario.md)
-- [Decisiones de arquitectura (ADR)](docs/decisiones/)
-- Proceso TSP: [Plan del ciclo 2](docs/tsp/PlanCiclo2.md) · [Postmortem del ciclo 2](docs/tsp/PostmortemCiclo2.md) · [Plan del ciclo 3 (Beta), por caso de uso](docs/tsp/PlanCiclo3.md)
-- Check-in 2 (20 de octubre): [Reporte de estado](docs/checkins/Checkin2_ReporteEstado.md) · [Guion de la demo](docs/checkins/Checkin2_GuionDemo.md)
+Índice completo en [`docs/README.md`](docs/README.md), separado en requisitos, diseño, planeación TSP, SQA, entregas y manuales.
+
+- [Plan de SQA](docs/04-sqa/PlanSQA.md) (ISO/IEC 29110, perfil de entrada, y material de la clase)
+- [Modelo de métricas para proyectos chicos](docs/02-diseno/decisiones/ADR-004-modelo-metricas.md): de dónde sale cada criterio
+- [Bitácora de SQA](docs/04-sqa/BitacoraSQA.md) · [Registro de defectos](docs/04-sqa/RegistroDefectos.md) · [Mediciones](docs/04-sqa/Mediciones.md) · [Lista de revisión](docs/04-sqa/ListaRevision.md)
+- [Casos de uso](docs/01-requisitos/CasosDeUso.md) · [Historias de usuario](docs/01-requisitos/HistoriasUsuario.md)
+- [Diagramas de clases](docs/02-diseno/DiagramasClases.md) · [Manual del equipo](docs/06-manuales/ManualEquipo.pdf)
+- [Decisiones de arquitectura (ADR)](docs/02-diseno/decisiones/)
+- Proceso TSP: [Plan del ciclo 2](docs/03-planeacion-tsp/PlanCiclo2.md) · [Postmortem del ciclo 2](docs/03-planeacion-tsp/PostmortemCiclo2.md) · [Plan del ciclo 3 (Beta), por caso de uso](docs/03-planeacion-tsp/PlanCiclo3.md)
+- Check-in 2 (20 de octubre): [Reporte de estado](docs/05-entregas/checkin2/Checkin2_ReporteEstado.md) · [Guion de la demo](docs/05-entregas/checkin2/Checkin2_GuionDemo.md) · [Reporte SQA](docs/05-entregas/checkin2/ReporteSQA_Checkin2.pdf)
 
 ## Estructura
 
@@ -83,5 +86,11 @@ apps/
     src/modules/{projects,metrics,techniques,health}
     test/          pruebas de integración con supertest
   web/   React + TypeScript + Vite + Chart.js
-docs/    plan y bitácora de SQA, ADR, proceso TSP, check-ins
+docs/
+  01-requisitos/       casos de uso e historias de usuario
+  02-diseno/           diagramas de clases y decisiones (ADR)
+  03-planeacion-tsp/   planes y postmortem de cada ciclo
+  04-sqa/              plan SQA, bitácora, defectos, mediciones, lista de revisión
+  05-entregas/         lo entregado en cada check-in
+  06-manuales/         manual del equipo
 ```

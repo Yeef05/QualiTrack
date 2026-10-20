@@ -132,7 +132,7 @@ flowchart LR
 | --- | --- |
 | **ID** | CU-03 |
 | **Actor** | Líder de QA |
-| **Descripción** | El Líder de QA decide qué métricas usa el proyecto y con qué valores peor y mejor se calificará cada una, sabiendo de dónde sale cada criterio ([ADR-004](decisiones/ADR-004-modelo-metricas.md)). |
+| **Descripción** | El Líder de QA decide qué métricas usa el proyecto y con qué valores peor y mejor se calificará cada una, sabiendo de dónde sale cada criterio ([ADR-004](../02-diseno/decisiones/ADR-004-modelo-metricas.md)). |
 
 **Precondiciones**
 - El catálogo trae las 6 métricas base y 3 opcionales, cada una con factor ISO/IEC 25010, fórmula y fuente.
@@ -383,4 +383,4 @@ flowchart LR
 | CU-10 | RF-34, RF-35 | HU-10 | `auth.test.ts`, pruebas 403 de cada módulo |
 | CU-11 | RF-36 a RF-38 | HU-11 | Por escribir en la Beta |
 
-La división de las actividades de implementación por caso de uso está en el [Plan del ciclo 3](tsp/PlanCiclo3.md).
+La división de las actividades de implementación por caso de uso está en el [Plan del ciclo 3](../03-planeacion-tsp/PlanCiclo3.md).

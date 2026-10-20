@@ -48,7 +48,7 @@ Igual que en el Entregable 1: líder del proyecto (Camila), QA (Flavio), líder 
 
 | Riesgo | Probabilidad | Impacto | Mitigación |
 | --- | --- | --- | --- |
-| No tener PostgreSQL en todas las máquinas | Alta (ocurrió) | Alto | PGlite en desarrollo y pruebas ([ADR-002](../decisiones/ADR-002-base-de-datos.md)) |
-| Versiones nuevas de herramientas incompatibles | Media (ocurrió con TypeScript 7) | Medio | Fijar versiones y registrar la decisión ([ADR-003](../decisiones/ADR-003-versiones-herramientas.md)) |
+| No tener PostgreSQL en todas las máquinas | Alta (ocurrió) | Alto | PGlite en desarrollo y pruebas ([ADR-002](../02-diseno/decisiones/ADR-002-base-de-datos.md)) |
+| Versiones nuevas de herramientas incompatibles | Media (ocurrió con TypeScript 7) | Medio | Fijar versiones y registrar la decisión ([ADR-003](../02-diseno/decisiones/ADR-003-versiones-herramientas.md)) |
 | Revisión de código tardía | Media | Medio | PR pequeños por módulo y revisor asignado en cada tarea |
 | Despliegue en Render sin probar | Media | Alto | Probar el despliegue antes de la Beta (3 de noviembre) |

@@ -18,22 +18,23 @@
 
 | Antes | Ahora | Decisión |
 | --- | --- | --- |
-| Complejidad ciclomática y cobertura como métricas del producto | Se retiran del catálogo: la complejidad es métrica en desuso según el curso y ambas necesitan herramientas. Quedan como controles automáticos del CI de QualiTrack | [ADR-004](../decisiones/ADR-004-modelo-metricas.md) |
+| Complejidad ciclomática y cobertura como métricas del producto | Se retiran del catálogo: la complejidad es métrica en desuso según el curso y ambas necesitan herramientas. Quedan como controles automáticos del CI de QualiTrack | [ADR-004](../../02-diseno/decisiones/ADR-004-modelo-metricas.md) |
 | Umbrales sin fuente (10 % de tolerancia, "defectos abiertos ≤ 5") | Modelo definido: cada métrica tiene valor peor y mejor con su fuente (rúbrica, láminas o acuerdo del equipo) | ADR-004 |
 | Índice ponderado 50/30/20 | Promedio de indicadores (verde 100, amarillo 50, rojo 0), como decía la hoja del Entregable 1, con tope de 79 si hay defectos críticos | ADR-004 |
-| Plan SQA "basado en IEEE 730" (de pago) | Plan SQA 2.0 sobre ISO/IEC 29110 para entidades muy pequeñas y la adaptación de roles de la maestra | [ADR-005](../decisiones/ADR-005-iso29110.md) |
+| Plan SQA "basado en IEEE 730" (de pago) | Plan SQA 2.0 sobre ISO/IEC 29110 para entidades muy pequeñas y la adaptación de roles de la maestra | [ADR-005](../../02-diseno/decisiones/ADR-005-iso29110.md) |
 
 ## Evidencia de aseguramiento y control de la calidad
 
 | Práctica del plan | Evidencia en el repositorio |
 | --- | --- |
-| Gestión de configuración | Ramas `feature/HU-04-modelo-metricas`, `fix/DEF-003-…` y `fix/DEF-004-…`, cada una con su PR para revisión |
+| Gestión de configuración | Ramas `feature/HU-04-modelo-metricas`, `feature/casos-de-uso`, `fix/DEF-003-…` y `fix/DEF-004-…` integradas a `main` con merge (se conserva cada rama en el historial) y etiqueta `v0.3-checkin2`. Falta la revisión cruzada en PR |
 | Registro de defectos | 4 defectos encontrados por el equipo (1 crítico, 2 mayores, 1 cosmético), cada uno con prueba de regresión; 0 críticos abiertos |
-| Pruebas automáticas | 84 pruebas al integrar las tres ramas; el pipeline falla si la cobertura baja de 70 % |
+| Pruebas automáticas | 84 pruebas (51 API + 33 web), cobertura de líneas 97.5 % API y 99.2 % web; el pipeline falla si la cobertura baja de 70 % |
 | Análisis estático | ESLint con `complexity ≤ 10`: detectó 3 componentes de 13 a 17 que se refactorizaron (HAL-001) |
 | Decisiones documentadas | 5 ADR |
-| Requisitos claros | 10 historias de usuario con criterios ligados a pruebas |
-| Auditoría interna | Bitácora con la auditoría del 19/10 |
+| Requisitos y diseño | 11 casos de uso con flujos y RF, 10 historias de usuario con criterios ligados a pruebas y diagramas de clases (general y por caso de uso de la Beta) |
+| Auditoría interna | Bitácora con la auditoría del 19/10 y el cierre del 20/10 |
+| Reporte de calidad | [Reporte SQA del check-in 2](ReporteSQA_Checkin2.pdf): actividades, métricas e índice de salud con el valor del producto |
 
 ## Métricas al corte (modelo del ADR-004)
 

@@ -1,6 +1,6 @@
 # Plan del ciclo 3 (TSP) · Versión Beta · 21 de octubre al 3 de noviembre de 2026
 
-Pasos del ciclo TSP: **lanzamiento → estrategia → plan → requisitos → diseño → implementación → pruebas → postmortem**. El trabajo se divide por [caso de uso](../CasosDeUso.md): cada CU tiene un responsable que lo implementa y **otro integrante que lo revisa en el PR**. Esa revisión es la evidencia que pide la definición de terminado del [Plan SQA](../sqa/PlanSQA.md).
+Pasos del ciclo TSP: **lanzamiento → estrategia → plan → requisitos → diseño → implementación → pruebas → postmortem**. El trabajo se divide por [caso de uso](../01-requisitos/CasosDeUso.md): cada CU tiene un responsable que lo implementa y **otro integrante que lo revisa en el PR**. Esa revisión es la evidencia que pide la definición de terminado del [Plan SQA](../04-sqa/PlanSQA.md).
 
 > Las horas plan son una estimación inicial. Se ajustan en la junta de lanzamiento del 21/10 y cada responsable anota sus horas reales al cerrar la tarea.
 

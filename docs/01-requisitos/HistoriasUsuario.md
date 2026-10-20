@@ -19,7 +19,7 @@ Cada criterio de aceptación está ligado a una o más pruebas automáticas. Cad
 
 ## M2. Métricas de calidad
 
-**HU-04 · Catálogo de métricas.** Como líder de QA quiero un catálogo de métricas que un equipo chico pueda contar a mano, y saber de dónde sale cada criterio ([ADR-004](decisiones/ADR-004-modelo-metricas.md)).
+**HU-04 · Catálogo de métricas.** Como líder de QA quiero un catálogo de métricas que un equipo chico pueda contar a mano, y saber de dónde sale cada criterio ([ADR-004](../02-diseno/decisiones/ADR-004-modelo-metricas.md)).
 - El sistema trae 6 métricas activas y 3 opcionales, cada una con su factor de ISO/IEC 25010, su fórmula y la fuente de sus valores peor y mejor → "incluye el modelo de métricas para proyectos chicos"
 - El equipo puede agregar, ajustar o desactivar las suyas; el valor peor no puede ser mejor que el mejor → "el equipo puede agregar y ajustar…", "valida el código de la métrica…"
 - Las métricas inactivas conservan su historial, pero no se pueden medir ni cuentan en el semáforo → "no registra mediciones de métricas inactivas"

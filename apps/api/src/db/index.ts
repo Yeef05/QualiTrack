@@ -6,7 +6,7 @@ import pg from 'pg';
  * Interfaz mínima de acceso a datos. Las dos implementaciones hablan SQL de PostgreSQL:
  * - PGlite (PostgreSQL en WebAssembly) para desarrollo local y pruebas, sin instalar nada.
  * - pg (PostgreSQL real) en producción, con DATABASE_URL.
- * Ver docs/decisiones/ADR-002-base-de-datos.md.
+ * Ver docs/02-diseno/decisiones/ADR-002-base-de-datos.md.
  */
 export interface Db {
   query<T = Record<string, unknown>>(sql: string, params?: unknown[]): Promise<{ rows: T[] }>;
