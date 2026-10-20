@@ -14,9 +14,16 @@ export function paramId(req: { params: unknown }, name = 'id'): number {
 
 export const PERIOD_RE = /^\d{4}-[12]$/;
 
-/** Fecha de hoy en formato AAAA-MM-DD (UTC). */
-export function todayIso(now: Date = new Date()): string {
-  return now.toISOString().slice(0, 10);
+/**
+ * Zona horaria de los usuarios. Las fechas de mediciones y ejecuciones son días del calendario local:
+ * con UTC, después de las 18:00 en Zacatecas el servidor ya estaba en el día siguiente (DEF-003).
+ */
+export const APP_TIMEZONE = process.env.APP_TIMEZONE || 'America/Mexico_City';
+
+/** Fecha de hoy en formato AAAA-MM-DD en la zona horaria de la aplicación. */
+export function todayIso(now: Date = new Date(), timeZone: string = APP_TIMEZONE): string {
+  // en-CA formatea como AAAA-MM-DD.
+  return new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
 }
 
 /** Días completos entre dos fechas AAAA-MM-DD (b - a). */

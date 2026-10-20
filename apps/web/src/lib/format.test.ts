@@ -29,6 +29,12 @@ describe('formato de valores', () => {
     expect(formatDate(null)).toBe('—');
   });
 
+  it('DEF-003: un instante con hora se muestra en el día local', () => {
+    // 19 oct a las 18:40 en México = 20 oct 00:40 UTC.
+    expect(formatDate('2026-10-20T00:40:00.000Z', 'America/Mexico_City')).toBe('19/10/2026');
+    expect(formatDate('2026-10-20', 'America/Mexico_City')).toBe('20/10/2026');
+  });
+
   it('formatea porcentajes', () => {
     expect(formatPercent(0.666)).toBe('67 %');
     expect(formatPercent(null)).toBe('Sin datos');
