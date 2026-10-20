@@ -84,20 +84,32 @@ describe('formularios', () => {
 });
 
 describe('gráfica de tendencia', () => {
-  const metric: Metric = { id: 1, code: 'cobertura', name: 'Cobertura', unit: '%', target: 70, direction: 'mayor', description: '' };
+  const metric: Metric = {
+    id: 1,
+    code: 'cobertura',
+    name: 'Cobertura',
+    unit: '%',
+    worst: 50,
+    best: 70,
+    direction: 'mayor',
+    description: '',
+    criterion: 'Mantenibilidad · facilidad de prueba',
+    source: 'Entregable 1',
+    active: true,
+  };
 
   it('avisa cuando no hay mediciones', () => {
     render(<TrendChart metric={metric} measurements={[]} />);
     expect(screen.getByText(/Todavía no hay mediciones de Cobertura/)).toBeInTheDocument();
   });
 
-  it('grafica los valores y la línea de meta', () => {
+  it('grafica los valores y las líneas de mejor y peor', () => {
     const measurements = [
       { id: 1, metricId: 1, value: 50, measuredOn: '2026-10-01', note: '', status: 'rojo' as const },
       { id: 2, metricId: 1, value: 75, measuredOn: '2026-10-15', note: '', status: 'verde' as const },
     ];
     render(<TrendChart metric={metric} measurements={measurements} />);
-    expect(screen.getByTestId('line')).toHaveTextContent('Cobertura:50,75|Meta:70,70');
+    expect(screen.getByTestId('line')).toHaveTextContent('Cobertura:50,75|Mejor:70,70|Peor:50,50');
   });
 });
 

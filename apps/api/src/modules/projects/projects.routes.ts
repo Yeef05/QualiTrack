@@ -32,7 +32,7 @@ export function projectsRouter(db: Db): Router {
     const withHealth = await Promise.all(
       projects.map(async (p) => {
         const h = await projectHealth(db, p.id);
-        return { ...p, health: { index: h.index, level: h.level }, openDefects: h.openDefects };
+        return { ...p, health: { index: h.index, level: h.level }, criticalOpen: h.criticalOpen };
       }),
     );
     res.json(withHealth);

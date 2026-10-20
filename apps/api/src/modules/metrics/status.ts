@@ -1,19 +1,30 @@
 export type Direction = 'mayor' | 'menor';
 export type Status = 'verde' | 'amarillo' | 'rojo';
 
+/** Valores del modelo definido de una métrica (ADR-004). */
+export interface Thresholds {
+  worst: number;
+  best: number;
+  direction: Direction;
+}
+
 /**
- * Semáforo de una medición contra su umbral meta.
- * - verde: cumple la meta.
- * - amarillo: no la cumple, pero está dentro de una tolerancia del 10 % de la meta
- *   (mínimo 1 unidad, para metas en 0 como "defectos críticos abiertos").
- * - rojo: fuera de la tolerancia.
+ * Semáforo de una medición:
+ * - verde: llega al valor "mejor";
+ * - amarillo: está entre el "peor" aceptable y el "mejor";
+ * - rojo: es peor que el valor "peor".
+ * Si peor y mejor son iguales (por ejemplo, defectos críticos = 0), no hay amarillo.
  */
-export function evaluate(value: number, target: number, direction: Direction): Status {
-  const tolerance = Math.abs(target) * 0.1 || 1;
+export function evaluate(value: number, { worst, best, direction }: Thresholds): Status {
   if (direction === 'mayor') {
-    if (value >= target) return 'verde';
-    return value >= target - tolerance ? 'amarillo' : 'rojo';
+    if (value >= best) return 'verde';
+    return value >= worst ? 'amarillo' : 'rojo';
   }
-  if (value <= target) return 'verde';
-  return value <= target + tolerance ? 'amarillo' : 'rojo';
+  if (value <= best) return 'verde';
+  return value <= worst ? 'amarillo' : 'rojo';
+}
+
+/** El valor peor no puede ser mejor que el valor mejor. */
+export function coherent({ worst, best, direction }: Thresholds): boolean {
+  return direction === 'mayor' ? worst <= best : worst >= best;
 }

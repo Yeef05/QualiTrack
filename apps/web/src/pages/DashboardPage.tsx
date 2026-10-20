@@ -11,7 +11,7 @@ import { useApi } from '../lib/useApi';
 
 function Kpis({ projects }: { projects: ProjectSummary[] }) {
   const health = average(projects.map((p) => p.health.index));
-  const defects = sum(projects.map((p) => p.openDefects));
+  const critical = sum(projects.map((p) => p.criticalOpen));
   return (
     <div className="grid grid-3">
       <div className="card kpi">
@@ -23,8 +23,8 @@ function Kpis({ projects }: { projects: ProjectSummary[] }) {
         <div className="value">{health === null ? '—' : `${health}/100`}</div>
       </div>
       <div className="card kpi">
-        <div className="label">Defectos abiertos</div>
-        <div className="value">{defects ?? '—'}</div>
+        <div className="label">Defectos críticos abiertos</div>
+        <div className="value">{critical ?? '—'}</div>
       </div>
     </div>
   );

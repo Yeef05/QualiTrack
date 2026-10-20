@@ -27,7 +27,7 @@ export interface Project {
 
 export interface ProjectSummary extends Project {
   health: { index: number | null; level: Status | null };
-  openDefects: number | null;
+  criticalOpen: number | null;
 }
 
 export type ProjectInput = Pick<Project, 'name' | 'description' | 'period' | 'repositoryUrl' | 'team' | 'qaLead'>;
@@ -37,9 +37,18 @@ export interface Metric {
   code: string;
   name: string;
   unit: string;
-  target: number;
+  /** Valor peor aceptable (modelo definido). */
+  worst: number;
+  /** Valor mejor esperado (modelo definido). */
+  best: number;
   direction: Direction;
+  /** Fórmula. */
   description: string;
+  /** Factor y criterio de ISO/IEC 25010. */
+  criterion: string;
+  /** De dónde salen los valores peor y mejor. */
+  source: string;
+  active: boolean;
 }
 
 export interface Measurement {
@@ -91,13 +100,12 @@ export interface Execution {
 export interface Health {
   index: number | null;
   level: Status | null;
-  metricsScore: number | null;
-  planScore: number | null;
-  defectsScore: number | null;
+  indicators: Record<Status, number>;
+  planStatus: Status | null;
+  cappedByCritical: boolean;
   metrics: MetricStatus[];
   planCompliance: number | null;
   criticalOpen: number | null;
-  openDefects: number | null;
   metricsInTarget: { met: number; total: number };
 }
 
