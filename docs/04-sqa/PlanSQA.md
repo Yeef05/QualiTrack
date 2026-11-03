@@ -40,15 +40,15 @@ Según la adaptación de la maestra. Con 5 integrantes, cada rol de responsabili
 | Producto de trabajo | En QualiTrack | Estado |
 | --- | --- | --- |
 | Acuerdo con el cliente | Enunciado SQA26 de la maestra | Listo |
-| Plan del proyecto | [Plan del ciclo 3](../03-planeacion-tsp/PlanCiclo3.md) (actividades por caso de uso) y este plan | Listo |
+| Plan del proyecto | [Plan del ciclo 4](../03-planeacion-tsp/PlanCiclo4.md) (entrega final, con responsable, revisor y fecha), planes de ciclos anteriores y este plan | Listo |
 | Registro de estado de avance | [Reportes de check-in](../05-entregas/checkin2/) | Listo |
 | Especificación de requisitos | [Casos de uso](../01-requisitos/CasosDeUso.md) con flujos y RF, e [historias de usuario](../01-requisitos/HistoriasUsuario.md) con criterios de aceptación | Listo |
 | Especificación de componentes | [ADR-001](../02-diseno/decisiones/ADR-001-arquitectura.md) y estructura del README | Listo |
 | Casos y procedimientos de prueba | `apps/api/test` y `apps/web/src/**/*.test.ts(x)` | Listo |
-| Resultados de verificación | Ejecuciones de CI, PR revisados con la [lista de revisión](ListaRevision.md), [bitácora](BitacoraSQA.md) | Faltan PR revisados |
+| Resultados de verificación | Ejecuciones de CI, PR revisados con la [lista de revisión](ListaRevision.md), [revisiones de la Beta](RevisionesBeta.md), [bitácora](BitacoraSQA.md) | Revisiones asignadas, por hacer (9/11) |
 | Resultados de validación | Demo de cada check-in con la maestra, anotada en la bitácora | Desde el 20 oct |
 | Solicitudes de cambio | [ADR](../02-diseno/decisiones/) e Issues de GitHub | Listo |
-| Registro de reuniones | *Falta*: `docs/03-planeacion-tsp/Reuniones.md` con acuerdos y pendientes | Pendiente |
+| Registro de reuniones | [Reuniones](../03-planeacion-tsp/Reuniones.md) con acuerdos y pendientes | Iniciado: faltan asistentes y acuerdos |
 | Repositorio del proyecto | GitHub `Yeef05/QualiTrack`, `main` protegida y una etiqueta por entrega | Falta proteger `main` |
 | Registro de aceptación | Entrega final del 19 nov | Pendiente |
 

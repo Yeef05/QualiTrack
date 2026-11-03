@@ -84,6 +84,8 @@ Cada tarea va en su rama (`feature/CU-xx-…` o `fix/DEF-xxx-…`) con un PR peq
 
 Del 21/10 al 1/11 no hubo avance registrado (ni commits ni documentos). El 2/11 el Responsable de calidad hizo las tareas 3 a 10 y 15 para cumplir los tres casos de uso comprometidos: **9 de 17 tareas hechas, 2 parciales y 6 pendientes**. Ninguna tiene la revisión del integrante asignado, así que las historias no cumplen todavía la definición de terminado. Las horas reales las anota cada integrante en el postmortem.
 
+El cierre del ciclo está en el [postmortem del ciclo 3](PostmortemCiclo3.md), y lo pendiente pasa al [plan del ciclo 4](PlanCiclo4.md).
+
 ## 6. Riesgos
 
 | Riesgo | Probabilidad | Impacto | Mitigación |
