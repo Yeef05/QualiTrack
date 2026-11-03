@@ -15,13 +15,13 @@ Proyecto de la materia **Calidad de Software** (SQA26) · Docente: Mtra. María 
 
 ## Módulos
 
-| Módulo | Qué permite | Estado (check-in 2) |
+| Módulo | Qué permite | Estado (Beta, 3 nov) |
 | --- | --- | --- |
-| M1. Proyectos y periodos | Alta, edición y archivo; un proyecto por periodo | Prototipo funcional |
-| M2. Métricas de calidad | Modelo definido: cada métrica con valor peor y mejor, criterio de ISO/IEC 25010 y fuente; mediciones, tendencia y semáforo | Prototipo funcional |
-| M3. Técnicas SQA | Catálogo, plan por proyecto, ejecuciones y cumplimiento | Prototipo funcional |
-| M4. Reportes de salud | Índice 0-100 (promedio de indicadores, tope 79 con defectos críticos), historial y exportación a PDF | Prototipo funcional |
-| M5. Usuarios y acceso | Inicio de sesión con JWT; roles Administrador, Líder QA y Miembro | Básico (sin pantalla de usuarios) |
+| M1. Proyectos y periodos | Alta, edición y archivo; un proyecto por periodo; historias entregadas | Beta |
+| M2. Métricas de calidad | Modelo definido: cada métrica con valor peor y mejor, criterio de ISO/IEC 25010 y fuente; mediciones, tendencia y semáforo. **Modelo editable por proyecto** y métricas propias (CU-03) | Beta |
+| M3. Técnicas SQA | Catálogo, plan por proyecto, ejecuciones y cumplimiento. **Registro de defectos** que calcula densidad, críticos, eficiencia de QA y tiempo de corrección (CU-11) | Beta |
+| M4. Reportes de salud | Índice 0-100 (promedio de indicadores, tope 79 con defectos críticos), historial y exportación a PDF | Beta |
+| M5. Usuarios y acceso | Inicio de sesión con JWT; roles Administrador, Líder QA y Miembro; **pantalla de usuarios** (CU-10) | Beta |
 
 ## Cómo correrlo
 
@@ -43,7 +43,7 @@ La primera vez se crean el esquema, los catálogos y tres proyectos de ejemplo. 
 | qa@qualitrack.local | Líder QA |
 | miembro@qualitrack.local | Miembro |
 
-Para borrar los datos locales y empezar de cero, elimina la carpeta `apps/api/.data/`. Hazlo también después de actualizar a la migración `002_modelo_definido.sql` si quieres ver los datos de ejemplo con el modelo de métricas nuevo.
+Para borrar los datos locales y empezar de cero, elimina la carpeta `apps/api/.data/`. Hazlo también después de actualizar a las migraciones `003` y `004` (Beta) si quieres ver los datos de ejemplo con el registro de defectos.
 
 ### Producción
 
@@ -77,6 +77,7 @@ El pipeline de GitHub Actions (`.github/workflows/ci.yml`) corre `lint`, `typech
 - [Decisiones de arquitectura (ADR)](docs/02-diseno/decisiones/)
 - Proceso TSP: [Plan del ciclo 2](docs/03-planeacion-tsp/PlanCiclo2.md) · [Postmortem del ciclo 2](docs/03-planeacion-tsp/PostmortemCiclo2.md) · [Plan del ciclo 3 (Beta), por caso de uso](docs/03-planeacion-tsp/PlanCiclo3.md)
 - Check-in 2 (20 de octubre): [Reporte de estado](docs/05-entregas/checkin2/Checkin2_ReporteEstado.md) · [Reporte SQA](docs/05-entregas/checkin2/ReporteSQA_Checkin2.pdf)
+- Beta (3 de noviembre): [Reporte de estado](docs/05-entregas/checkin3/Beta_ReporteEstado.md) · [Reporte SQA](docs/05-entregas/checkin3/ReporteSQA_Beta.pdf)
 
 ## Estructura
 

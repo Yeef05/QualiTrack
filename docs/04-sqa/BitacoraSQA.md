@@ -71,3 +71,17 @@ Registro cronológico de las actividades de aseguramiento y control de la calida
 | Revisión del prototipo al preparar el manual del equipo | 4 detalles menores: título del reporte pegado al semáforo, barra de críticos que se lee al revés, "Responsable de QA" como texto libre y nombres distintos en ejecuciones | Se registran como defectos al iniciar el ciclo 3 |
 | Reporte de calidad | [Reporte SQA del check-in 2](../05-entregas/checkin2/ReporteSQA_Checkin2.pdf) con actividades, métricas, índice de salud y autoevaluación con la rúbrica | Se entrega junto con la demo |
 | CI en GitHub | La corrida #4 de GitHub Actions sobre `main` (commit `65d201f`) pasó lint, tipos, pruebas con cobertura y build | Primer corrido verificado en GitHub; cierra el pendiente del 18/10 |
+
+## 02/11/2026 · Ciclo 3: versión Beta
+
+| Actividad SQA | Resultado | Decisión / acción |
+| --- | --- | --- |
+| Auditoría interna del avance del ciclo 3 (víspera de la Beta) | Del 21/10 al 1/11 no hubo commits, ramas, PR ni documentos nuevos en el Drive; ninguna de las 17 tareas del [Plan del ciclo 3](../03-planeacion-tsp/PlanCiclo3.md) estaba hecha. La junta de lanzamiento del 21/10 no quedó registrada | Se materializaron los riesgos "PR sin revisar" y "CONISOFT reduce horas". El Responsable de calidad implementó el 2/11 los tres casos de uso comprometidos para no llegar a la Beta sin avance; el plan registra quién hizo cada tarea |
+| CU-11 Registro de defectos | Migración 004, API, pestaña Defectos y cálculo automático de 4 métricas; 6 pruebas nuevas (cálculo a mano de un caso de ejemplo, A4.1, fechas futuras, archivado, semáforo e índice) | HU-11 terminada salvo la revisión cruzada. Prueba manual en el navegador: registrar, cerrar y ver la métrica en la pestaña Métricas |
+| CU-03 Modelo por proyecto | Migración 003, API del modelo y tabla editable con "Restaurar" y métrica propia; 5 pruebas nuevas (aislamiento entre proyectos, A3.2, A4.1, permisos, restaurar) | Cierra la consecuencia pendiente del ADR-004 (activar una opcional era global) |
+| CU-10 Pantalla de usuarios | Ruta `/usuarios` solo para el Administrador; prueba de que el enlace solo aparece para ese rol | Con la lista de usuarios ya se pueden corregir DEF-007 y DEF-008 para la entrega final |
+| Análisis estático | HAL-002: complejidad 11 en `ModelRow` | Refactor antes del commit; la regla de ESLint funcionó como compuerta |
+| Registro de los 4 detalles del 20/10 | DEF-005 a DEF-008 registrados; DEF-005 y DEF-006 corregidos con prueba de regresión, DEF-007 y DEF-008 abiertos | El tiempo medio de corrección sube a 4.3 días (amarillo). Lección: registrar el defecto el día que se encuentra, no "al iniciar el ciclo" |
+| Chequeo completo (`npm run check`) | Lint y tipos sin errores; 98 pruebas en verde (62 API + 36 web); cobertura de líneas 97.95 % API y 99.2 % web; build correcto | Listo para la demo |
+| Índice de salud de QualiTrack medido con su propio modelo | 79/100 (amarillo): densidad 0.73 y tiempo de corrección 4.3 días en amarillo, plan de técnicas al 75 % | Para la entrega final: revisión cruzada en cada PR, `main` protegida y cerrar DEF-007 y DEF-008 |
+| Revisión cruzada y `main` protegida | **Siguen sin hacerse.** Las ramas se integraron con merge sin fast-forward, sin aprobación de otro integrante | No se cuentan como hechas. Cada dueño de CU revisa el código de la Beta (§3 del plan) antes del 9/11 |
