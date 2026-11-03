@@ -47,7 +47,7 @@ flowchart LR
 | --- | --- | --- | --- | --- |
 | CU-01 | Registrar un proyecto del periodo | Líder de QA | HU-01, HU-03 | Implementado |
 | CU-02 | Concluir el seguimiento de un proyecto | Líder de QA | HU-03 | Implementado |
-| CU-03 | Definir el modelo de calidad del proyecto | Líder de QA | HU-04 | **Parcial:** reglas y API listas; falta la pantalla y la selección por proyecto |
+| CU-03 | Definir el modelo de calidad del proyecto | Líder de QA | HU-04 | **Implementado** en la Beta: modelo editable por proyecto y métricas propias |
 | CU-04 | Registrar una medición de calidad | Integrante | HU-05 | Implementado |
 | CU-05 | Revisar el estado de calidad de un proyecto | Integrante | HU-06 | Implementado |
 | CU-06 | Planear las técnicas de SQA del proyecto | Líder de QA | HU-07 | Implementado |
@@ -159,7 +159,7 @@ flowchart LR
 | RF-11 | El sistema deberá permitir al Líder de QA ajustar los valores peor y mejor de cada métrica. |
 | RF-12 | El sistema deberá rechazar un modelo en el que el valor peor sea mejor que el mejor. |
 | RF-13 | El sistema deberá permitir agregar métricas propias del equipo. |
-| RF-14 | *(Beta)* El sistema deberá guardar el modelo **por proyecto**, para que cada equipo tenga el suyo. |
+| RF-14 | El sistema deberá guardar el modelo **por proyecto**, para que cada equipo tenga el suyo. *(Beta)* |
 
 ## CU-04 — Registrar una medición de calidad
 
@@ -373,7 +373,7 @@ flowchart LR
 | --- | --- | --- | --- |
 | CU-01 | RF-01 a RF-05 | HU-01, HU-03 | `projects.test.ts`, `components.test.tsx` (ProjectForm) |
 | CU-02 | RF-06 a RF-08 | HU-03 | `projects.test.ts` "consulta, edita y archiva", `metrics.test.ts` "no admite mediciones en proyectos archivados" |
-| CU-03 | RF-09 a RF-14 | HU-04 | `metrics.test.ts` (modelo, peor/mejor, inactivas), `unit.test.ts` (semáforo, migración) |
+| CU-03 | RF-09 a RF-14 | HU-04 | `metrics.test.ts` (catálogo, peor/mejor, inactivas), `model.test.ts` (modelo por proyecto, A3.2, A4.1, restaurar), `unit.test.ts` (semáforo, migración) |
 | CU-04 | RF-15 a RF-18 | HU-05 | `metrics.test.ts` "registra mediciones…", "rechaza fechas futuras…", `unit.test.ts` DEF-003 |
 | CU-05 | RF-19 a RF-21 | HU-06 | `metrics.test.ts` "el semáforo usa la última medición", `components.test.tsx` (gráfica) |
 | CU-06 | RF-22 a RF-24 | HU-07 | `techniques-health.test.ts`, `unit.test.ts` (cumplimiento) |

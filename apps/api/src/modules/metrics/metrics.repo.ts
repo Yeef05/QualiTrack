@@ -26,6 +26,12 @@ export interface Metric {
   active: boolean;
 }
 
+/** Métrica con los valores que usa un proyecto: los del catálogo o los que ajustó el Líder de QA (CU-03). */
+export interface ProjectMetric extends Metric {
+  /** true si el proyecto sobrescribe el catálogo (activa, peor o mejor). */
+  customized: boolean;
+}
+
 export interface Measurement {
   id: number;
   projectId: number;
@@ -67,6 +73,12 @@ export const metricInput = metricFields
       .regex(/^[a-z0-9_]{2,40}$/, 'El código solo admite minúsculas, números y guion bajo'),
   })
   .refine(coherent, { message: WORST_BEST_MESSAGE, path: ['worst'] });
+
+export const projectMetricInput = z.object({
+  worst: z.number().finite(),
+  best: z.number().finite(),
+  active: z.boolean(),
+});
 
 export const measurementInput = z.object({
   metricId: idSchema,
@@ -144,6 +156,44 @@ export async function updateMetric(db: Db, id: number, input: z.infer<typeof met
   return rows[0];
 }
 
+/** Modelo de calidad del proyecto (RF-14): el catálogo con los ajustes de ese proyecto. */
+export async function projectModel(db: Db, projectId: number, options: { activeOnly?: boolean } = {}): Promise<ProjectMetric[]> {
+  const { rows } = await db.query<ProjectMetric>(
+    `SELECT m.id, m.code, m.name, m.unit, COALESCE(pm.worst, m.worst) AS worst, COALESCE(pm.best, m.best) AS best,
+       m.direction, m.description, m.criterion, m.source, COALESCE(pm.active, m.active) AS active,
+       pm.project_id IS NOT NULL AS customized
+     FROM metrics m LEFT JOIN project_metrics pm ON pm.metric_id = m.id AND pm.project_id = $1
+     ORDER BY m.id`,
+    [projectId],
+  );
+  return options.activeOnly ? rows.filter((m) => m.active) : rows;
+}
+
+/** Guarda, solo para el proyecto, si la métrica está activa y sus valores peor y mejor (RF-10, RF-11, RF-12). */
+export async function setProjectMetric(
+  db: Db,
+  projectId: number,
+  metricId: number,
+  input: z.infer<typeof projectMetricInput>,
+): Promise<ProjectMetric> {
+  const metric = await getMetric(db, metricId);
+  if (!coherent({ ...input, direction: metric.direction })) {
+    throw new HttpError(400, WORST_BEST_MESSAGE);
+  }
+  await db.query(
+    `INSERT INTO project_metrics (project_id, metric_id, worst, best, active) VALUES ($1, $2, $3, $4, $5)
+     ON CONFLICT (project_id, metric_id) DO UPDATE SET worst = $3, best = $4, active = $5`,
+    [projectId, metricId, input.worst, input.best, input.active],
+  );
+  return { ...metric, ...input, customized: true };
+}
+
+/** Quita los ajustes del proyecto: la métrica vuelve a los valores del catálogo. */
+export async function resetProjectMetric(db: Db, projectId: number, metricId: number): Promise<void> {
+  await getMetric(db, metricId);
+  await db.query('DELETE FROM project_metrics WHERE project_id = $1 AND metric_id = $2', [projectId, metricId]);
+}
+
 function toMeasurement(r: MeasurementRow, metric: Metric): Measurement {
   return {
     id: r.id,
@@ -157,7 +207,7 @@ function toMeasurement(r: MeasurementRow, metric: Metric): Measurement {
 }
 
 export async function listMeasurements(db: Db, projectId: number, metricId?: number): Promise<Measurement[]> {
-  const metrics = new Map((await listMetrics(db)).map((m) => [m.id, m]));
+  const metrics = new Map((await projectModel(db, projectId)).map((m) => [m.id, m]));
   const { rows } = await db.query<MeasurementRow>(
     `SELECT id, project_id, metric_id, value, measured_on::text AS measured_on, note
      FROM measurements
@@ -174,9 +224,12 @@ export async function createMeasurement(
   input: z.infer<typeof measurementInput>,
   userId: number,
 ): Promise<Measurement> {
-  const metric = await getMetric(db, input.metricId);
+  const metric = (await projectModel(db, projectId)).find((m) => m.id === input.metricId);
+  if (!metric) {
+    throw notFound('Métrica');
+  }
   if (!metric.active) {
-    throw new HttpError(409, 'La métrica no está activa en el catálogo; actívala antes de registrar mediciones');
+    throw new HttpError(409, 'La métrica no está activa en el modelo del proyecto; actívala antes de registrar mediciones');
   }
   const { rows } = await db.query<MeasurementRow>(
     `INSERT INTO measurements (project_id, metric_id, value, measured_on, note, created_by)
@@ -214,11 +267,11 @@ function statusFor(metric: Metric, row: LatestRow | undefined, derived: number |
 }
 
 /**
- * Valor actual de cada métrica activa del catálogo para un proyecto, con su semáforo. Es la última medición,
+ * Valor actual de cada métrica activa en el modelo del proyecto, con su semáforo. Es la última medición,
  * salvo en las 4 métricas que calcula el registro de defectos cuando el proyecto ya lo usa (RF-37).
  */
 export async function metricStatuses(db: Db, projectId: number): Promise<MetricStatus[]> {
-  const metrics = await listMetrics(db, { activeOnly: true });
+  const metrics = await projectModel(db, projectId, { activeOnly: true });
   const { rows } = await db.query<LatestRow>(
     `SELECT DISTINCT ON (metric_id) metric_id, value, measured_on::text AS measured_on
      FROM measurements WHERE project_id = $1

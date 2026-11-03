@@ -6,6 +6,7 @@ import { StatusDot } from '../components/Status';
 import { TrendChart } from '../components/TrendChart';
 import { formatBest, formatDate, formatValue, formatWorst, todayIso } from '../lib/format';
 import { useApi } from '../lib/useApi';
+import { QualityModelCard } from './QualityModelCard';
 
 function MetricsTable({ statuses }: { statuses: MetricStatus[] }) {
   return (
@@ -39,40 +40,6 @@ function MetricsTable({ statuses }: { statuses: MetricStatus[] }) {
           ))}
         </tbody>
       </table>
-    </div>
-  );
-}
-
-/** De dónde sale cada criterio: factor de ISO/IEC 25010, fórmula y fuente de los valores peor y mejor. */
-function QualityModel({ statuses }: { statuses: MetricStatus[] }) {
-  return (
-    <div className="card">
-      <h2>Modelo de calidad</h2>
-      <p className="muted small">
-        Verde si llega al valor mejor, amarillo entre el peor y el mejor, rojo si es peor que el peor (modelo definido).
-      </p>
-      <div className="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Métrica</th>
-              <th>Factor · criterio</th>
-              <th>Cómo se calcula</th>
-              <th>Por qué esos valores</th>
-            </tr>
-          </thead>
-          <tbody>
-            {statuses.map(({ metric }) => (
-              <tr key={metric.id}>
-                <td>{metric.name}</td>
-                <td>{metric.criterion || '—'}</td>
-                <td className="small">{metric.description || '—'}</td>
-                <td className="small">{metric.source || '—'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
     </div>
   );
 }
@@ -208,7 +175,7 @@ export function MetricsTab({ projectId, archived }: { projectId: number; archive
           />
         </div>
       )}
-      <QualityModel statuses={list} />
+      <QualityModelCard projectId={projectId} onChanged={refresh} />
     </>
   );
 }
