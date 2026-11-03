@@ -59,8 +59,12 @@ export const ROLE_LABEL: Record<Role, string> = {
   miembro: 'Miembro',
 };
 
+/** Enteros tal cual; menores que 1 con 2 decimales (densidad 0.73, no 0.7); el resto con 1. */
 export function formatNumber(n: number): string {
-  return Number.isInteger(n) ? String(n) : n.toFixed(1);
+  if (Number.isInteger(n)) {
+    return String(n);
+  }
+  return Math.abs(n) < 1 ? String(Number(n.toFixed(2))) : n.toFixed(1);
 }
 
 export function formatValue(value: number, unit: string): string {

@@ -23,6 +23,8 @@ Proyecto de la materia **Calidad de Software** (SQA26) · Docente: Mtra. María 
 | M4. Reportes de salud | Índice 0-100 (promedio de indicadores, tope 79 con defectos críticos), historial y exportación a PDF | Beta |
 | M5. Usuarios y acceso | Inicio de sesión con JWT; roles Administrador, Líder QA y Miembro; **pantalla de usuarios** (CU-10) | Beta |
 
+La interfaz tiene modo claro y oscuro: el botón del encabezado lo cambia, y la primera vez se usa el del sistema operativo.
+
 ## Cómo correrlo
 
 Requisitos: Node.js 20.19 o superior. **No hace falta instalar PostgreSQL**: en desarrollo se usa PGlite, que es PostgreSQL compilado a WebAssembly ([ADR-002](docs/02-diseno/decisiones/ADR-002-base-de-datos.md)).

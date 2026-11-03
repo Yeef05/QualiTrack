@@ -31,7 +31,7 @@ export function ProgressBar({ value, label }: { value: number | null; label: str
   );
 }
 
-const DONUT_COLORS: Record<Status, string> = { verde: '#16a34a', amarillo: '#f59e0b', rojo: '#dc2626' };
+const DONUT_COLORS: Record<Status, string> = { verde: 'var(--dot-green)', amarillo: 'var(--dot-yellow)', rojo: 'var(--dot-red)' };
 
 /** Dona del índice de salud, en SVG para que se imprima bien en el PDF. */
 export function HealthDonut({ index, level }: { index: number | null; level: Status | null }) {
@@ -40,19 +40,19 @@ export function HealthDonut({ index, level }: { index: number | null; level: Sta
   const filled = ((index ?? 0) / 100) * circumference;
   return (
     <svg width="140" height="140" viewBox="0 0 140 140" role="img" aria-label={`Índice de salud ${index ?? 'sin datos'}`}>
-      <circle cx="70" cy="70" r={radius} fill="none" stroke="#e9edf3" strokeWidth="14" />
+      <circle cx="70" cy="70" r={radius} fill="none" style={{ stroke: 'var(--track)' }} strokeWidth="14" />
       <circle
         cx="70"
         cy="70"
         r={radius}
         fill="none"
-        stroke={level ? DONUT_COLORS[level] : '#c4cad4'}
+        style={{ stroke: level ? DONUT_COLORS[level] : 'var(--border-strong)' }}
         strokeWidth="14"
         strokeDasharray={`${filled} ${circumference}`}
         strokeLinecap="round"
         transform="rotate(-90 70 70)"
       />
-      <text x="70" y="78" textAnchor="middle" fontSize="28" fontWeight="700" fill="#1d2433">
+      <text x="70" y="78" textAnchor="middle" fontSize="28" fontWeight="700" style={{ fill: 'var(--text)' }}>
         {index ?? '—'}
       </text>
     </svg>

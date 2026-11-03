@@ -20,6 +20,9 @@ describe('formato de valores', () => {
     expect(formatValue(72, '%')).toBe('72 %');
     expect(formatValue(3.456, 'defectos')).toBe('3.5 defectos');
     expect(formatValue(8, '')).toBe('8');
+    // La densidad de defectos se lee con 2 decimales, como en el reporte SQA.
+    expect(formatValue(0.727, 'por funcionalidad')).toBe('0.73 por funcionalidad');
+    expect(formatValue(0.5, '')).toBe('0.5');
   });
 
   it('muestra los valores peor y mejor con su dirección', () => {
