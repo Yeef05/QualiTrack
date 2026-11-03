@@ -21,3 +21,11 @@ La usa quien revisa un pull request antes de aprobarlo. Si un punto no se cumple
 - [ ] ESLint sin errores (complejidad ≤ 10 por función)
 - [ ] Nombres claros; la lógica de negocio está en funciones puras o repositorios, no en la interfaz
 - [ ] Si cambia la arquitectura o una herramienta, hay ADR
+
+## Interfaz y datos (desde el ciclo 4)
+
+Son los tipos de defecto más frecuentes al corte de la Beta: 50 Interfaz y 70 Datos suman el 62.5 % ([Pareto del ciclo 3](../03-planeacion-tsp/PostmortemCiclo3.md)).
+
+- [ ] Revisé la pantalla en modo claro y en oscuro, y en ancho de celular: nada se corta ni se encima
+- [ ] Textos, títulos y espacios se leen igual que en las demás pantallas
+- [ ] Los datos de ejemplo y los nombres que se muestran son coherentes (sin textos repetidos ni campos libres para algo que debería elegirse de una lista)

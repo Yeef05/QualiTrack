@@ -73,11 +73,11 @@ El pipeline de GitHub Actions (`.github/workflows/ci.yml`) corre `lint`, `typech
 
 - [Plan de SQA](docs/04-sqa/PlanSQA.md) (ISO/IEC 29110, perfil de entrada, y material de la clase)
 - [Modelo de métricas para proyectos chicos](docs/02-diseno/decisiones/ADR-004-modelo-metricas.md): de dónde sale cada criterio
-- [Bitácora de SQA](docs/04-sqa/BitacoraSQA.md) · [Registro de defectos](docs/04-sqa/RegistroDefectos.md) · [Mediciones](docs/04-sqa/Mediciones.md) · [Lista de revisión](docs/04-sqa/ListaRevision.md)
+- [Bitácora de SQA](docs/04-sqa/BitacoraSQA.md) · [Registro de defectos](docs/04-sqa/RegistroDefectos.md) · [Mediciones](docs/04-sqa/Mediciones.md) · [Lista de revisión](docs/04-sqa/ListaRevision.md) · [Revisiones de la Beta](docs/04-sqa/RevisionesBeta.md)
 - [Casos de uso](docs/01-requisitos/CasosDeUso.md) · [Historias de usuario](docs/01-requisitos/HistoriasUsuario.md)
 - [Diagramas de clases](docs/02-diseno/DiagramasClases.md)
 - [Decisiones de arquitectura (ADR)](docs/02-diseno/decisiones/)
-- Proceso TSP: [Plan del ciclo 2](docs/03-planeacion-tsp/PlanCiclo2.md) · [Postmortem del ciclo 2](docs/03-planeacion-tsp/PostmortemCiclo2.md) · [Plan del ciclo 3 (Beta), por caso de uso](docs/03-planeacion-tsp/PlanCiclo3.md)
+- Proceso TSP: [Plan del ciclo 2](docs/03-planeacion-tsp/PlanCiclo2.md) · [Postmortem del ciclo 2](docs/03-planeacion-tsp/PostmortemCiclo2.md) · [Plan del ciclo 3 (Beta)](docs/03-planeacion-tsp/PlanCiclo3.md) · [Postmortem del ciclo 3](docs/03-planeacion-tsp/PostmortemCiclo3.md) · [Plan del ciclo 4 (entrega final)](docs/03-planeacion-tsp/PlanCiclo4.md) · [Registro de tiempos](docs/03-planeacion-tsp/RegistroTiempos.md) · [Reuniones](docs/03-planeacion-tsp/Reuniones.md)
 - Check-in 2 (20 de octubre): [Reporte de estado](docs/05-entregas/checkin2/Checkin2_ReporteEstado.md) · [Reporte SQA](docs/05-entregas/checkin2/ReporteSQA_Checkin2.pdf)
 - Beta (3 de noviembre): [Reporte de estado](docs/05-entregas/checkin3/Beta_ReporteEstado.md) · [Reporte SQA](docs/05-entregas/checkin3/ReporteSQA_Beta.pdf)
 

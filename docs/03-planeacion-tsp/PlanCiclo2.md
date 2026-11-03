@@ -1,7 +1,7 @@
 # Plan del ciclo 2 (TSP) · 7 al 20 de octubre de 2026
 
 Seguimos los pasos de un ciclo TSP: **lanzamiento → estrategia → plan → requisitos → diseño → implementación → pruebas → postmortem**.
-Las horas reales las anota cada responsable al cerrar su tarea; el postmortem compara plan contra real.
+Las horas reales las anota cada responsable al cerrar su tarea, también en el [registro de tiempos](RegistroTiempos.md); el [postmortem](PostmortemCiclo2.md) compara plan contra real.
 
 > El prototipo inicial (tareas 1 a 12 y 14) se integró el 18/10 en un solo bloque. Cada responsable debe revisar su parte en el PR, ajustarla y anotar sus horas reales antes de marcarla como terminada.
 
@@ -41,7 +41,7 @@ Igual que en el Entregable 1: líder del proyecto (Camila), QA (Flavio), líder 
 | 12 | Pipeline de CI y SonarCloud | Pruebas | David | 2 | | CI listo; falta conectar SonarCloud |
 | 13 | Subir repositorio, proteger `main` y revisión cruzada del PR | Pruebas | Todos | 2 | | Pendiente |
 | 14 | Auditoría interna, bitácora y registro de defectos | Postmortem | Flavio | 2 | | Implementado, falta revisión del responsable |
-| 15 | Reporte de estado y ensayo de la demo de 3 minutos | Postmortem | Camila | 2 | | Pendiente |
+| 15 | Reporte de estado y ensayo de la demo de 3 minutos | Postmortem | Camila | 2 | | Hecha: demo y reporte del 20/10 |
 | | **Total** | | | **41** | | |
 
 ## 5. Riesgos
