@@ -91,4 +91,4 @@ Registro cronológico de las actividades de aseguramiento y control de la calida
 | Actividad SQA | Resultado | Decisión / acción |
 | --- | --- | --- |
 | Limpieza de los mensajes de commit | Se reescribieron los mensajes del historial a partir del 19/10. El código no cambió: el árbol de cada rama es idéntico al anterior. Cambiaron los hashes de esos commits y se movieron las etiquetas `v0.3-checkin2` y `v0.4-beta` | Se actualizaron los hashes que citan el registro de defectos y esta bitácora. Quien tenga un clon anterior debe volver a clonar el repositorio |
-
+| Interfaz de la Beta | Rediseño visual y modo claro/oscuro (variables de color por tema, selector en el encabezado, gráfica y reporte adaptados; el PDF se imprime siempre en claro). Revisión visual de las pantallas en ambos modos y en ancho de celular | 100 pruebas en verde (62 API + 38 web), 2 nuevas del tema. Se corrigió además que la densidad se mostrara con 1 decimal (0.7 en lugar de 0.73) |

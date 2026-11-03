@@ -2,7 +2,7 @@
 
 **Materia:** Calidad de Software · **Docente:** Mtra. María de León Sigg · **Fecha:** martes 3 de noviembre de 2026 · **Equipo:** QualiTrack · **Versión:** etiqueta `v0.4-beta`
 
-**Qué mostramos:** QualiTrack ya registra los defectos de cada proyecto y calcula solo cuatro de sus métricas de calidad. Cada proyecto define su propio modelo de calidad, y el Administrador da acceso a los integrantes. Con eso quedan implementados los 11 casos de uso.
+**Qué mostramos:** QualiTrack ya registra los defectos de cada proyecto y calcula solo cuatro de sus métricas de calidad. Cada proyecto define su propio modelo de calidad, y el Administrador da acceso a los integrantes. Con eso quedan implementados los 11 casos de uso. La interfaz se renovó para la Beta y tiene modo claro y oscuro.
 
 ## Avance del producto
 
