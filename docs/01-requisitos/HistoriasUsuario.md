@@ -24,6 +24,9 @@ Cada criterio de aceptación está ligado a una o más pruebas automáticas. Cad
 - El equipo puede agregar, ajustar o desactivar las suyas; el valor peor no puede ser mejor que el mejor → "el equipo puede agregar y ajustar…", "valida el código de la métrica…"
 - Las métricas inactivas conservan su historial, pero no se pueden medir ni cuentan en el semáforo → "no registra mediciones de métricas inactivas"
 - Una base anterior se actualiza sin perder mediciones → `unit.test.ts` "ADR-004: una base del check-in 1 se actualiza…"
+- *(Beta, RF-14)* Cada proyecto guarda su modelo: activar una opcional o ajustar peor y mejor en un proyecto no cambia a los demás, y el semáforo usa los valores del proyecto → `model.test.ts` "el Líder de QA ajusta peor y mejor y activa una opcional solo para su proyecto"
+- *(Beta)* Una métrica desactivada en el proyecto conserva sus mediciones y deja de pedirse; "Restaurar" regresa a los valores del catálogo → "A3.2: una métrica desactivada…", "restaurar una métrica…"
+- *(Beta)* Solo Administrador o Líder de QA cambian el modelo; peor y mejor al revés se rechazan → "A4.1 y permisos…"
 
 **HU-05 · Registrar mediciones.** Como integrante quiero registrar el valor de una métrica en una fecha.
 - No se aceptan fechas futuras ni valores no numéricos → "rechaza fechas futuras…"

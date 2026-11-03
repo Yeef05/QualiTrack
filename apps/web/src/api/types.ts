@@ -58,6 +58,11 @@ export interface Metric {
   active: boolean;
 }
 
+/** Métrica con los valores que usa un proyecto (catálogo o ajustes del Líder de QA). */
+export interface ProjectMetric extends Metric {
+  customized: boolean;
+}
+
 export interface Measurement {
   id: number;
   metricId: number;

@@ -13,6 +13,10 @@ import {
   metricInput,
   metricStatuses,
   metricUpdateInput,
+  projectMetricInput,
+  projectModel,
+  resetProjectMetric,
+  setProjectMetric,
   updateMetric,
 } from './metrics.repo';
 
@@ -36,7 +40,7 @@ export function metricsRouter(db: Db): Router {
   return router;
 }
 
-/** /api/projects/:id/...: mediciones y semáforo de un proyecto. */
+/** /api/projects/:id/...: modelo de calidad del proyecto (CU-03), mediciones y semáforo. */
 export function measurementsRouter(db: Db): Router {
   const router = Router({ mergeParams: true });
 
@@ -58,6 +62,26 @@ export function measurementsRouter(db: Db): Router {
       throw new HttpError(400, 'La fecha de medición no puede ser futura');
     }
     res.status(201).json(await createMeasurement(db, projectId, input, currentUser(res).id));
+  });
+
+  router.get('/model', async (req, res) => {
+    const projectId = paramId(req);
+    await getProject(db, projectId);
+    res.json(await projectModel(db, projectId));
+  });
+
+  router.put('/model/:metricId', canManage, async (req, res) => {
+    const projectId = paramId(req);
+    await getProject(db, projectId);
+    const input = projectMetricInput.parse(req.body);
+    res.json(await setProjectMetric(db, projectId, paramId(req, 'metricId'), input));
+  });
+
+  router.delete('/model/:metricId', canManage, async (req, res) => {
+    const projectId = paramId(req);
+    await getProject(db, projectId);
+    await resetProjectMetric(db, projectId, paramId(req, 'metricId'));
+    res.status(204).end();
   });
 
   router.get('/metrics-status', async (req, res) => {

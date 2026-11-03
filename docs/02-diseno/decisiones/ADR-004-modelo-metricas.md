@@ -46,6 +46,6 @@ Cada indicador vale verde = 100, amarillo = 50 y rojo = 0, y el índice es el pr
 ## Consecuencias
 
 - **A favor:** cualquier equipo puede medir con su lista de historias, sus casos de prueba y su registro de defectos. Cada semáforo dice de dónde salen sus valores, porque la pestaña Métricas muestra la tabla "Modelo de calidad". Los peor/mejor se ajustan por equipo, que es lo que pide el enunciado con "métricas a definir por el equipo".
-- **En contra:** algunos valores (densidad y tiempo de corrección) son acuerdo del equipo y se deben revisar con datos reales en el postmortem. Activar una métrica opcional es global, no por proyecto; la selección por proyecto queda para la Beta.
+- **En contra:** algunos valores (densidad y tiempo de corrección) son acuerdo del equipo y se deben revisar con datos reales en el postmortem. Activar una métrica opcional era global; desde la Beta cada proyecto guarda su modelo en `project_metrics` (migración 003, CU-03).
 - La complejidad (≤ 10) y la cobertura (≥ 70 %) siguen como **controles automáticos internos** del código de QualiTrack en CI, porque ESLint y Vitest los revisan sin trabajo manual. Ya no son métricas del producto.
 - Las bases creadas antes se actualizan con la migración `002_modelo_definido.sql` sin perder mediciones. Para ver los datos de ejemplo nuevos hay que borrar `apps/api/.data/`.
