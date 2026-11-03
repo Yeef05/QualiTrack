@@ -2,6 +2,22 @@
 
 Valores medidos con las herramientas del proyecto. También se capturan en QualiTrack, en el proyecto "QualiTrack".
 
+## Beta · 02/11/2026 · modelo del ADR-004 y registro de defectos
+
+| Métrica | Peor | Mejor | Valor | Cómo se obtuvo | Estado |
+| --- | --- | --- | --- | --- | --- |
+| Capacidad funcional (%E) | 70 % | 100 % | 100 % (3 de 3 casos de uso comprometidos para la Beta: CU-03, CU-10 y CU-11) | Plan del ciclo 3 §1 | Verde |
+| Criterios de aceptación cumplidos | 90 % | 100 % | 100 % | Las 98 pruebas automáticas pasan (62 API + 36 web) | Verde |
+| Densidad de defectos | 1.0 | 0.5 | 0.73 (8 defectos ÷ 11 historias) | Registro de defectos, calculado por QualiTrack | Amarillo |
+| Defectos críticos abiertos | 0 | 0 | 0 | Registro de defectos | Verde |
+| Eficiencia de QA | 85 % | 95 % | 100 % (A = 8, B = 0, C = 0) | Registro de defectos; B se actualiza después de la demo | Verde |
+| Tiempo medio de corrección | 7 días | 2 días | 4.3 días | DEF-005 y DEF-006 tardaron 13 días | Amarillo |
+| Cumplimiento del plan de técnicas | 70 % | 90 % | 6 de 8 = 75 % | Siguen sin hacerse la revisión de código por otro integrante y `main` protegida | Amarillo |
+
+Índice de salud: (4 × 100 + 3 × 50) ÷ 7 = **79** (amarillo). Baja de 93 a 79 porque desde la Beta la densidad y el tiempo de corrección salen del registro real y no de una captura a mano: el modelo detectó que los 4 detalles del 20/10 esperaron casi dos semanas.
+
+**Controles automáticos internos.** Lint sin errores (complejidad ≤ 10; HAL-002 se corrigió antes del commit), 0 errores de tipos, cobertura de líneas API 97.95 % (478/488) y web 99.2 % (125/126), 98 pruebas en verde, build correcto.
+
 ## Check-in 2 · 19–20/10/2026 · modelo de métricas del ADR-004
 
 | Métrica | Peor | Mejor | Valor | Cómo se obtuvo | Estado |
