@@ -359,6 +359,11 @@ button:disabled {
   align-items: center;
 }
 
+/* DEF-005: el subtítulo del reporte quedaba pegado al semáforo del índice. */
+.donut-wrap + h3 {
+  margin-top: 24px;
+}
+
 .login {
   max-width: 380px;
   margin: 10vh auto;

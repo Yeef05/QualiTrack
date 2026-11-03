@@ -18,6 +18,15 @@ function Bar({ label, value, text }: { label: string; value: number | null; text
   );
 }
 
+export const criticalFreeBar = (critical: number | null) => (critical === null ? null : critical === 0 ? 100 : 0);
+
+export function criticalFreeText(critical: number | null): string {
+  if (critical === null) {
+    return 'Sin datos';
+  }
+  return critical === 0 ? 'Sí · 0 abiertos' : `No · ${critical} abiertos`;
+}
+
 function HealthBars({ health }: { health: Health }) {
   const { verde, amarillo, rojo } = health.indicators;
   const total = verde + amarillo + rojo;
@@ -34,11 +43,8 @@ function HealthBars({ health }: { health: Health }) {
         value={health.planCompliance === null ? null : health.planCompliance * 100}
         text={formatPercent(health.planCompliance)}
       />
-      <Bar
-        label="Defectos críticos"
-        value={critical === null ? null : critical === 0 ? 100 : 0}
-        text={critical === null ? 'Sin datos' : `${critical} abiertos`}
-      />
+      {/* DEF-006: "Defectos críticos" con la barra llena se leía como "100 % críticos". Llena = libre de críticos. */}
+      <Bar label="Libre de defectos críticos" value={criticalFreeBar(critical)} text={criticalFreeText(critical)} />
     </div>
   );
 }

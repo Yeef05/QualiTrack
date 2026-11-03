@@ -151,17 +151,18 @@ describe('M4. Reportes de salud', () => {
     expect((await request(ctx.app).get('/api/projects/9999/health').set(bearer(ctx.tokens.qa))).status).toBe(404);
   });
 
-  it('los datos de demostración producen proyectos sano, en riesgo y crítico', async () => {
+  it('los datos de demostración producen proyectos en riesgo y crítico, y QualiTrack medido con su registro real', async () => {
     const demo = await createTestContext({ demo: true });
     const res = await request(demo.app).get('/api/projects?period=2026-2').set(bearer(demo.tokens.qa));
     const levels = Object.fromEntries(res.body.map((p: { name: string; health: { level: string } }) => [p.name, p.health.level]));
     expect(levels).toEqual({
       'Odín · App educativa': 'amarillo',
       'Portal de Servicio Social': 'rojo',
-      QualiTrack: 'verde',
+      QualiTrack: 'amarillo',
     });
     const byName = (name: string) => res.body.find((p: { name: string }) => p.name === name);
-    expect(byName('QualiTrack')).toMatchObject({ health: { index: 93 }, criticalOpen: 0 });
+    // 8 defectos ÷ 11 historias = 0.73 y 4.3 días de corrección (amarillos), plan al 75 %: (4 × 100 + 3 × 50) ÷ 7 = 79.
+    expect(byName('QualiTrack')).toMatchObject({ health: { index: 79 }, criticalOpen: 0 });
     const report = await request(demo.app)
       .post(`/api/projects/${byName('Portal de Servicio Social').id}/reports`)
       .set(bearer(demo.tokens.qa));
