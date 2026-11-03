@@ -126,7 +126,9 @@ describe('utilidades', () => {
   it('DEF-002: crea la carpeta de datos de PGlite si no existe y aplica migraciones una sola vez', async () => {
     const dir = path.join(await mkdtemp(path.join(tmpdir(), 'qualitrack-db-')), 'anidada', 'datos');
     const db = await createPgliteDb(dir);
-    expect(await migrate(db)).toEqual(['001_init.sql', '002_modelo_definido.sql']);
+    const applied = await migrate(db);
+    expect(applied.slice(0, 2)).toEqual(['001_init.sql', '002_modelo_definido.sql']);
+    expect(applied).toContain('004_defectos.sql');
     expect(await migrate(db)).toEqual([]);
     await db.close();
   });
@@ -147,7 +149,8 @@ describe('utilidades', () => {
        INSERT INTO projects (name, period) VALUES ('Viejo', '2026-2');
        INSERT INTO measurements (project_id, metric_id, value, measured_on) VALUES (1, 3, 12, '2026-10-01');`,
     );
-    expect(await migrate(db)).toEqual(['002_modelo_definido.sql']);
+    // Las migraciones posteriores (004, CU-11) también se aplican sobre la base vieja.
+    expect((await migrate(db))[0]).toBe('002_modelo_definido.sql');
     const { rows } = await db.query<{ code: string; worst: number; best: number; active: boolean }>(
       'SELECT code, worst, best, active FROM metrics ORDER BY id',
     );

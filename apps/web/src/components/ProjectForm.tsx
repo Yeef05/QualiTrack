@@ -3,7 +3,15 @@ import { errorMessage, fieldErrors } from '../api/client';
 import type { ProjectInput } from '../api/types';
 import { ErrorAlert, Field } from './Field';
 
-const EMPTY: ProjectInput = { name: '', description: '', period: '', repositoryUrl: '', team: '', qaLead: '' };
+const EMPTY: ProjectInput = {
+  name: '',
+  description: '',
+  period: '',
+  repositoryUrl: '',
+  team: '',
+  qaLead: '',
+  deliveredStories: 0,
+};
 
 interface Props {
   initial?: Partial<ProjectInput>;
@@ -60,6 +68,14 @@ export function ProjectForm({ initial, submitLabel, onSubmit, onCancel }: Props)
         </Field>
         <Field label="Responsable de QA" error={errors.qaLead}>
           <input value={values.qaLead} onChange={set('qaLead')} />
+        </Field>
+        <Field label="Historias entregadas" error={errors.deliveredStories}>
+          <input
+            type="number"
+            min={0}
+            value={values.deliveredStories}
+            onChange={(e) => setValues((v) => ({ ...v, deliveredStories: Number(e.target.value) }))}
+          />
         </Field>
       </div>
       <div className="actions">

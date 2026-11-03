@@ -1,4 +1,4 @@
-import type { ExecutionResult, Frequency, Metric, Role, Status, TechniqueKind } from '../api/types';
+import type { ExecutionResult, FoundBy, Frequency, Metric, Role, Severity, Status, TechniqueKind } from '../api/types';
 
 export const STATUS_LABEL: Record<Status, string> = {
   verde: 'En meta',
@@ -23,6 +23,34 @@ export const KIND_LABEL: Record<TechniqueKind, string> = {
   estatica: 'Estática',
   dinamica: 'Dinámica',
   proceso: 'Proceso',
+};
+
+export const SEVERITY_LABEL: Record<Severity, string> = {
+  critica: 'Crítica',
+  mayor: 'Mayor',
+  menor: 'Menor',
+  cosmetica: 'Cosmética',
+};
+
+/** Quién encontró el defecto: A, B y C de la eficiencia de QA (lámina 47). */
+export const FOUND_BY_LABEL: Record<FoundBy, string> = {
+  equipo: 'El equipo (A)',
+  cliente: 'El cliente en una revisión (B)',
+  usuario: 'Un usuario después de entregar (C)',
+};
+
+/** Clasificación de tipo de defecto de TSP. */
+export const TSP_TYPE_LABEL: Record<number, string> = {
+  10: 'Documentación',
+  20: 'Sintaxis',
+  30: 'Build/paquetes',
+  40: 'Asignación',
+  50: 'Interfaz',
+  60: 'Verificación',
+  70: 'Datos',
+  80: 'Función',
+  90: 'Sistema',
+  100: 'Entorno',
 };
 
 export const ROLE_LABEL: Record<Role, string> = {

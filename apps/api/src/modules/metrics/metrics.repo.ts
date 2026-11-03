@@ -1,7 +1,9 @@
 import { z } from 'zod';
 import type { Db } from '../../db';
 import { HttpError, notFound } from '../../errors';
-import { idSchema, isoDate } from '../../validation';
+import { idSchema, isoDate, todayIso } from '../../validation';
+import { derivedValues } from '../defects/defectMetrics';
+import { projectDefectMetrics } from '../defects/defects.repo';
 import { coherent, evaluate, type Direction, type Status } from './status';
 
 export interface Metric {
@@ -36,7 +38,8 @@ export interface Measurement {
 
 export interface MetricStatus {
   metric: Metric;
-  latest: { value: number; measuredOn: string } | null;
+  /** fromDefects: el valor lo calculó el registro de defectos (CU-11), no una medición capturada. */
+  latest: { value: number; measuredOn: string; fromDefects: boolean } | null;
   status: Status | null;
 }
 
@@ -184,25 +187,45 @@ export async function createMeasurement(
   return toMeasurement(rows[0], metric);
 }
 
-/** Última medición de cada métrica activa del catálogo para un proyecto, con su semáforo. */
+interface LatestRow {
+  metric_id: number;
+  value: number;
+  measured_on: string;
+}
+
+/** Valores que salen del registro de defectos; vacío si el proyecto no registra defectos (sigue a mano). */
+async function derivedFromDefects(db: Db, projectId: number): Promise<Record<string, number | null>> {
+  const defects = await projectDefectMetrics(db, projectId);
+  return defects ? derivedValues(defects) : {};
+}
+
+function statusFor(metric: Metric, row: LatestRow | undefined, derived: number | null): MetricStatus {
+  if (derived !== null) {
+    return { metric, latest: { value: derived, measuredOn: todayIso(), fromDefects: true }, status: evaluate(derived, metric) };
+  }
+  if (!row) {
+    return { metric, latest: null, status: null };
+  }
+  return {
+    metric,
+    latest: { value: row.value, measuredOn: row.measured_on, fromDefects: false },
+    status: evaluate(row.value, metric),
+  };
+}
+
+/**
+ * Valor actual de cada métrica activa del catálogo para un proyecto, con su semáforo. Es la última medición,
+ * salvo en las 4 métricas que calcula el registro de defectos cuando el proyecto ya lo usa (RF-37).
+ */
 export async function metricStatuses(db: Db, projectId: number): Promise<MetricStatus[]> {
   const metrics = await listMetrics(db, { activeOnly: true });
-  const { rows } = await db.query<{ metric_id: number; value: number; measured_on: string }>(
+  const { rows } = await db.query<LatestRow>(
     `SELECT DISTINCT ON (metric_id) metric_id, value, measured_on::text AS measured_on
      FROM measurements WHERE project_id = $1
      ORDER BY metric_id, measured_on DESC, id DESC`,
     [projectId],
   );
   const latest = new Map(rows.map((r) => [r.metric_id, r]));
-  return metrics.map((metric) => {
-    const row = latest.get(metric.id);
-    if (!row) {
-      return { metric, latest: null, status: null };
-    }
-    return {
-      metric,
-      latest: { value: row.value, measuredOn: row.measured_on },
-      status: evaluate(row.value, metric),
-    };
-  });
+  const derived = await derivedFromDefects(db, projectId);
+  return metrics.map((metric) => statusFor(metric, latest.get(metric.id), derived[metric.code] ?? null));
 }

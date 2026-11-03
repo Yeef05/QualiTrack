@@ -194,8 +194,21 @@ async function seedUsers(db: Db, adminPassword: string) {
 type Series = Record<string, number[]>;
 // Técnica, frecuencia y hace cuántos días fue la última ejecución (null: nunca se ha hecho).
 type PlanEntry = [string, string, number | null];
+// Descripción, gravedad, tipo TSP, quién lo encontró, fecha de registro y de cierre (null: abierto).
+type DefectEntry = [string, string, number, string, string, string | null];
 
-const DEMO_PROJECTS: { name: string; description: string; team: string; qaLead: string; series: Series; plan: PlanEntry[] }[] = [
+interface DemoProject {
+  name: string;
+  description: string;
+  team: string;
+  qaLead: string;
+  series: Series;
+  plan: PlanEntry[];
+  deliveredStories?: number;
+  defects?: DefectEntry[];
+}
+
+const DEMO_PROJECTS: DemoProject[] = [
   {
     name: 'QualiTrack',
     description: 'La propia herramienta, monitoreada con QualiTrack desde el primer sprint.',
@@ -216,6 +229,14 @@ const DEMO_PROJECTS: { name: string; description: string; team: string; qaLead: 
       ['Pruebas unitarias', 'por_pr', 1],
       ['Análisis estático', 'por_pr', 1],
       ['Auditoría interna', 'por_checkin', 4],
+    ],
+    // Registro real de docs/04-sqa/RegistroDefectos.md; con él se calculan densidad, críticos, eficiencia y tiempo.
+    deliveredStories: 10,
+    defects: [
+      ['npm install falla: TypeScript 7.0 no es compatible con typescript-eslint', 'mayor', 30, 'equipo', '2026-10-18', '2026-10-18'],
+      ['El servidor no arranca en un clon nuevo: PGlite no crea la carpeta de datos', 'critica', 100, 'equipo', '2026-10-18', '2026-10-18'],
+      ['"Hoy" se calcula en UTC: después de las 18:00 las fechas salen del día siguiente', 'mayor', 80, 'equipo', '2026-10-19', '2026-10-19'],
+      ['El encabezado muestra "Líder QA · Líder QA" por el nombre del usuario de ejemplo', 'cosmetica', 70, 'equipo', '2026-10-19', '2026-10-19'],
     ],
   },
   {
@@ -257,12 +278,24 @@ const DEMO_PROJECTS: { name: string; description: string; team: string; qaLead: 
   },
 ];
 
-async function seedDemoProject(db: Db, demo: (typeof DEMO_PROJECTS)[number], period: string) {
+async function seedDefects(db: Db, projectId: number, defects: DefectEntry[]) {
+  for (const [description, severity, tspType, foundBy, foundOn, closedOn] of defects) {
+    await db.query(
+      `INSERT INTO defects (project_id, description, severity, tsp_type, found_by, found_on, closed_on)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [projectId, description, severity, tspType, foundBy, foundOn, closedOn],
+    );
+  }
+}
+
+async function seedDemoProject(db: Db, demo: DemoProject, period: string) {
   const { rows } = await db.query<{ id: number }>(
-    'INSERT INTO projects (name, description, period, team, qa_lead) VALUES ($1, $2, $3, $4, $5) RETURNING id',
-    [demo.name, demo.description, period, demo.team, demo.qaLead],
+    `INSERT INTO projects (name, description, period, team, qa_lead, delivered_stories)
+     VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
+    [demo.name, demo.description, period, demo.team, demo.qaLead, demo.deliveredStories ?? 0],
   );
   const projectId = rows[0].id;
+  await seedDefects(db, projectId, demo.defects ?? []);
   for (const [code, values] of Object.entries(demo.series)) {
     for (const [i, value] of values.entries()) {
       await db.query(

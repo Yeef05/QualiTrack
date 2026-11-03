@@ -7,6 +7,7 @@ import { ErrorAlert } from '../components/Field';
 import { ProjectForm } from '../components/ProjectForm';
 import { canManage } from '../lib/format';
 import { useApi } from '../lib/useApi';
+import { DefectsTab } from './DefectsTab';
 import { MetricsTab } from './MetricsTab';
 import { ReportTab } from './ReportTab';
 import { TechniquesTab } from './TechniquesTab';
@@ -14,6 +15,7 @@ import { TechniquesTab } from './TechniquesTab';
 const TABS = [
   ['metricas', 'Métricas'],
   ['tecnicas', 'Técnicas'],
+  ['defectos', 'Defectos'],
   ['reporte', 'Reporte'],
 ] as const;
 type Tab = (typeof TABS)[number][0];
@@ -81,7 +83,7 @@ function ProjectHeader({ project, onChanged }: { project: Project; onChanged: ()
   );
 }
 
-/** Detalle de un proyecto con pestañas para M2 (métricas), M3 (técnicas) y M4 (reporte). */
+/** Detalle de un proyecto con pestañas para M2 (métricas), M3 (técnicas), defectos (CU-11) y M4 (reporte). */
 export function ProjectPage() {
   const { id } = useParams();
   const [params, setParams] = useSearchParams();
@@ -108,6 +110,7 @@ export function ProjectPage() {
       </div>
       {tab === 'metricas' && <MetricsTab projectId={projectId} archived={project.data.archived} />}
       {tab === 'tecnicas' && <TechniquesTab projectId={projectId} />}
+      {tab === 'defectos' && <DefectsTab project={project.data} />}
       {tab === 'reporte' && <ReportTab project={project.data} />}
     </>
   );

@@ -5,6 +5,8 @@ export type Direction = 'mayor' | 'menor';
 export type Frequency = 'por_pr' | 'semanal' | 'por_checkin' | 'mensual';
 export type TechniqueKind = 'estatica' | 'dinamica' | 'proceso';
 export type ExecutionResult = 'aprobada' | 'con_hallazgos' | 'rechazada';
+export type Severity = 'critica' | 'mayor' | 'menor' | 'cosmetica';
+export type FoundBy = 'equipo' | 'cliente' | 'usuario';
 
 export interface User {
   id: number;
@@ -21,6 +23,8 @@ export interface Project {
   repositoryUrl: string;
   team: string;
   qaLead: string;
+  /** Historias entregadas: tamaño para la densidad de defectos. */
+  deliveredStories: number;
   archived: boolean;
   createdAt: string;
 }
@@ -30,7 +34,10 @@ export interface ProjectSummary extends Project {
   criticalOpen: number | null;
 }
 
-export type ProjectInput = Pick<Project, 'name' | 'description' | 'period' | 'repositoryUrl' | 'team' | 'qaLead'>;
+export type ProjectInput = Pick<
+  Project,
+  'name' | 'description' | 'period' | 'repositoryUrl' | 'team' | 'qaLead' | 'deliveredStories'
+>;
 
 export interface Metric {
   id: number;
@@ -62,7 +69,8 @@ export interface Measurement {
 
 export interface MetricStatus {
   metric: Metric;
-  latest: { value: number; measuredOn: string } | null;
+  /** fromDefects: el valor lo calculó el registro de defectos, no una medición capturada. */
+  latest: { value: number; measuredOn: string; fromDefects: boolean } | null;
   status: Status | null;
 }
 
@@ -114,4 +122,25 @@ export interface HealthReport {
   generatedAt: string;
   healthIndex: number;
   summary: string;
+}
+
+export interface Defect {
+  id: number;
+  description: string;
+  severity: Severity;
+  tspType: number;
+  foundBy: FoundBy;
+  foundOn: string;
+  closedOn: string | null;
+  fixNote: string;
+}
+
+export interface DefectSummary {
+  total: number;
+  open: number;
+  criticalOpen: number;
+  density: number | null;
+  qaEfficiency: number | null;
+  meanFixDays: number | null;
+  byFinder: Record<FoundBy, number>;
 }

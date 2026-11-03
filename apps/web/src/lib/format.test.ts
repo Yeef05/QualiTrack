@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
   average,
+  FOUND_BY_LABEL,
+  SEVERITY_LABEL,
+  TSP_TYPE_LABEL,
   canManage,
   formatDate,
   formatPercent,
@@ -68,5 +71,13 @@ describe('utilidades', () => {
     expect(canManage('lider_qa')).toBe(true);
     expect(canManage('miembro')).toBe(false);
     expect(canManage(undefined)).toBe(false);
+  });
+});
+
+describe('etiquetas del registro de defectos (CU-11)', () => {
+  it('cubre la clasificación TSP y los tres orígenes de la eficiencia de QA', () => {
+    expect(Object.keys(TSP_TYPE_LABEL).map(Number)).toEqual([10, 20, 30, 40, 50, 60, 70, 80, 90, 100]);
+    expect(Object.values(FOUND_BY_LABEL).map((l) => l.slice(-3))).toEqual(['(A)', '(B)', '(C)']);
+    expect(SEVERITY_LABEL.critica).toBe('Crítica');
   });
 });
