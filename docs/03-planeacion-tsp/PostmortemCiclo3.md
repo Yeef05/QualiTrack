@@ -7,7 +7,7 @@ Cierre del ciclo del [plan del ciclo 3](PlanCiclo3.md). Los datos salen del hist
 | Medida | Plan | Real | Diferencia |
 | --- | --- | --- | --- |
 | Horas totales | 52 | ✍ Suma de [Registro de tiempos](RegistroTiempos.md) | ✍ |
-| Tareas hechas | 17 | 9 hechas, 2 parciales (14 y 16) y 6 pendientes | −8 |
+| Tareas hechas | 17 | 9 hechas, 3 parciales (14, 16 y 17) y 5 pendientes | −8 |
 | Casos de uso comprometidos | 3 (CU-03, CU-10, CU-11) | 3 | 0 |
 | Integrantes con al menos un PR propio aprobado por otro | 5 | 0 | −5 |
 | Días con avance en el repositorio | Repartido en 2 semanas | 1 (2/11); del 21/10 al 1/11 no hubo commits | — |
