@@ -230,13 +230,19 @@ const DEMO_PROJECTS: DemoProject[] = [
       ['Análisis estático', 'por_pr', 1],
       ['Auditoría interna', 'por_checkin', 4],
     ],
-    // Registro real de docs/04-sqa/RegistroDefectos.md; con él se calculan densidad, críticos, eficiencia y tiempo.
-    deliveredStories: 10,
+    // Registro real de docs/04-sqa/RegistroDefectos.md al 2 nov; con él se calculan densidad, críticos, eficiencia
+    // y tiempo. DEF-005 a DEF-008 esperaron 13 días al ciclo 3: el tiempo de corrección queda en amarillo.
+    // HU-01 a HU-11 (la HU-04 creció con el modelo por proyecto de la Beta).
+    deliveredStories: 11,
     defects: [
       ['npm install falla: TypeScript 7.0 no es compatible con typescript-eslint', 'mayor', 30, 'equipo', '2026-10-18', '2026-10-18'],
       ['El servidor no arranca en un clon nuevo: PGlite no crea la carpeta de datos', 'critica', 100, 'equipo', '2026-10-18', '2026-10-18'],
       ['"Hoy" se calcula en UTC: después de las 18:00 las fechas salen del día siguiente', 'mayor', 80, 'equipo', '2026-10-19', '2026-10-19'],
       ['El encabezado muestra "Líder QA · Líder QA" por el nombre del usuario de ejemplo', 'cosmetica', 70, 'equipo', '2026-10-19', '2026-10-19'],
+      ['El subtítulo del reporte queda pegado al semáforo del índice', 'cosmetica', 50, 'equipo', '2026-10-20', '2026-11-02'],
+      ['La barra "Defectos críticos" se ve llena con 0 abiertos y se lee al revés', 'menor', 50, 'equipo', '2026-10-20', '2026-11-02'],
+      ['"Responsable de QA" del proyecto es texto libre y no se liga a un usuario', 'menor', 50, 'equipo', '2026-10-20', null],
+      ['El responsable de cada ejecución es texto libre: la misma persona sale con nombres distintos', 'menor', 70, 'equipo', '2026-10-20', null],
     ],
   },
   {
