@@ -66,7 +66,12 @@ describe('formularios', () => {
     await userEvent.type(screen.getByLabelText('Nombre del proyecto'), 'Proyecto X');
     await userEvent.type(screen.getByLabelText('Equipo'), 'Equipo 1');
     await userEvent.click(screen.getByRole('button', { name: 'Registrar' }));
-    expect(onSubmit).toHaveBeenCalledWith(expect.objectContaining({ name: 'Proyecto X', period: '2026-2', team: 'Equipo 1' }));
+    await userEvent.clear(screen.getByLabelText('Historias entregadas'));
+    await userEvent.type(screen.getByLabelText('Historias entregadas'), '12');
+    await userEvent.click(screen.getByRole('button', { name: 'Registrar' }));
+    expect(onSubmit).toHaveBeenLastCalledWith(
+      expect.objectContaining({ name: 'Proyecto X', period: '2026-2', team: 'Equipo 1', deliveredStories: 12 }),
+    );
   });
 
   it('ProjectForm muestra los errores de validación de la API', async () => {

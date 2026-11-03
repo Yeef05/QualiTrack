@@ -11,6 +11,8 @@ export interface Project {
   repositoryUrl: string;
   team: string;
   qaLead: string;
+  /** Historias entregadas: tamaño del proyecto para la densidad de defectos (RF-38). */
+  deliveredStories: number;
   archived: boolean;
   createdAt: string;
 }
@@ -23,6 +25,7 @@ interface ProjectRow {
   repository_url: string;
   team: string;
   qa_lead: string;
+  delivered_stories: number;
   archived: boolean;
   created_at: string | Date;
 }
@@ -34,6 +37,7 @@ export const projectInput = z.object({
   repositoryUrl: z.union([z.literal(''), z.string().trim().url('URL de repositorio inválida')]).default(''),
   team: z.string().trim().max(300).default(''),
   qaLead: z.string().trim().max(100).default(''),
+  deliveredStories: z.number().int().min(0).max(10_000).default(0),
 });
 
 export type ProjectInput = z.infer<typeof projectInput>;
@@ -47,6 +51,7 @@ function toProject(r: ProjectRow): Project {
     repositoryUrl: r.repository_url,
     team: r.team,
     qaLead: r.qa_lead,
+    deliveredStories: r.delivered_stories,
     archived: r.archived,
     createdAt: new Date(r.created_at).toISOString(),
   };
@@ -77,18 +82,19 @@ export async function getProject(db: Db, id: number): Promise<Project> {
 
 export async function createProject(db: Db, input: ProjectInput): Promise<Project> {
   const { rows } = await db.query<ProjectRow>(
-    `INSERT INTO projects (name, description, period, repository_url, team, qa_lead)
-     VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-    [input.name, input.description, input.period, input.repositoryUrl, input.team, input.qaLead],
+    `INSERT INTO projects (name, description, period, repository_url, team, qa_lead, delivered_stories)
+     VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+    [input.name, input.description, input.period, input.repositoryUrl, input.team, input.qaLead, input.deliveredStories],
   );
   return toProject(rows[0]);
 }
 
 export async function updateProject(db: Db, id: number, input: ProjectInput): Promise<Project> {
   const { rows } = await db.query<ProjectRow>(
-    `UPDATE projects SET name = $2, description = $3, period = $4, repository_url = $5, team = $6, qa_lead = $7
+    `UPDATE projects SET name = $2, description = $3, period = $4, repository_url = $5, team = $6, qa_lead = $7,
+       delivered_stories = $8
      WHERE id = $1 RETURNING *`,
-    [id, input.name, input.description, input.period, input.repositoryUrl, input.team, input.qaLead],
+    [id, input.name, input.description, input.period, input.repositoryUrl, input.team, input.qaLead, input.deliveredStories],
   );
   if (!rows[0]) {
     throw notFound('Proyecto');

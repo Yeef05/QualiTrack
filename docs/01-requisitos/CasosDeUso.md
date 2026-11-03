@@ -55,7 +55,7 @@ flowchart LR
 | CU-08 | Generar el reporte de salud de un proyecto | Integrante | HU-09 | Implementado |
 | CU-09 | Identificar los proyectos que requieren atención | Integrante | HU-02 | Implementado |
 | CU-10 | Dar acceso a un integrante | Administrador | HU-10 | **Parcial:** solo API; falta la pantalla |
-| CU-11 | Registrar un defecto del proyecto | Integrante | HU-11 (nueva) | **Propuesto** para la Beta |
+| CU-11 | Registrar un defecto del proyecto | Integrante | HU-11 | **Implementado** en la Beta (pestaña Defectos) |
 
 ---
 
@@ -341,7 +341,7 @@ flowchart LR
 | RF-34 | El sistema deberá permitir solo al Administrador registrar usuarios con rol Administrador, Líder de QA o Miembro. |
 | RF-35 | El sistema deberá aplicar los permisos por rol en cada operación: un Miembro no crea proyectos, métricas ni planes. |
 
-## CU-11 — Registrar un defecto del proyecto *(propuesto para la Beta)*
+## CU-11 — Registrar un defecto del proyecto *(Beta)*
 
 | | |
 | --- | --- |
@@ -381,6 +381,6 @@ flowchart LR
 | CU-08 | RF-28 a RF-31 | HU-09 | `unit.test.ts` (índice), `techniques-health.test.ts` (reportes) |
 | CU-09 | RF-32, RF-33 | HU-02 | `projects.test.ts` "lista por periodo…", `format.test.ts` |
 | CU-10 | RF-34, RF-35 | HU-10 | `auth.test.ts`, pruebas 403 de cada módulo |
-| CU-11 | RF-36 a RF-38 | HU-11 | Por escribir en la Beta |
+| CU-11 | RF-36 a RF-38 | HU-11 | `defects.test.ts` (registro, cierre, A4.1, cálculo de las 4 métricas, semáforo e índice), `format.test.ts` (clasificación TSP) |
 
 La división de las actividades de implementación por caso de uso está en el [Plan del ciclo 3](../03-planeacion-tsp/PlanCiclo3.md).

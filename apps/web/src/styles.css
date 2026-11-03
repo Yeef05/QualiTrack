@@ -116,6 +116,10 @@ h3 {
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
+.grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
 .kpi .label {
   color: var(--muted);
   font-size: 0.85rem;

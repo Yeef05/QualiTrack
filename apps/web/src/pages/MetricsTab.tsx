@@ -34,7 +34,7 @@ function MetricsTable({ statuses }: { statuses: MetricStatus[] }) {
               <td>
                 <StatusDot status={status} />
               </td>
-              <td>{formatDate(latest?.measuredOn ?? null)}</td>
+              <td>{latest?.fromDefects ? 'Registro de defectos' : formatDate(latest?.measuredOn ?? null)}</td>
             </tr>
           ))}
         </tbody>

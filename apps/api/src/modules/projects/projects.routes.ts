@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { canManage } from '../../auth/auth';
 import type { Db } from '../../db';
 import { idSchema, PERIOD_RE } from '../../validation';
+import { defectsRouter } from '../defects/defects.routes';
 import { healthRouter } from '../health/health.routes';
 import { projectHealth } from '../health/health.service';
 import { measurementsRouter } from '../metrics/metrics.routes';
@@ -22,7 +23,7 @@ const listQuery = z.object({
   archived: z.enum(['true', 'false']).optional(),
 });
 
-/** /api/projects: registro de proyectos por periodo (M1) y rutas anidadas de M2, M3 y M4. */
+/** /api/projects: registro de proyectos por periodo (M1) y rutas anidadas de M2, M3, M4 y defectos (CU-11). */
 export function projectsRouter(db: Db): Router {
   const router = Router();
 
@@ -62,6 +63,7 @@ export function projectsRouter(db: Db): Router {
   router.use('/:id', measurementsRouter(db));
   router.use('/:id', planRouter(db));
   router.use('/:id', healthRouter(db));
+  router.use('/:id', defectsRouter(db));
 
   return router;
 }

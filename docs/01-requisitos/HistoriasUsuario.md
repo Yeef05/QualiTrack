@@ -59,6 +59,8 @@ Cada criterio de aceptación está ligado a una o más pruebas automáticas. Cad
 ## Beta
 
 **HU-11 · Registrar defectos (CU-11).** Como integrante quiero registrar los defectos del proyecto y cerrarlos al corregirlos, para que QualiTrack calcule solo la densidad, los críticos abiertos, la eficiencia de QA y el tiempo de corrección.
-- Un defecto se registra con descripción, gravedad, tipo TSP, fecha y quién lo encontró (equipo, cliente o después de entregar) → *por escribir*
-- La fecha de cierre no puede ser anterior a la de registro → *por escribir*
-- Las 4 métricas se calculan a partir del registro y coinciden con un cálculo a mano de un caso de ejemplo → *por escribir*
+- Un defecto se registra abierto con descripción, gravedad, tipo TSP, fecha y quién lo encontró (equipo, cliente o después de entregar), y se cierra con su fecha → `defects.test.ts` "un integrante registra un defecto abierto y lo cierra al corregirlo"
+- La fecha de cierre no puede ser anterior a la de registro; no se aceptan fechas futuras, tipos TSP fuera de la clasificación ni defectos en proyectos archivados → "A4.1: rechaza un cierre anterior al registro…", "no admite defectos en un proyecto archivado"
+- Las 4 métricas se calculan a partir del registro y coinciden con un cálculo a mano de un caso de ejemplo (4 defectos, 8 historias: densidad 0.5, 1 crítico abierto, eficiencia 50 %, 1.5 días) → "calcula densidad, críticos abiertos, eficiencia de QA y tiempo medio de corrección"
+- El semáforo y el índice de salud usan los valores del registro en lugar de las mediciones capturadas a mano → "el semáforo y el índice usan los valores del registro…"
+- La densidad usa las historias entregadas del proyecto como tamaño (RF-38) → "deja sin dato lo que no se puede calcular", `components.test.tsx` "ProjectForm envía los valores capturados"
