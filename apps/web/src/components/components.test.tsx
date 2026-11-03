@@ -139,8 +139,32 @@ describe('layout', () => {
       </AuthProvider>,
     );
     expect(await screen.findByText('Líder QA')).toBeInTheDocument();
+    // CU-10: solo el Administrador ve el enlace a la pantalla de usuarios.
+    expect(screen.queryByRole('link', { name: 'Usuarios' })).not.toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Salir' }));
     await waitFor(() => expect(screen.queryByText('Líder QA')).not.toBeInTheDocument());
     expect(screen.getByText('contenido')).toBeInTheDocument();
+  });
+
+  it('CU-10: el Administrador ve el enlace a Usuarios', async () => {
+    setToken('token');
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        status: 200,
+        ok: true,
+        json: () => Promise.resolve({ user: { id: 1, name: 'David', email: 'd@x.mx', role: 'admin' } }),
+      }),
+    );
+    render(
+      <AuthProvider>
+        <MemoryRouter>
+          <Layout>
+            <p>contenido</p>
+          </Layout>
+        </MemoryRouter>
+      </AuthProvider>,
+    );
+    expect(await screen.findByRole('link', { name: 'Usuarios' })).toHaveAttribute('href', '/usuarios');
   });
 });
