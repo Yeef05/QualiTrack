@@ -58,7 +58,7 @@ El prototipo se integró en un solo bloque el 18/10. Cada dueño revisa el códi
 | 14 | Todos | Proteger `main`, etiquetar `v0.4-beta`, mantener el repositorio | Pruebas | Responsable de colaboración | Flavio | 1 | | Parcial: etiqueta `v0.4-beta`; `main` sin proteger |
 | 15 | Todos | Auditoría interna, bitácora, mediciones y registro de defectos | Postmortem | Flavio | Camila | 2 | | Hecha 02/11 |
 | 16 | Todos | Reporte de estado y ensayo de la demo de la Beta | Postmortem | Camila | Todos | 2 | | Reporte hecho 02/11; ensayo pendiente |
-| 17 | Todos | Postmortem del ciclo 3: plan contra real, defectos por tipo TSP (Pareto) | Postmortem | Camila | Flavio | 2 | | Pendiente |
+| 17 | Todos | Postmortem del ciclo 3: plan contra real, defectos por tipo TSP (Pareto) | Postmortem | Camila | Flavio | 2 | | Borrador 03/11 por Flavio ([postmortem](PostmortemCiclo3.md)); faltan horas y aportes del equipo |
 | | | **Total** | | | | **52** | | |
 
 **Carga por persona (horas plan).** La tarea 2 se reparte entre los dueños de la §3. Las revisiones de PR de la columna "Revisa" se anotan aparte como horas reales.
@@ -82,7 +82,7 @@ Cada tarea va en su rama (`feature/CU-xx-…` o `fix/DEF-xxx-…`) con un PR peq
 
 ## Estado al 2 de noviembre (víspera de la Beta)
 
-Del 21/10 al 1/11 no hubo avance registrado (ni commits ni documentos). El 2/11 el Responsable de calidad hizo las tareas 3 a 10 y 15 para cumplir los tres casos de uso comprometidos: **9 de 17 tareas hechas, 2 parciales y 6 pendientes**. Ninguna tiene la revisión del integrante asignado, así que las historias no cumplen todavía la definición de terminado. Las horas reales las anota cada integrante en el postmortem.
+Del 21/10 al 1/11 no hubo avance registrado (ni commits ni documentos). El 2/11 el Responsable de calidad hizo las tareas 3 a 10 y 15 para cumplir los tres casos de uso comprometidos: **9 de 17 tareas hechas, 3 parciales (14, 16 y 17) y 5 pendientes**. Ninguna tiene la revisión del integrante asignado, así que las historias no cumplen todavía la definición de terminado. Las horas reales las anota cada integrante en el postmortem.
 
 El cierre del ciclo está en el [postmortem del ciclo 3](PostmortemCiclo3.md), y lo pendiente pasa al [plan del ciclo 4](PlanCiclo4.md).
 
