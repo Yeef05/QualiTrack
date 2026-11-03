@@ -13,6 +13,11 @@ export function Layout({ children }: { children: ReactNode }) {
         </Link>
         <span className="muted small">Centro de control de SQA</span>
         <span className="spacer" />
+        {user?.role === 'admin' && (
+          <Link to="/usuarios" className="small">
+            Usuarios
+          </Link>
+        )}
         {user && (
           <>
             <span className="small">

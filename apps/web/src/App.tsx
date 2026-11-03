@@ -5,6 +5,7 @@ import { Layout } from './components/Layout';
 import { DashboardPage } from './pages/DashboardPage';
 import { LoginPage } from './pages/LoginPage';
 import { ProjectPage } from './pages/ProjectPage';
+import { UsersPage } from './pages/UsersPage';
 
 function Protected({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
@@ -36,6 +37,14 @@ export function App() {
             element={
               <Protected>
                 <ProjectPage />
+              </Protected>
+            }
+          />
+          <Route
+            path="/usuarios"
+            element={
+              <Protected>
+                <UsersPage />
               </Protected>
             }
           />

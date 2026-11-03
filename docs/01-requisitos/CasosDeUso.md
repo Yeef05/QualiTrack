@@ -54,7 +54,7 @@ flowchart LR
 | CU-07 | Registrar la aplicación de una técnica | Integrante | HU-08 | Implementado |
 | CU-08 | Generar el reporte de salud de un proyecto | Integrante | HU-09 | Implementado |
 | CU-09 | Identificar los proyectos que requieren atención | Integrante | HU-02 | Implementado |
-| CU-10 | Dar acceso a un integrante | Administrador | HU-10 | **Parcial:** solo API; falta la pantalla |
+| CU-10 | Dar acceso a un integrante | Administrador | HU-10 | **Implementado** en la Beta (pantalla Usuarios) |
 | CU-11 | Registrar un defecto del proyecto | Integrante | HU-11 | **Implementado** en la Beta (pestaña Defectos) |
 
 ---
@@ -380,7 +380,7 @@ flowchart LR
 | CU-07 | RF-25 a RF-27 | HU-08 | `techniques-health.test.ts` "valida las ejecuciones" |
 | CU-08 | RF-28 a RF-31 | HU-09 | `unit.test.ts` (índice), `techniques-health.test.ts` (reportes) |
 | CU-09 | RF-32, RF-33 | HU-02 | `projects.test.ts` "lista por periodo…", `format.test.ts` |
-| CU-10 | RF-34, RF-35 | HU-10 | `auth.test.ts`, pruebas 403 de cada módulo |
+| CU-10 | RF-34, RF-35 | HU-10 | `auth.test.ts`, pruebas 403 de cada módulo, `components.test.tsx` "CU-10: el Administrador ve el enlace a Usuarios" |
 | CU-11 | RF-36 a RF-38 | HU-11 | `defects.test.ts` (registro, cierre, A4.1, cálculo de las 4 métricas, semáforo e índice), `format.test.ts` (clasificación TSP) |
 
 La división de las actividades de implementación por caso de uso está en el [Plan del ciclo 3](../03-planeacion-tsp/PlanCiclo3.md).
