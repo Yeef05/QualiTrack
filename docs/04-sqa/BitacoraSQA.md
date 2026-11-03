@@ -70,7 +70,7 @@ Registro cronológico de las actividades de aseguramiento y control de la calida
 | Diseño | Diagramas de clases general y de CU-03, CU-10 y CU-11 ([DiagramasClases](../02-diseno/DiagramasClases.md)) | El revisor de cada PR de la Beta compara el código contra la página de su caso de uso |
 | Revisión del prototipo al preparar el manual del equipo | 4 detalles menores: título del reporte pegado al semáforo, barra de críticos que se lee al revés, "Responsable de QA" como texto libre y nombres distintos en ejecuciones | Se registran como defectos al iniciar el ciclo 3 |
 | Reporte de calidad | [Reporte SQA del check-in 2](../05-entregas/checkin2/ReporteSQA_Checkin2.pdf) con actividades, métricas, índice de salud y autoevaluación con la rúbrica | Se entrega junto con la demo |
-| CI en GitHub | La corrida #4 de GitHub Actions sobre `main` (commit `65d201f`) pasó lint, tipos, pruebas con cobertura y build | Primer corrido verificado en GitHub; cierra el pendiente del 18/10 |
+| CI en GitHub | La corrida #4 de GitHub Actions sobre `main` (commit `3e2e986`; GitHub muestra la corrida con el hash anterior `65d201f`) pasó lint, tipos, pruebas con cobertura y build | Primer corrido verificado en GitHub; cierra el pendiente del 18/10 |
 
 ## 02/11/2026 · Ciclo 3: versión Beta
 
@@ -85,3 +85,10 @@ Registro cronológico de las actividades de aseguramiento y control de la calida
 | Chequeo completo (`npm run check`) | Lint y tipos sin errores; 98 pruebas en verde (62 API + 36 web); cobertura de líneas 97.95 % API y 99.2 % web; build correcto | Listo para la demo |
 | Índice de salud de QualiTrack medido con su propio modelo | 79/100 (amarillo): densidad 0.73 y tiempo de corrección 4.3 días en amarillo, plan de técnicas al 75 % | Para la entrega final: revisión cruzada en cada PR, `main` protegida y cerrar DEF-007 y DEF-008 |
 | Revisión cruzada y `main` protegida | **Siguen sin hacerse.** Las ramas se integraron con merge sin fast-forward, sin aprobación de otro integrante | No se cuentan como hechas. Cada dueño de CU revisa el código de la Beta (§3 del plan) antes del 9/11 |
+
+## 03/11/2026 · Gestión de configuración antes de la demo
+
+| Actividad SQA | Resultado | Decisión / acción |
+| --- | --- | --- |
+| Limpieza de los mensajes de commit | Se reescribieron los mensajes del historial a partir del 19/10. El código no cambió: el árbol de cada rama es idéntico al anterior. Cambiaron los hashes de esos commits y se movieron las etiquetas `v0.3-checkin2` y `v0.4-beta` | Se actualizaron los hashes que citan el registro de defectos y esta bitácora. Quien tenga un clon anterior debe volver a clonar el repositorio |
+
