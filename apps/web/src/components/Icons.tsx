@@ -11,13 +11,14 @@ const base = {
   'aria-hidden': true,
 };
 
-/** Marca de QualiTrack: escudo con una palomita (aseguramiento de la calidad). */
+/** Marca de QualiTrack: la Q del nombre con una palomita dentro (aseguramiento de la calidad). */
 export function LogoMark({ size = 28 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
       <rect width="32" height="32" rx="8" fill="var(--primary)" />
-      <path d="M16 6.5 24 9.5v6.2c0 4.9-3.4 8.6-8 9.8-4.6-1.2-8-4.9-8-9.8V9.5z" fill="none" stroke="#fff" strokeWidth="2" strokeLinejoin="round" />
-      <path d="m12.3 16 2.6 2.6 4.9-5.2" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="15" cy="15" r="7.4" fill="none" stroke="#fff" strokeWidth="2.8" />
+      <path d="M20 20l4.6 4.6" stroke="#fff" strokeWidth="3.2" strokeLinecap="round" />
+      <path d="m11.8 15.1 2.3 2.3 4.2-4.4" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
