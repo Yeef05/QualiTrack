@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { bearer, createProject, createTestContext, sampleProject, type TestContext } from './helpers';
+import { bearer, createProject, createTestContext, sampleProject, userId, type TestContext } from './helpers';
 
 describe('M1. Proyectos y periodos', () => {
   let ctx: TestContext;
@@ -77,6 +77,29 @@ describe('M1. Proyectos y periodos', () => {
     expect(visible.body.some((p: { id: number }) => p.id === project.id)).toBe(false);
     const all = await request(ctx.app).get('/api/projects?archived=true').set(bearer(ctx.tokens.qa));
     expect(all.body.some((p: { id: number }) => p.id === project.id)).toBe(true);
+  });
+
+  it('DEF-007: el responsable de QA se elige de la lista de usuarios', async () => {
+    const qaId = await userId(ctx, 'qa@qualitrack.local');
+    const res = await request(ctx.app)
+      .post('/api/projects')
+      .set(bearer(ctx.tokens.qa))
+      .send({ ...sampleProject, name: 'Con responsable', qaLeadId: qaId });
+    expect(res.status).toBe(201);
+    expect(res.body).toMatchObject({ qaLeadId: qaId, qaLead: 'Flavio Huizar' });
+
+    const unknown = await request(ctx.app)
+      .put(`/api/projects/${res.body.id}`)
+      .set(bearer(ctx.tokens.qa))
+      .send({ ...sampleProject, name: 'Con responsable', qaLeadId: 9999 });
+    expect(unknown.status).toBe(400);
+    expect(unknown.body.details).toEqual([{ path: 'qaLeadId', message: 'Elige a una persona de la lista de usuarios' }]);
+
+    const cleared = await request(ctx.app)
+      .put(`/api/projects/${res.body.id}`)
+      .set(bearer(ctx.tokens.qa))
+      .send({ ...sampleProject, name: 'Con responsable', qaLeadId: null });
+    expect(cleared.body).toMatchObject({ qaLeadId: null, qaLead: '' });
   });
 
   it('responde 404 para proyectos inexistentes y 400 para ids inválidos', async () => {

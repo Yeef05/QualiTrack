@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { memberName } from '../../auth/team';
 import type { Db } from '../../db';
 import { HttpError, notFound } from '../../errors';
 import { idSchema, isoDate } from '../../validation';
@@ -32,6 +33,8 @@ export interface Execution {
   planId: number;
   techniqueName: string;
   executedOn: string;
+  /** Usuario que aplicó la técnica (DEF-008); null en ejecuciones anteriores con texto libre. */
+  responsibleId: number | null;
   responsible: string;
   result: (typeof RESULTS)[number];
   findings: number;
@@ -52,7 +55,8 @@ export const planInput = z.object({
 
 export const executionInput = z.object({
   executedOn: isoDate,
-  responsible: z.string().trim().min(2).max(100),
+  // DEF-008: antes era texto libre y la misma persona salía con nombres distintos.
+  responsibleId: z.number({ required_error: 'Elige al responsable de la lista de usuarios' }).int().positive(),
   result: z.enum(RESULTS),
   findings: z.number().int().min(0).default(0),
   notes: z.string().trim().max(500).default(''),
@@ -134,6 +138,7 @@ interface ExecutionRow {
   plan_id: number;
   technique_name: string;
   executed_on: string;
+  responsible_id: number | null;
   responsible: string;
   result: Execution['result'];
   findings: number;
@@ -145,6 +150,7 @@ const toExecution = (r: ExecutionRow): Execution => ({
   planId: r.plan_id,
   techniqueName: r.technique_name,
   executedOn: r.executed_on,
+  responsibleId: r.responsible_id,
   responsible: r.responsible,
   result: r.result,
   findings: r.findings,
@@ -154,7 +160,7 @@ const toExecution = (r: ExecutionRow): Execution => ({
 export async function listExecutions(db: Db, projectId: number): Promise<Execution[]> {
   const { rows } = await db.query<ExecutionRow>(
     `SELECT e.id, e.plan_id, t.name AS technique_name, e.executed_on::text AS executed_on,
-            e.responsible, e.result, e.findings, e.notes
+            e.responsible_id, e.responsible, e.result, e.findings, e.notes
      FROM technique_executions e
      JOIN technique_plans p ON p.id = e.plan_id
      JOIN techniques t ON t.id = p.technique_id
@@ -182,11 +188,12 @@ export async function createExecution(
   if (input.result === 'aprobada' && input.findings > 0) {
     throw new HttpError(400, 'Una ejecución aprobada no puede tener hallazgos; usa "con hallazgos"');
   }
+  const responsible = await memberName(db, input.responsibleId, 'responsibleId');
   const { rows } = await db.query<ExecutionRow>(
-    `INSERT INTO technique_executions (plan_id, executed_on, responsible, result, findings, notes)
-     VALUES ($1, $2, $3, $4, $5, $6)
-     RETURNING id, plan_id, executed_on::text AS executed_on, responsible, result, findings, notes`,
-    [planId, input.executedOn, input.responsible, input.result, input.findings, input.notes],
+    `INSERT INTO technique_executions (plan_id, executed_on, responsible_id, responsible, result, findings, notes)
+     VALUES ($1, $2, $3, $4, $5, $6, $7)
+     RETURNING id, plan_id, executed_on::text AS executed_on, responsible_id, responsible, result, findings, notes`,
+    [planId, input.executedOn, input.responsibleId, responsible, input.result, input.findings, input.notes],
   );
   return toExecution({ ...rows[0], technique_name: plan.rows[0].technique_name });
 }

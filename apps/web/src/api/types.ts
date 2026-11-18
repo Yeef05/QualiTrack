@@ -8,6 +8,12 @@ export type ExecutionResult = 'aprobada' | 'con_hallazgos' | 'rechazada';
 export type Severity = 'critica' | 'mayor' | 'menor' | 'cosmetica';
 export type FoundBy = 'equipo' | 'cliente' | 'usuario';
 
+/** Lo que se ve de cada usuario al elegir un responsable. */
+export interface TeamMember {
+  id: number;
+  name: string;
+}
+
 export interface User {
   id: number;
   name: string;
@@ -22,6 +28,9 @@ export interface Project {
   period: string;
   repositoryUrl: string;
   team: string;
+  /** Usuario responsable de QA (DEF-007); null si no se ha elegido. */
+  qaLeadId: number | null;
+  /** Nombre del responsable de QA, para mostrarlo. */
   qaLead: string;
   /** Historias entregadas: tamaño para la densidad de defectos. */
   deliveredStories: number;
@@ -36,7 +45,7 @@ export interface ProjectSummary extends Project {
 
 export type ProjectInput = Pick<
   Project,
-  'name' | 'description' | 'period' | 'repositoryUrl' | 'team' | 'qaLead' | 'deliveredStories'
+  'name' | 'description' | 'period' | 'repositoryUrl' | 'team' | 'qaLeadId' | 'deliveredStories'
 >;
 
 export interface Metric {
@@ -104,6 +113,7 @@ export interface Execution {
   planId: number;
   techniqueName: string;
   executedOn: string;
+  responsibleId: number | null;
   responsible: string;
   result: ExecutionResult;
   findings: number;

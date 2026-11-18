@@ -45,7 +45,6 @@ export const sampleProject = {
   period: '2026-2',
   repositoryUrl: 'https://github.com/equipo/proyecto',
   team: 'Equipo A',
-  qaLead: 'QA A',
 };
 
 export async function createProject(ctx: TestContext, overrides: Partial<typeof sampleProject> = {}) {
@@ -54,6 +53,11 @@ export async function createProject(ctx: TestContext, overrides: Partial<typeof 
     .set(bearer(ctx.tokens.qa))
     .send({ ...sampleProject, ...overrides });
   return res.body as { id: number; name: string; period: string };
+}
+
+export async function userId(ctx: TestContext, email: string): Promise<number> {
+  const { rows } = await ctx.db.query<{ id: number }>('SELECT id FROM users WHERE email = $1', [email]);
+  return rows[0].id;
 }
 
 export async function metricId(ctx: TestContext, code: string): Promise<number> {

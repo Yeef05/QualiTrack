@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { errorMessage, fieldErrors } from '../api/client';
 import type { ProjectInput } from '../api/types';
 import { ErrorAlert, Field } from './Field';
+import { TeamSelect } from './TeamSelect';
 
 const EMPTY: ProjectInput = {
   name: '',
@@ -9,9 +10,14 @@ const EMPTY: ProjectInput = {
   period: '',
   repositoryUrl: '',
   team: '',
-  qaLead: '',
+  qaLeadId: null,
   deliveredStories: 0,
 };
+
+function pickInput(p: ProjectInput): ProjectInput {
+  const { name, description, period, repositoryUrl, team, qaLeadId, deliveredStories } = p;
+  return { name, description, period, repositoryUrl, team, qaLeadId, deliveredStories };
+}
 
 interface Props {
   initial?: Partial<ProjectInput>;
@@ -22,7 +28,8 @@ interface Props {
 
 /** Alta y edición de proyectos (M1). Muestra los errores de validación que devuelve la API. */
 export function ProjectForm({ initial, submitLabel, onSubmit, onCancel }: Props) {
-  const [values, setValues] = useState<ProjectInput>({ ...EMPTY, ...initial });
+  // Solo los campos que se capturan: el proyecto completo también trae id, nombre del responsable, etc.
+  const [values, setValues] = useState<ProjectInput>(() => pickInput({ ...EMPTY, ...initial }));
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [message, setMessage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -66,8 +73,12 @@ export function ProjectForm({ initial, submitLabel, onSubmit, onCancel }: Props)
         <Field label="Equipo" error={errors.team}>
           <input value={values.team} onChange={set('team')} />
         </Field>
-        <Field label="Responsable de QA" error={errors.qaLead}>
-          <input value={values.qaLead} onChange={set('qaLead')} />
+        <Field label="Responsable de QA" error={errors.qaLeadId}>
+          <TeamSelect
+            value={values.qaLeadId}
+            onChange={(qaLeadId) => setValues((v) => ({ ...v, qaLeadId }))}
+            emptyLabel="Sin asignar"
+          />
         </Field>
         <Field label="Historias entregadas" error={errors.deliveredStories}>
           <input

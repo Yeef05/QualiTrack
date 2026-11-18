@@ -96,6 +96,14 @@ describe('M5. Usuarios y acceso', () => {
     expect(duplicated.body.error).toBe('Ya existe un usuario con ese correo; usa otro o pide que inicie sesión con el suyo');
   });
 
+  it('DEF-007 y DEF-008: cualquier integrante ve la lista de nombres para elegir responsables, sin correos', async () => {
+    const res = await request(ctx.app).get('/api/team').set(bearer(ctx.tokens.miembro));
+    expect(res.status).toBe(200);
+    expect(res.body.map((u: { name: string }) => u.name)).toEqual(expect.arrayContaining(['David Becerra', 'Flavio Huizar', 'Jorge López']));
+    expect(Object.keys(res.body[0]).sort()).toEqual(['id', 'name']);
+    expect((await request(ctx.app).get('/api/team')).status).toBe(401);
+  });
+
   it('responde 404 en rutas de API inexistentes y expone /api/health', async () => {
     expect((await request(ctx.app).get('/api/no-existe')).status).toBe(404);
     expect((await request(ctx.app).get('/api/health')).body).toEqual({ status: 'ok' });

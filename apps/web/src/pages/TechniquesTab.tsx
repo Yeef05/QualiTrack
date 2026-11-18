@@ -4,6 +4,7 @@ import type { Execution, ExecutionResult, Frequency, PlanItem, Technique } from 
 import { useAuth } from '../auth/AuthContext';
 import { ErrorAlert, Field } from '../components/Field';
 import { ProgressBar, StatusDot } from '../components/Status';
+import { TeamSelect } from '../components/TeamSelect';
 import { canManage, formatDate, formatPercent, FREQUENCY_LABEL, KIND_LABEL, RESULT_LABEL, todayIso } from '../lib/format';
 import { useApi } from '../lib/useApi';
 
@@ -115,7 +116,8 @@ function ExecutionForm({ projectId, items, onSaved }: { projectId: number; items
   const { user } = useAuth();
   const [planId, setPlanId] = useState(items[0]?.id);
   const [executedOn, setExecutedOn] = useState(todayIso());
-  const [responsible, setResponsible] = useState(user?.name ?? '');
+  // DEF-008: por omisión, quien tiene la sesión; se cambia eligiendo de la lista de usuarios.
+  const [responsibleId, setResponsibleId] = useState<number | null>(user?.id ?? null);
   const [result, setResult] = useState<ExecutionResult>('aprobada');
   const [findings, setFindings] = useState('0');
   const [notes, setNotes] = useState('');
@@ -127,7 +129,7 @@ function ExecutionForm({ projectId, items, onSaved }: { projectId: number; items
     setErrors({});
     setMessage(null);
     try {
-      const body = { executedOn, responsible, result, findings: Number(findings), notes };
+      const body = { executedOn, responsibleId, result, findings: Number(findings), notes };
       await api(`/projects/${projectId}/plan/${planId}/executions`, { method: 'POST', body });
       setNotes('');
       setFindings('0');
@@ -154,8 +156,8 @@ function ExecutionForm({ projectId, items, onSaved }: { projectId: number; items
         <Field label="Fecha" error={errors.executedOn}>
           <input type="date" value={executedOn} max={todayIso()} onChange={(e) => setExecutedOn(e.target.value)} />
         </Field>
-        <Field label="Responsable" error={errors.responsible}>
-          <input value={responsible} onChange={(e) => setResponsible(e.target.value)} />
+        <Field label="Responsable" error={errors.responsibleId}>
+          <TeamSelect value={responsibleId} onChange={setResponsibleId} />
         </Field>
       </div>
       <div className="form-row">

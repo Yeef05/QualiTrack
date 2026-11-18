@@ -1,6 +1,6 @@
 import path from 'node:path';
 import express, { type Express } from 'express';
-import { authRouter, usersRouter } from './auth/auth.routes';
+import { authRouter, teamRouter, usersRouter } from './auth/auth.routes';
 import { requireAuth } from './auth/auth';
 import type { Db } from './db';
 import { errorHandler } from './errors';
@@ -30,6 +30,7 @@ export function createApp({ db, jwtSecret, webDist }: AppDeps): Express {
   app.use('/api/metrics', auth, metricsRouter(db));
   app.use('/api/techniques', auth, techniquesRouter(db));
   app.use('/api/users', auth, usersRouter(db));
+  app.use('/api/team', auth, teamRouter(db));
   app.use('/api', (_req, res) => {
     res.status(404).json({ error: 'Ruta no encontrada' });
   });

@@ -201,7 +201,8 @@ interface DemoProject {
   name: string;
   description: string;
   team: string;
-  qaLead: string;
+  /** Correo del usuario de ejemplo que es responsable de QA (DEF-007); null si no tiene. */
+  qaLeadEmail: string | null;
   series: Series;
   plan: PlanEntry[];
   deliveredStories?: number;
@@ -213,7 +214,7 @@ const DEMO_PROJECTS: DemoProject[] = [
     name: 'QualiTrack',
     description: 'La propia herramienta, monitoreada con QualiTrack desde el primer sprint.',
     team: 'Equipo QualiTrack',
-    qaLead: 'Flavio Uriel Huizar González',
+    qaLeadEmail: 'qa@qualitrack.local',
     // Valores reales al check-in 2: 10 de 10 historias, 3 defectos, 0 críticos, todos encontrados por el equipo.
     series: {
       funciones_terminadas: [20, 40, 60, 80, 100],
@@ -249,7 +250,7 @@ const DEMO_PROJECTS: DemoProject[] = [
     name: 'Odín · App educativa',
     description: 'Aplicación Android de retos educativos (TSP, Equipo Æsir).',
     team: 'Equipo Æsir',
-    qaLead: 'Flavio Uriel Huizar González',
+    qaLeadEmail: 'qa@qualitrack.local',
     series: {
       funciones_terminadas: [55, 62, 70, 78, 85],
       criterios_aceptacion: [80, 85, 88, 90, 92],
@@ -268,7 +269,7 @@ const DEMO_PROJECTS: DemoProject[] = [
     name: 'Portal de Servicio Social',
     description: 'Registro de horas y reportes de servicio social.',
     team: 'Equipo Portal',
-    qaLead: 'Responsable QA',
+    qaLeadEmail: null,
     series: {
       funciones_terminadas: [5, 8, 12, 15, 18],
       criterios_aceptacion: [50, 55, 60, 62, 65],
@@ -294,11 +295,38 @@ async function seedDefects(db: Db, projectId: number, defects: DefectEntry[]) {
   }
 }
 
+type Person = { id: number | null; name: string };
+
+async function seedPlan(db: Db, projectId: number, plan: PlanEntry[], responsible: string, executor: Person) {
+  for (const [technique, frequency, lastDaysAgo] of plan) {
+    const item = await db.query<{ id: number }>(
+      `INSERT INTO technique_plans (project_id, technique_id, frequency, responsible)
+       SELECT $1, id, $2, $3 FROM techniques WHERE name = $4 RETURNING id`,
+      [projectId, frequency, responsible, technique],
+    );
+    if (lastDaysAgo === null) continue;
+    const late = lastDaysAgo > 10;
+    await db.query(
+      `INSERT INTO technique_executions (plan_id, executed_on, responsible_id, responsible, result, findings)
+       VALUES ($1, $2, $3, $4, $5, $6)`,
+      [item.rows[0].id, isoDaysAgo(lastDaysAgo), executor.id, executor.name, late ? 'con_hallazgos' : 'aprobada', late ? 2 : 0],
+    );
+  }
+}
+
+async function userByEmail(db: Db, email: string | null): Promise<Person> {
+  const { rows } = await db.query<{ id: number; name: string }>('SELECT id, name FROM users WHERE email = $1', [email]);
+  return rows[0] ?? { id: null, name: '' };
+}
+
 async function seedDemoProject(db: Db, demo: DemoProject, period: string) {
+  const qaLead = await userByEmail(db, demo.qaLeadEmail);
+  // Sin responsable de QA, las ejecuciones de ejemplo las registra el miembro del equipo.
+  const executor = qaLead.id === null ? await userByEmail(db, 'miembro@qualitrack.local') : qaLead;
   const { rows } = await db.query<{ id: number }>(
-    `INSERT INTO projects (name, description, period, team, qa_lead, delivered_stories)
-     VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
-    [demo.name, demo.description, period, demo.team, demo.qaLead, demo.deliveredStories ?? 0],
+    `INSERT INTO projects (name, description, period, team, qa_lead, qa_lead_id, delivered_stories)
+     VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
+    [demo.name, demo.description, period, demo.team, qaLead.name, qaLead.id, demo.deliveredStories ?? 0],
   );
   const projectId = rows[0].id;
   await seedDefects(db, projectId, demo.defects ?? []);
@@ -311,19 +339,8 @@ async function seedDemoProject(db: Db, demo: DemoProject, period: string) {
       );
     }
   }
-  for (const [technique, frequency, lastDaysAgo] of demo.plan) {
-    const plan = await db.query<{ id: number }>(
-      `INSERT INTO technique_plans (project_id, technique_id, frequency, responsible)
-       SELECT $1, id, $2, $3 FROM techniques WHERE name = $4 RETURNING id`,
-      [projectId, frequency, demo.qaLead, technique],
-    );
-    if (lastDaysAgo === null) continue;
-    await db.query(
-      `INSERT INTO technique_executions (plan_id, executed_on, responsible, result, findings)
-       VALUES ($1, $2, $3, $4, $5)`,
-      [plan.rows[0].id, isoDaysAgo(lastDaysAgo), demo.qaLead, lastDaysAgo > 10 ? 'con_hallazgos' : 'aprobada', lastDaysAgo > 10 ? 2 : 0],
-    );
-  }
+  // HAL-003: el plan va en su propia función para que seedDemoProject no pase de complejidad 10.
+  await seedPlan(db, projectId, demo.plan, qaLead.name || 'Responsable de calidad', executor);
 }
 
 /** Idempotente: solo inserta lo que falte. */

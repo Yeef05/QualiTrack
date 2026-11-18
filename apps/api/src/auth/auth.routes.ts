@@ -4,6 +4,7 @@ import { z } from 'zod';
 import type { Db } from '../db';
 import { HttpError } from '../errors';
 import { ROLES, currentUser, requireAuth, requireRole, signToken, type AuthUser, type Role } from './auth';
+import { listTeam } from './team';
 
 interface UserRow {
   id: number;
@@ -73,5 +74,14 @@ export function usersRouter(db: Db): Router {
     res.status(201).json(toUser(rows[0]));
   });
 
+  return router;
+}
+
+/** /api/team: nombres para elegir responsables (DEF-007 y DEF-008). Cualquier integrante con sesión los ve. */
+export function teamRouter(db: Db): Router {
+  const router = Router();
+  router.get('/', async (_req, res) => {
+    res.json(await listTeam(db));
+  });
   return router;
 }

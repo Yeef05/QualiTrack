@@ -74,6 +74,25 @@ describe('formularios', () => {
     );
   });
 
+  it('DEF-007: el responsable de QA se elige de la lista de usuarios', async () => {
+    const team = [
+      { id: 2, name: 'Flavio Huizar' },
+      { id: 3, name: 'Jorge López' },
+    ];
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ status: 200, ok: true, json: () => Promise.resolve(team) }));
+    const onSubmit = vi.fn().mockResolvedValue(undefined);
+    render(<ProjectForm initial={{ name: 'Proyecto X', period: '2026-2' }} submitLabel="Registrar" onSubmit={onSubmit} onCancel={vi.fn()} />);
+    const select = screen.getByLabelText('Responsable de QA');
+    expect(select.tagName).toBe('SELECT');
+    await screen.findByRole('option', { name: 'Jorge López' });
+    await userEvent.selectOptions(select, 'Jorge López');
+    await userEvent.click(screen.getByRole('button', { name: 'Registrar' }));
+    expect(onSubmit).toHaveBeenLastCalledWith(expect.objectContaining({ qaLeadId: 3 }));
+    await userEvent.selectOptions(select, 'Sin asignar');
+    await userEvent.click(screen.getByRole('button', { name: 'Registrar' }));
+    expect(onSubmit).toHaveBeenLastCalledWith(expect.objectContaining({ qaLeadId: null }));
+  });
+
   it('ProjectForm muestra los errores de validación de la API', async () => {
     const onSubmit = vi.fn().mockRejectedValue(
       new ApiError(400, 'Datos inválidos', [{ path: 'period', message: 'El periodo debe tener el formato AAAA-1 o AAAA-2' }]),
