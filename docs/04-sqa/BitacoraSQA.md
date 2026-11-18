@@ -118,7 +118,7 @@ Registro cronológico de las actividades de aseguramiento y control de la calida
 
 | Punto | Estado |
 | --- | --- |
-| CI en verde en `main` | Local: sí (`npm run check` y clon nuevo). En GitHub: confirmar la corrida de Actions después de subir `main` |
+| CI en verde en `main` | Sí: local (`npm run check` y clon nuevo) y corrida #12 de GitHub Actions sobre `d8a4179` (etiqueta `v1.0-final`) |
 | Métricas capturadas | Sí: [Mediciones](Mediciones.md) al 18/11 y proyecto "QualiTrack" de la herramienta con el registro real |
 | Registro de defectos al día | Sí: 14 registrados, 14 cerrados, 0 críticos abiertos |
 | Historias terminadas según la definición | **No:** las 11 cumplen sus criterios y tienen pruebas, pero ningún PR tuvo la aprobación de otro integrante |
