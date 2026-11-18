@@ -92,4 +92,34 @@ Registro cronológico de las actividades de aseguramiento y control de la calida
 | --- | --- | --- |
 | Limpieza de los mensajes de commit | Se reescribieron los mensajes del historial a partir del 19/10. El código no cambió: el árbol de cada rama es idéntico al anterior. Cambiaron los hashes de esos commits y se movieron las etiquetas `v0.3-checkin2` y `v0.4-beta` | Se actualizaron los hashes que citan el registro de defectos y esta bitácora. Quien tenga un clon anterior debe volver a clonar el repositorio |
 | Interfaz de la Beta | Rediseño visual y modo claro/oscuro (variables de color por tema, selector en el encabezado, gráfica y reporte adaptados; el PDF se imprime siempre en claro). Revisión visual de las pantallas en ambos modos y en ancho de celular | 100 pruebas en verde (62 API + 38 web), 2 nuevas del tema. Se corrigió además que la densidad se mostrara con 1 decimal (0.7 en lugar de 0.73) |
-| Artefactos del proceso al día | Postmortem del ciclo 2 llenado con los datos del repositorio; postmortem del ciclo 3 con Pareto por tipo TSP y análisis de causa; plan del ciclo 4 con responsable, revisor y fecha; registro de reuniones y de tiempos; formato de revisión cruzada de la Beta (7 revisiones asignadas) | Lo que solo puede dar el equipo (horas reales, asistentes y acuerdos, revisiones) queda marcado con ✍ para la junta del 4/11 |
+| Artefactos del proceso al día | Postmortem del ciclo 2 llenado con los datos del repositorio; postmortem del ciclo 3 con Pareto por tipo TSP y análisis de causa; plan del ciclo 4 con responsable, revisor y fecha; registro de reuniones y de tiempos; formato de revisión cruzada de la Beta (7 revisiones asignadas) | Lo que solo puede dar el equipo (horas reales, asistentes y acuerdos, revisiones) queda para la junta del 4/11 |
+
+## 03/11/2026 · Revisión del código de la Beta (inicio)
+
+| Actividad SQA | Resultado | Decisión / acción |
+| --- | --- | --- |
+| Revisión de R1, R3, R4 y R5 con la lista de revisión | 4 defectos: cerrar defectos de un proyecto archivado (DEF-009), modelo editable en un proyecto archivado (DEF-010), peor/mejor vacío guardado como 0 (DEF-011), errores en inglés y correo repetido (DEF-012) | Corrección con pruebas de regresión en la rama `fix/revision-cruzada-beta`. Quedó sin commit ni registro hasta el 18/11 |
+
+## 18/11/2026 · Ciclo 4: auditoría final antes de la entrega
+
+| Actividad SQA | Resultado | Decisión / acción |
+| --- | --- | --- |
+| Auditoría del avance del ciclo 4 | Del 4 al 17/11 no hubo commits, ramas ni cambios en los documentos del repositorio; las revisiones R1 a R7 y las tareas del plan del ciclo 4 no tenían registro | Se repite lo del ciclo 3: el riesgo "el trabajo se concentra en una persona" se materializó. El Responsable de calidad hace las tareas de verificación que faltan para la entrega |
+| Registro de los defectos del 3/11 | DEF-009 a DEF-012 registrados con su fecha real (03/11) y cerrados al integrarse (18/11): 15 días cada uno | Tres commits en `fix/DEF-009-012-revision-beta`, uno por defecto o par de defectos |
+| DEF-007 y DEF-008 | Migración 005, `GET /api/team` y listas desplegables; 4 pruebas de regresión nuevas | Cerrados después de 29 días. Al ligar los usuarios de ejemplo, ESLint marcó complejidad 11 en `seedDemoProject` (HAL-003) y se separó la función antes del commit |
+| Revisión de R2, R6 y R7 | R2 y R6 con hallazgos (plural "1 abiertos", ya corregido); R7 rechazada por DEF-014 (lista que se sale de la tarjeta en celular) | 7 de 7 revisiones hechas: 5 rechazadas y 2 con hallazgos ([revisiones](RevisionesBeta.md)). No cuentan como revisión cruzada: las hizo la misma cuenta que integró el código |
+| Casos de prueba manuales CP-01 a CP-33 | 33 de 33 criterios cumplidos. CP-02 y CP-19 rechazaban el duplicado con un mensaje genérico (DEF-013) | DEF-013 corregido con prueba. La métrica "Criterios de aceptación cumplidos" queda en 100 % con prueba automática y manual |
+| Prueba de humo en un clon nuevo | `npm ci` y `npm run check` correctos: 109 pruebas, cobertura 97.8 % API y 98.9 % web. Recorrido completo en el navegador, en claro, oscuro y celular | La exportación a PDF no se probó a mano |
+| Modo de producción con el driver de PostgreSQL | Migraciones 001 a 005, datos de ejemplo, frontend compilado y escrituras correctas con `NODE_ENV=production` | Se agrega `render.yaml`. Falta desplegar en Render y repetir ahí la prueba de humo |
+| Índice de salud de QualiTrack con su propio modelo | 64/100 (antes 79): densidad 1.27 y tiempo de corrección 10.3 días en rojo, plan de técnicas en 75 % | Se entrega con 0 defectos abiertos. El índice baja por cómo se trabajó, no por el estado del producto, y así se explica en el postmortem del ciclo 4 |
+| Versión | La interfaz decía "v0.4 Beta"; ahora dice "v1.0". Paquetes en 1.0.0 | Etiqueta `v1.0-final` en `main` |
+
+### Auditoría interna final (Plan SQA §12)
+
+| Punto | Estado |
+| --- | --- |
+| CI en verde en `main` | Local: sí (`npm run check` y clon nuevo). En GitHub: confirmar la corrida de Actions después de subir `main` |
+| Métricas capturadas | Sí: [Mediciones](Mediciones.md) al 18/11 y proyecto "QualiTrack" de la herramienta con el registro real |
+| Registro de defectos al día | Sí: 14 registrados, 14 cerrados, 0 críticos abiertos |
+| Historias terminadas según la definición | **No:** las 11 cumplen sus criterios y tienen pruebas, pero ningún PR tuvo la aprobación de otro integrante |
+| `main` protegida | Sin evidencia en el repositorio |

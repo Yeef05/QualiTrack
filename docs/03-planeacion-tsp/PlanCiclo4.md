@@ -2,7 +2,7 @@
 
 Pasos del ciclo TSP: **lanzamiento → estrategia → plan → requisitos → diseño → implementación → pruebas → postmortem**. Este plan sale de las acciones de los postmortems de los [ciclos 2](PostmortemCiclo2.md) y [3](PostmortemCiclo3.md).
 
-> **Borrador para la junta de lanzamiento del 4/11.** Los responsables y revisores son una propuesta que sigue los roles del [Plan SQA](../04-sqa/PlanSQA.md) y los dueños de cada caso de uso. El equipo los confirma o los cambia en la junta y lo anota en [Reuniones](Reuniones.md).
+Los responsables y revisores siguen los roles del [Plan SQA](../04-sqa/PlanSQA.md) y los dueños de cada caso de uso. El estado de cada tarea es el que muestra la evidencia al 18/11 (repositorio, [bitácora](../04-sqa/BitacoraSQA.md) y [revisiones](../04-sqa/RevisionesBeta.md)); el cierre está en el [postmortem del ciclo 4](PostmortemCiclo4.md).
 
 ## 1. Objetivos (rúbrica SQA26 en "Excelente")
 
@@ -21,30 +21,30 @@ Pasos del ciclo TSP: **lanzamiento → estrategia → plan → requisitos → di
 | Líder de equipo | Camila |
 | Responsable técnico | David |
 | Responsable de calidad | Flavio |
-| Responsable de colaboración | ✍ *Nombrarlo en la junta del 4/11* |
+| Responsable de colaboración | |
 | Desarrolladores | Jorge y Martin (todos desarrollan) |
 
 ## 3. Plan de tareas
 
 | # | Tarea | Fase TSP | Responsable | Revisa | Fecha límite | Horas plan | Horas real | Estado |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Junta de lanzamiento: nombrar al Responsable de colaboración, confirmar este plan y registrarla en Reuniones | Lanzamiento | Camila | Todos | 04/11 | 1 | | Pendiente |
-| 2 | Revisión cruzada del código de la Beta con la lista de revisión ([formato](../04-sqa/RevisionesBeta.md)) | Pruebas | Ver formato (David, Martin, Jorge y Camila) | Flavio | 09/11 | 4 | | Pendiente |
-| 3 | Registrar las observaciones de la maestra en la Beta como defectos de origen B | Pruebas | Flavio | Camila | 04/11 | 1 | | Pendiente |
-| 4 | Proteger `main`: los PR requieren 1 aprobación y CI en verde | Pruebas | Responsable de colaboración | David | 04/11 | 0.5 | | Pendiente |
-| 5 | DEF-007: elegir al "Responsable de QA" del proyecto de la lista de usuarios | Implementación | Martin | Flavio | 07/11 | 3 | | Pendiente |
-| 6 | DEF-008: elegir al responsable de cada ejecución de la lista de usuarios (el de la sesión por omisión) | Implementación | David | Camila | 07/11 | 2 | | Pendiente |
-| 7 | Pruebas E2E (Playwright) de 3 flujos: registrar proyecto y medición, registrar y cerrar defecto, generar reporte | Pruebas | Jorge | Flavio | 12/11 | 5 | | Pendiente |
-| 8 | Prueba con 3 usuarios de otro equipo, 5 tareas cada uno (métrica "Tareas completadas sin ayuda") | Pruebas | Flavio | Camila | 12/11 | 2 | | Pendiente |
-| 9 | Seguimiento a mitad del ciclo: avance de tareas y horas, y ajuste del plan | Plan | Camila | Responsable de colaboración | 10/11 | 1 | | Pendiente |
-| 10 | Desplegar con PostgreSQL real y repetir la prueba de humo ahí | Pruebas | David | Flavio | 13/11 | 4 | | Pendiente |
-| 11 | Conectar SonarCloud (`sonar-project.properties` con la organización real y secreto `SONAR_TOKEN`) | Pruebas | David | Martin | 13/11 | 1 | | Pendiente |
-| 12 | Manual de usuario de la versión final (pantallas de la Beta y modo claro/oscuro) | Requisitos | Camila | Jorge | 14/11 | 3 | | Pendiente |
-| 13 | Exploración de 30 min por integrante con una misión (Plan SQA §8.1); lo encontrado va al registro de defectos | Pruebas | Todos | Flavio | 14/11 | 2.5 | | Pendiente |
-| 14 | Congelar código, auditoría final, bitácora SQA final y mediciones | Postmortem | Flavio | Camila | 17/11 | 3 | | Pendiente |
-| 15 | Postmortem del ciclo 4, reporte final y ensayo de la demo final | Postmortem | Camila | Todos | 18/11 | 3 | | Pendiente |
-| 16 | Anotar las horas de la semana en el registro de tiempos (cada viernes: 7/11 y 14/11) | Postmortem | Todos | Camila | 14/11 | 1 | | Pendiente |
-| 17 | Etiqueta `v1.0-final` y entrega en Classroom | Postmortem | Responsable de colaboración | Flavio | 19/11 | 0.5 | | Pendiente |
+| 1 | Junta de lanzamiento: nombrar al Responsable de colaboración, confirmar este plan y registrarla en Reuniones | Lanzamiento | Camila | Todos | 04/11 | 1 | | |
+| 2 | Revisión cruzada del código de la Beta con la lista de revisión ([formato](../04-sqa/RevisionesBeta.md)) | Pruebas | Ver formato (David, Martin, Jorge y Camila) | Flavio | 09/11 | 4 | | Hecha 18/11 por Flavio (R1 a R7; no cuenta como revisión cruzada) |
+| 3 | Registrar las observaciones de la maestra en la Beta como defectos de origen B | Pruebas | Flavio | Camila | 04/11 | 1 | | |
+| 4 | Proteger `main`: los PR requieren 1 aprobación y CI en verde | Pruebas | Responsable de colaboración | David | 04/11 | 0.5 | | |
+| 5 | DEF-007: elegir al "Responsable de QA" del proyecto de la lista de usuarios | Implementación | Martin | Flavio | 07/11 | 3 | | Hecha 18/11 por Flavio |
+| 6 | DEF-008: elegir al responsable de cada ejecución de la lista de usuarios (el de la sesión por omisión) | Implementación | David | Camila | 07/11 | 2 | | Hecha 18/11 por Flavio |
+| 7 | Pruebas E2E (Playwright) de 3 flujos: registrar proyecto y medición, registrar y cerrar defecto, generar reporte | Pruebas | Jorge | Flavio | 12/11 | 5 | | Sin pruebas E2E en el repositorio |
+| 8 | Prueba con 3 usuarios de otro equipo, 5 tareas cada uno (métrica "Tareas completadas sin ayuda") | Pruebas | Flavio | Camila | 12/11 | 2 | | |
+| 9 | Seguimiento a mitad del ciclo: avance de tareas y horas, y ajuste del plan | Plan | Camila | Responsable de colaboración | 10/11 | 1 | | |
+| 10 | Desplegar con PostgreSQL real y repetir la prueba de humo ahí | Pruebas | David | Flavio | 13/11 | 4 | | Listo para desplegar (`render.yaml`); modo de producción probado el 18/11 |
+| 11 | Conectar SonarCloud (`sonar-project.properties` con la organización real y secreto `SONAR_TOKEN`) | Pruebas | David | Martin | 13/11 | 1 | | Sin conectar: `sonar-project.properties` sigue con la organización de ejemplo |
+| 12 | Manual de usuario de la versión final (pantallas de la Beta y modo claro/oscuro) | Requisitos | Camila | Jorge | 14/11 | 3 | | |
+| 13 | Exploración de 30 min por integrante con una misión (Plan SQA §8.1); lo encontrado va al registro de defectos | Pruebas | Todos | Flavio | 14/11 | 2.5 | | Parcial: sesión de Flavio el 18/11 |
+| 14 | Congelar código, auditoría final, bitácora SQA final y mediciones | Postmortem | Flavio | Camila | 17/11 | 3 | | Hecha 18/11 |
+| 15 | Postmortem del ciclo 4, reporte final y ensayo de la demo final | Postmortem | Camila | Todos | 18/11 | 3 | | Parcial: postmortem y reporte de estado hechos el 18/11 por Flavio |
+| 16 | Anotar las horas de la semana en el registro de tiempos (cada viernes: 7/11 y 14/11) | Postmortem | Todos | Camila | 14/11 | 1 | | |
+| 17 | Etiqueta `v1.0-final` y entrega en Classroom | Postmortem | Responsable de colaboración | Flavio | 19/11 | 0.5 | | Etiqueta `v1.0-final` el 18/11 |
 | | **Total** | | | | | **37.5** | | |
 
 ### Carga por persona (horas plan)

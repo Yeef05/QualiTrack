@@ -2,6 +2,22 @@
 
 Valores medidos con las herramientas del proyecto. También se capturan en QualiTrack, en el proyecto "QualiTrack".
 
+## Entrega final · 18/11/2026
+
+| Métrica | Peor | Mejor | Valor | Cómo se obtuvo | Estado |
+| --- | --- | --- | --- | --- | --- |
+| Capacidad funcional (%E) | 70 % | 100 % | 100 % (11 de 11 casos de uso; DEF-007 y DEF-008, comprometidos para la entrega final, cerrados) | Casos de uso y plan del ciclo 4 | Verde |
+| Criterios de aceptación cumplidos | 90 % | 100 % | 100 % (33 de 33) | Prueba automática (109 en verde) y caso de prueba manual de cada criterio ([casos de prueba](RevisionesBeta.md#casos-de-prueba-manuales)) | Verde |
+| Densidad de defectos | 1.0 | 0.5 | 1.27 (14 defectos ÷ 11 historias) | Registro de defectos, calculado por QualiTrack | Rojo |
+| Defectos críticos abiertos | 0 | 0 | 0 | Registro de defectos | Verde |
+| Eficiencia de QA | 85 % | 95 % | 100 % (A = 14, B = 0, C = 0) | Registro de defectos; no se registraron observaciones de la maestra | Verde |
+| Tiempo medio de corrección | 7 días | 2 días | 10.3 días | DEF-007/008 tardaron 29 días y DEF-009 a DEF-012, 15 | Rojo |
+| Cumplimiento del plan de técnicas | 70 % | 90 % | 6 de 8 = 75 % | Siguen sin hacerse la revisión de código por otro integrante y `main` protegida | Amarillo |
+
+Índice de salud: (4 × 100 + 50 + 0 + 0) ÷ 7 = **64** (amarillo). Baja de 79 a 64. El producto mejoró (todos los defectos cerrados, 0 críticos), pero el modelo mide también cómo se trabajó: la revisión del código de la Beta y los casos de prueba encontraron 6 defectos más, y varios defectos esperaron semanas a que alguien los tomara.
+
+**Controles automáticos internos.** Lint sin errores (HAL-003 se corrigió antes del commit), 0 errores de tipos, 109 pruebas en verde (68 API + 41 web), cobertura de líneas API 97.8 % (527/539) y web 98.9 % (173/175), build correcto. La prueba de humo en un clon nuevo pasó.
+
 ## Beta · 02/11/2026 · modelo del ADR-004 y registro de defectos
 
 | Métrica | Peor | Mejor | Valor | Cómo se obtuvo | Estado |
