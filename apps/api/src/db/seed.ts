@@ -231,8 +231,8 @@ const DEMO_PROJECTS: DemoProject[] = [
       ['Análisis estático', 'por_pr', 1],
       ['Auditoría interna', 'por_checkin', 4],
     ],
-    // Registro real de docs/04-sqa/RegistroDefectos.md al 2 nov; con él se calculan densidad, críticos, eficiencia
-    // y tiempo. DEF-005 a DEF-008 esperaron 13 días al ciclo 3: el tiempo de corrección queda en amarillo.
+    // Registro real de docs/04-sqa/RegistroDefectos.md al 18 nov; con él se calculan densidad, críticos, eficiencia
+    // y tiempo. DEF-007/008 (29 días) y DEF-009 a DEF-012 (15 días) dejan el tiempo de corrección en rojo.
     // HU-01 a HU-11 (la HU-04 creció con el modelo por proyecto de la Beta).
     deliveredStories: 11,
     defects: [
@@ -242,8 +242,14 @@ const DEMO_PROJECTS: DemoProject[] = [
       ['El encabezado muestra "Líder QA · Líder QA" por el nombre del usuario de ejemplo', 'cosmetica', 70, 'equipo', '2026-10-19', '2026-10-19'],
       ['El subtítulo del reporte queda pegado al semáforo del índice', 'cosmetica', 50, 'equipo', '2026-10-20', '2026-11-02'],
       ['La barra "Defectos críticos" se ve llena con 0 abiertos y se lee al revés', 'menor', 50, 'equipo', '2026-10-20', '2026-11-02'],
-      ['"Responsable de QA" del proyecto es texto libre y no se liga a un usuario', 'menor', 50, 'equipo', '2026-10-20', null],
-      ['El responsable de cada ejecución es texto libre: la misma persona sale con nombres distintos', 'menor', 70, 'equipo', '2026-10-20', null],
+      ['"Responsable de QA" del proyecto es texto libre y no se liga a un usuario', 'menor', 50, 'equipo', '2026-10-20', '2026-11-18'],
+      ['El responsable de cada ejecución es texto libre: la misma persona sale con nombres distintos', 'menor', 70, 'equipo', '2026-10-20', '2026-11-18'],
+      ['La API permite cerrar defectos de un proyecto archivado', 'menor', 80, 'equipo', '2026-11-03', '2026-11-18'],
+      ['El modelo de calidad de un proyecto archivado se puede cambiar y restaurar', 'menor', 80, 'equipo', '2026-11-03', '2026-11-18'],
+      ['Borrar el valor peor o mejor del modelo lo guarda como 0 sin avisar', 'mayor', 70, 'equipo', '2026-11-03', '2026-11-18'],
+      ['Los errores de validación salen en inglés y el correo repetido da un mensaje genérico', 'menor', 50, 'equipo', '2026-11-03', '2026-11-18'],
+      ['Proyecto o técnica repetidos responden "Ya existe un registro con esos datos" sin decir qué cambiar', 'menor', 50, 'equipo', '2026-11-18', '2026-11-18'],
+      ['En celular, la lista de técnicas se sale de la tarjeta "Agregar técnica al plan"', 'cosmetica', 50, 'equipo', '2026-11-18', '2026-11-18'],
     ],
   },
   {

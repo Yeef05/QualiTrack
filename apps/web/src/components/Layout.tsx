@@ -5,7 +5,7 @@ import { ROLE_LABEL } from '../lib/format';
 import { LogoMark, LogoutIcon } from './Icons';
 import { ThemeToggle } from './ThemeToggle';
 
-export const APP_VERSION = 'v0.4 Beta';
+export const APP_VERSION = 'v1.0';
 
 const initials = (name: string) =>
   name
@@ -30,7 +30,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <header className="topbar">
         <div className="topbar-inner">
           <Brand />
-          <span className="badge beta">Beta</span>
+          <span className="badge version">{APP_VERSION}</span>
           <nav className="nav" aria-label="Principal">
             <NavLink to="/" end>
               Proyectos
