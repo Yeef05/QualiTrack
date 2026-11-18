@@ -1,6 +1,6 @@
 # Historias de usuario
 
-Cada criterio de aceptación está ligado a una o más pruebas automáticas. Cada historia se rastrea a un [caso de uso](CasosDeUso.md#trazabilidad-cu--historias--pruebas). Estado al check-in 2: implementadas y con pruebas; pendiente la revisión cruzada para darlas por terminadas.
+Cada criterio de aceptación está ligado a una o más pruebas automáticas. Cada historia se rastrea a un [caso de uso](CasosDeUso.md#trazabilidad-cu--historias--pruebas). Estado al 18 de noviembre: las 11 historias están implementadas y sus 33 criterios pasan la prueba automática y la manual ([casos de prueba](../04-sqa/RevisionesBeta.md#casos-de-prueba-manuales)). Para la definición de terminado falta la revisión de otro integrante en un PR.
 
 ## M1. Proyectos y periodos
 
@@ -8,6 +8,7 @@ Cada criterio de aceptación está ligado a una o más pruebas automáticas. Cad
 - Se captura nombre, periodo (AAAA-1 o AAAA-2), descripción, repositorio, equipo y responsable de QA → `projects.test.ts` "el líder de QA registra un proyecto"
 - No se puede registrar el mismo proyecto dos veces en el mismo periodo, pero sí en otro → "no permite registrar…", "sí permite el mismo proyecto en otro periodo"
 - Los datos inválidos muestran el error en el campo correspondiente → "valida nombre, periodo y URL", `components.test.tsx` "ProjectForm muestra los errores"
+- *(Final)* El responsable de QA se elige de la lista de usuarios → `projects.test.ts` "DEF-007: el responsable de QA se elige…", `components.test.tsx` "DEF-007…"
 
 **HU-02 · Ver proyectos por periodo.** Como integrante quiero ver los proyectos del periodo con su salud para saber cuáles necesitan atención.
 - Se filtra por periodo y se listan los periodos existentes → "lista por periodo con índice de salud"
@@ -45,6 +46,7 @@ Cada criterio de aceptación está ligado a una o más pruebas automáticas. Cad
 **HU-08 · Registrar ejecuciones.** Como integrante quiero registrar cada vez que se aplica una técnica, con su resultado y hallazgos.
 - Una ejecución "aprobada" no puede tener hallazgos → "valida las ejecuciones"
 - El cumplimiento del plan se actualiza → "registra ejecuciones con sus hallazgos…"
+- *(Final)* El responsable es un usuario de la lista; por omisión, quien tiene la sesión → "DEF-008: el responsable de la ejecución es un usuario de la lista…"
 
 ## M4. Reportes de salud
 

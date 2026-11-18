@@ -73,7 +73,7 @@ flowchart LR
 **Flujo normal**
 1. El Líder de QA indica que quiere registrar un proyecto nuevo.
 2. El sistema muestra el formulario del proyecto.
-3. El Líder de QA captura nombre, periodo (AAAA-1 o AAAA-2), descripción, URL del repositorio, equipo y responsable de QA.
+3. El Líder de QA captura nombre, periodo (AAAA-1 o AAAA-2), descripción, URL del repositorio y equipo, y elige al responsable de QA de la lista de usuarios.
 4. El sistema valida los datos.
 5. El sistema verifica que el proyecto no esté registrado en ese periodo.
 6. El sistema guarda el proyecto y lo muestra en la lista del periodo, con salud "sin datos".
@@ -90,7 +90,7 @@ flowchart LR
 
 | ID | Requerimiento |
 | --- | --- |
-| RF-01 | El sistema deberá permitir al Líder de QA registrar un proyecto con nombre, periodo, descripción, repositorio, equipo y responsable de QA. |
+| RF-01 | El sistema deberá permitir al Líder de QA registrar un proyecto con nombre, periodo, descripción, repositorio, equipo y responsable de QA, elegido de la lista de usuarios (DEF-007). |
 | RF-02 | El sistema deberá aceptar solo periodos con el formato AAAA-1 o AAAA-2 y URL de repositorio completas. |
 | RF-03 | El sistema deberá impedir registrar dos veces el mismo nombre de proyecto en un periodo. |
 | RF-04 | El sistema deberá mostrar cada error de validación junto al campo que lo causa. |
@@ -256,7 +256,7 @@ flowchart LR
 
 **Flujo normal**
 1. El integrante elige la técnica en "Registrar ejecución".
-2. El integrante captura la fecha, el responsable, el resultado (aprobada, con hallazgos o rechazada), el número de hallazgos y notas.
+2. El integrante captura la fecha, el resultado (aprobada, con hallazgos o rechazada), el número de hallazgos y notas, y elige al responsable de la lista de usuarios (por omisión, él mismo).
 3. El sistema valida la ejecución.
 4. El sistema la guarda, la muestra en el historial y recalcula el cumplimiento del plan.
 
@@ -266,7 +266,7 @@ flowchart LR
 
 | ID | Requerimiento |
 | --- | --- |
-| RF-25 | El sistema deberá permitir registrar ejecuciones de técnicas con fecha, responsable, resultado, hallazgos y notas. |
+| RF-25 | El sistema deberá permitir registrar ejecuciones de técnicas con fecha, responsable (un usuario registrado, DEF-008), resultado, hallazgos y notas. |
 | RF-26 | El sistema deberá rechazar ejecuciones "aprobadas" con hallazgos y fechas futuras. |
 | RF-27 | El sistema deberá mostrar el historial de ejecuciones del más reciente al más antiguo. |
 

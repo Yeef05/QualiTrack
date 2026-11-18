@@ -1,12 +1,12 @@
 # Postmortem del ciclo 2 (TSP) · Prototipo funcional · 7 al 20 de octubre de 2026
 
-Cierre del ciclo del [plan del ciclo 2](PlanCiclo2.md). Los datos salen del historial del repositorio, del [registro de defectos](../04-sqa/RegistroDefectos.md) y de la [bitácora de SQA](../04-sqa/BitacoraSQA.md). Las celdas marcadas con ✍ las llena el equipo.
+Cierre del ciclo del [plan del ciclo 2](PlanCiclo2.md). Los datos salen del historial del repositorio, del [registro de defectos](../04-sqa/RegistroDefectos.md) y de la [bitácora de SQA](../04-sqa/BitacoraSQA.md). Las horas reales salen del [registro de tiempos](RegistroTiempos.md).
 
 ## 1. Plan contra real
 
 | Medida | Plan | Real | Diferencia |
 | --- | --- | --- | --- |
-| Horas totales | 41 | ✍ Suma de [Registro de tiempos](RegistroTiempos.md) | ✍ |
+| Horas totales | 41 | | |
 | Tareas hechas | 15 | 13 hechas, 1 parcial (tarea 12, falta SonarCloud) y 1 pendiente (tarea 13, revisión cruzada) | −1 pendiente, −1 parcial |
 | Tareas terminadas según la definición de terminado (Plan SQA §10) | 15 | 0, porque ningún PR tuvo revisión de otro integrante | −15 |
 | Defectos registrados | — | 4 (DEF-001 a DEF-004) y 1 hallazgo de análisis estático (HAL-001) | — |
@@ -23,7 +23,7 @@ Cierre del ciclo del [plan del ciclo 2](PlanCiclo2.md). Los datos salen del hist
 | Prueba de humo | 1 | DEF-002 (crítico: carpeta de datos de PGlite) |
 | Revisión manual previa a la demo | 2 | DEF-003 (zona horaria) y DEF-004 (nombre de usuario de ejemplo) |
 | Revisión de código entre integrantes | 0 | No se hizo |
-| Demo con la maestra (valor B) | ✍ | Anotar las observaciones de la maestra del 20/10, si las hubo |
+| Demo con la maestra (valor B) | | |
 
 ## 3. Qué funcionó (mantener)
 
@@ -38,7 +38,6 @@ Cierre del ciclo del [plan del ciclo 2](PlanCiclo2.md). Los datos salen del hist
 - No se anotaron las horas reales, así que no se puede comparar el plan contra lo real.
 - No se nombró al Responsable de colaboración, y nadie protegió `main` ni conectó SonarCloud.
 - No quedó registro de las reuniones del equipo.
-- ✍ Lo que el equipo agregue en la junta de cierre.
 
 ## 5. Acciones para el ciclo 3 (PDCA → Actuar) y cómo quedaron al 3/11
 

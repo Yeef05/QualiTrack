@@ -32,7 +32,7 @@ Según la adaptación de la maestra. Con 5 integrantes, cada rol de responsabili
 | Líder de equipo | Camila Rachel Sánchez Molina | PM.01.01–03, .05, .06, .08, .09 · PM.02.02 · PM.03.01, .03 · PM.04.01 · SI.0x.01 | Plan del ciclo, reuniones con la maestra, asignación de tareas, reporte de avance y cierre |
 | Responsable técnico | David Ignacio Becerra Morán | PM.03.02 · SI.02.02 · SI.03.02–03 · SI.04.02 · SI.05.03 · SI.06.02 | Requisitos técnicos, diseño (ADR), estándares de código, CI, armado de la entrega |
 | Responsable de calidad | Flavio Uriel Huizar González | SI.02.03 · SI.03.03 (apoyo) · SI.04.03–04 · SI.05.02 · SI.05.04–06 | Validar requisitos, casos de prueba, revisiones, registro de defectos, validación con la maestra, este plan |
-| Responsable de colaboración | *Por asignar en la junta del equipo* | PM.01.04, .07, .10 · PM.02.01 · PM.04.02 · SI.01.02 · SI.0x.04/05/07 | Herramientas y repositorio al día, seguimiento del plan, guardar productos en el repositorio |
+| Responsable de colaboración | | PM.01.04, .07, .10 · PM.02.01 · PM.04.02 · SI.01.02 · SI.0x.04/05/07 | Herramientas y repositorio al día, seguimiento del plan, guardar productos en el repositorio |
 | Desarrolladores | Jorge Eduardo López Morán, Martin Alejandro Gaspar Mercado | Tareas de construcción del proceso SI | Código, pruebas de su código y revisión de PR de otros integrantes |
 
 ## 4. Productos de trabajo de 29110 y dónde están
@@ -41,16 +41,16 @@ Según la adaptación de la maestra. Con 5 integrantes, cada rol de responsabili
 | --- | --- | --- |
 | Acuerdo con el cliente | Enunciado SQA26 de la maestra | Listo |
 | Plan del proyecto | [Plan del ciclo 4](../03-planeacion-tsp/PlanCiclo4.md) (entrega final, con responsable, revisor y fecha), planes de ciclos anteriores y este plan | Listo |
-| Registro de estado de avance | [Reportes de check-in](../05-entregas/checkin2/) | Listo |
+| Registro de estado de avance | Reportes de estado de cada check-in en [05-entregas](../05-entregas/) | Listo |
 | Especificación de requisitos | [Casos de uso](../01-requisitos/CasosDeUso.md) con flujos y RF, e [historias de usuario](../01-requisitos/HistoriasUsuario.md) con criterios de aceptación | Listo |
 | Especificación de componentes | [ADR-001](../02-diseno/decisiones/ADR-001-arquitectura.md) y estructura del README | Listo |
 | Casos y procedimientos de prueba | `apps/api/test` y `apps/web/src/**/*.test.ts(x)` | Listo |
-| Resultados de verificación | Ejecuciones de CI, PR revisados con la [lista de revisión](ListaRevision.md), [revisiones de la Beta](RevisionesBeta.md), [bitácora](BitacoraSQA.md) | Revisiones asignadas, por hacer (9/11) |
+| Resultados de verificación | Ejecuciones de CI, PR revisados con la [lista de revisión](ListaRevision.md), [revisiones y casos de prueba](RevisionesBeta.md), [bitácora](BitacoraSQA.md) | 7 revisiones y 33 casos de prueba al 18/11; sin PR revisados por otro integrante |
 | Resultados de validación | Demo de cada check-in con la maestra, anotada en la bitácora | Desde el 20 oct |
 | Solicitudes de cambio | [ADR](../02-diseno/decisiones/) e Issues de GitHub | Listo |
-| Registro de reuniones | [Reuniones](../03-planeacion-tsp/Reuniones.md) con acuerdos y pendientes | Iniciado: faltan asistentes y acuerdos |
-| Repositorio del proyecto | GitHub `Yeef05/QualiTrack`, `main` protegida y una etiqueta por entrega | Falta proteger `main` |
-| Registro de aceptación | Entrega final del 19 nov | Pendiente |
+| Registro de reuniones | [Reuniones](../03-planeacion-tsp/Reuniones.md) con acuerdos y pendientes | Incompleto: sin asistentes ni acuerdos de las juntas del equipo |
+| Repositorio del proyecto | GitHub `Yeef05/QualiTrack`, `main` protegida y una etiqueta por entrega | Etiquetas `v0.3-checkin2`, `v0.4-beta` y `v1.0-final`; no hay evidencia de que `main` esté protegida |
+| Registro de aceptación | Entrega final del 19 nov ([reporte de estado](../05-entregas/final/Final_ReporteEstado.md)) | Se entrega el 19/11 |
 
 ## 5. Características de calidad que priorizamos
 
@@ -107,8 +107,8 @@ Son prácticas ligeras que caben en un equipo chico. Cada una alimenta una métr
 3. **Análisis de causa de defectos.** Al cerrar cada ciclo se agrupan los defectos por tipo TSP (Pareto). A los más frecuentes se les hace un diagrama de Ishikawa para decidir qué práctica cambiar.
 4. **Matriz de trazabilidad.** Historia → criterio → prueba → resultado. Ya existe dentro de `HistoriasUsuario.md`; mantenerla al día da el valor de "Criterios de aceptación cumplidos".
 5. **Registro de tiempos de TSP.** Permite calcular el **desperdicio** (tiempo corrigiendo defectos ÷ tiempo total, lámina 44) después de liberar.
-6. **Pruebas de flujo completo (E2E)** de los 3 flujos principales para la Beta, para cubrir las páginas que hoy no cuentan en la cobertura web.
-7. **Revisión del despliegue.** Antes del 19 nov: desplegar en un servicio con PostgreSQL real y repetir la prueba de humo ahí.
+6. **Pruebas de flujo completo (E2E)** de los 3 flujos principales, para cubrir las páginas que no cuentan en la cobertura web. Al 18/11 se cubren con los casos de prueba manuales.
+7. **Revisión del despliegue.** Desplegar en un servicio con PostgreSQL real (`render.yaml`) y repetir la prueba de humo ahí.
 
 ## 9. Estándares
 

@@ -67,3 +67,7 @@ Las clases nuevas y modificadas de cada página son las que implementan las tare
 ### CU-11 · Registrar un defecto del proyecto
 
 ![Diagrama de clases CU-11](img/DiagramaClases_CU-11.png)
+
+## Cambios de la entrega final
+
+DEF-007 y DEF-008 no agregan clases. `Project` gana `qaLeadId` y `Execution` gana `responsibleId`, ambos referencias a `User` (migración 005). La función `listTeam` (`auth/team.ts`) da la lista de usuarios para elegir responsables y la usa el componente `TeamSelect` de la web. Los diagramas de arriba muestran el diseño de la Beta.

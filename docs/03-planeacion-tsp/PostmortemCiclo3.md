@@ -1,12 +1,12 @@
 # Postmortem del ciclo 3 (TSP) · Versión Beta · 21 de octubre al 3 de noviembre de 2026
 
-Cierre del ciclo del [plan del ciclo 3](PlanCiclo3.md). Los datos salen del historial del repositorio, del [registro de defectos](../04-sqa/RegistroDefectos.md), de las [mediciones](../04-sqa/Mediciones.md) y de la [bitácora de SQA](../04-sqa/BitacoraSQA.md). Las celdas marcadas con ✍ las llena el equipo.
+Cierre del ciclo del [plan del ciclo 3](PlanCiclo3.md). Los datos salen del historial del repositorio, del [registro de defectos](../04-sqa/RegistroDefectos.md), de las [mediciones](../04-sqa/Mediciones.md) y de la [bitácora de SQA](../04-sqa/BitacoraSQA.md). Las horas reales salen del [registro de tiempos](RegistroTiempos.md).
 
 ## 1. Plan contra real
 
 | Medida | Plan | Real | Diferencia |
 | --- | --- | --- | --- |
-| Horas totales | 52 | ✍ Suma de [Registro de tiempos](RegistroTiempos.md) | ✍ |
+| Horas totales | 52 | | |
 | Tareas hechas | 17 | 9 hechas, 3 parciales (14, 16 y 17) y 5 pendientes | −8 |
 | Casos de uso comprometidos | 3 (CU-03, CU-10, CU-11) | 3 | 0 |
 | Integrantes con al menos un PR propio aprobado por otro | 5 | 0 | −5 |
@@ -25,7 +25,7 @@ Cierre del ciclo del [plan del ciclo 3](PlanCiclo3.md). Los datos salen del hist
 | DEF-007 | 50 Interfaz | Menor | Revisión del prototipo (20/10) | Abierto |
 | DEF-008 | 70 Datos | Menor | Revisión del prototipo (20/10) | Abierto |
 | HAL-002 | Análisis estático | — | ESLint antes del commit (2/11) | 0 |
-| Observaciones de la maestra en la Beta (valor B) | ✍ | ✍ | Demo del 3/11 | ✍ |
+| Observaciones de la maestra en la Beta (valor B) | | | Demo del 3/11 | |
 
 ### Pareto por tipo TSP (acumulado, 8 defectos)
 
@@ -48,7 +48,6 @@ Interfaz y Datos suman el 62.5 %. Acción: la [lista de revisión](../04-sqa/Lis
 | Método | Los 4 detalles del 20/10 se dejaron "para el ciclo 3" en vez de registrarse ese día |
 | Entorno | CONISOFT (27–30/10) redujo las horas disponibles, como preveía el riesgo del plan |
 | Medición | Sin horas reales no se detectó a tiempo que el plan no avanzaba |
-| ✍ | Lo que el equipo agregue en la junta de cierre |
 
 ## 4. Qué funcionó (mantener)
 
@@ -60,7 +59,6 @@ Interfaz y Datos suman el 62.5 %. Acción: la [lista de revisión](../04-sqa/Lis
 
 - Del 21/10 al 1/11 no hubo avance, y el trabajo de la Beta lo hizo una sola persona el 2/11.
 - Siguen sin hacerse la revisión cruzada, `main` protegida, las pruebas E2E, la prueba con usuarios y el despliegue.
-- ✍ Lo que el equipo agregue.
 
 ## 6. Acciones para el ciclo 4 (PDCA → Actuar)
 
