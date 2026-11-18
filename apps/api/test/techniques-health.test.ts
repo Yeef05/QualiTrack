@@ -1,7 +1,9 @@
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { isoDaysAgo, todayIso } from '../src/validation';
-import { bearer, createProject, createTestContext, metricId, type TestContext } from './helpers';
+import { bearer, createProject, createTestContext, metricId, userId, type TestContext } from './helpers';
+
+let memberId: number;
 
 async function techniqueId(ctx: TestContext, name: string): Promise<number> {
   const { rows } = await ctx.db.query<{ id: number }>('SELECT id FROM techniques WHERE name = $1', [name]);
@@ -14,6 +16,7 @@ describe('M3. Técnicas de SQA', () => {
   let planId: number;
   beforeAll(async () => {
     ctx = await createTestContext();
+    memberId = await userId(ctx, 'miembro@qualitrack.local');
     projectId = (await createProject(ctx)).id;
   });
   afterAll(() => ctx.close());
@@ -53,7 +56,7 @@ describe('M3. Técnicas de SQA', () => {
     const res = await request(ctx.app)
       .post(url)
       .set(bearer(ctx.tokens.miembro))
-      .send({ executedOn: todayIso(), responsible: 'Integrante', result: 'con_hallazgos', findings: 3 });
+      .send({ executedOn: todayIso(), responsibleId: memberId, result: 'con_hallazgos', findings: 3 });
     expect(res.status).toBe(201);
     expect(res.body.techniqueName).toBe('Revisión de código');
 
@@ -70,19 +73,41 @@ describe('M3. Técnicas de SQA', () => {
     const approvedWithFindings = await request(ctx.app)
       .post(url)
       .set(bearer(ctx.tokens.miembro))
-      .send({ executedOn: todayIso(), responsible: 'Integrante', result: 'aprobada', findings: 1 });
+      .send({ executedOn: todayIso(), responsibleId: memberId, result: 'aprobada', findings: 1 });
     expect(approvedWithFindings.status).toBe(400);
     const future = await request(ctx.app)
       .post(url)
       .set(bearer(ctx.tokens.miembro))
-      .send({ executedOn: '2999-01-01', responsible: 'Integrante', result: 'aprobada' });
+      .send({ executedOn: '2999-01-01', responsibleId: memberId, result: 'aprobada' });
     expect(future.status).toBe(400);
     const otherProject = await createProject(ctx, { name: 'Otro proyecto' });
     const wrongPlan = await request(ctx.app)
       .post(`/api/projects/${otherProject.id}/plan/${planId}/executions`)
       .set(bearer(ctx.tokens.miembro))
-      .send({ executedOn: todayIso(), responsible: 'Integrante', result: 'aprobada' });
+      .send({ executedOn: todayIso(), responsibleId: memberId, result: 'aprobada' });
     expect(wrongPlan.status).toBe(404);
+  });
+
+  it('DEF-008: el responsable de la ejecución es un usuario de la lista y se guarda con su nombre', async () => {
+    const url = `/api/projects/${projectId}/plan/${planId}/executions`;
+    const res = await request(ctx.app)
+      .post(url)
+      .set(bearer(ctx.tokens.miembro))
+      .send({ executedOn: todayIso(), responsibleId: memberId, result: 'aprobada' });
+    expect(res.status).toBe(201);
+    expect(res.body).toMatchObject({ responsibleId: memberId, responsible: 'Jorge López' });
+    const freeText = await request(ctx.app)
+      .post(url)
+      .set(bearer(ctx.tokens.miembro))
+      .send({ executedOn: todayIso(), responsible: 'Jorge', result: 'aprobada' });
+    expect(freeText.status).toBe(400);
+    expect(freeText.body.details).toContainEqual({ path: 'responsibleId', message: 'Elige al responsable de la lista de usuarios' });
+    const unknown = await request(ctx.app)
+      .post(url)
+      .set(bearer(ctx.tokens.miembro))
+      .send({ executedOn: todayIso(), responsibleId: 9999, result: 'aprobada' });
+    expect(unknown.status).toBe(400);
+    expect(unknown.body.details).toContainEqual({ path: 'responsibleId', message: 'Elige a una persona de la lista de usuarios' });
   });
 
   it('quita técnicas del plan', async () => {
@@ -99,6 +124,7 @@ describe('M4. Reportes de salud', () => {
   let ctx: TestContext;
   beforeAll(async () => {
     ctx = await createTestContext();
+    memberId = await userId(ctx, 'miembro@qualitrack.local');
   });
   afterAll(() => ctx.close());
 
@@ -123,7 +149,7 @@ describe('M4. Reportes de salud', () => {
     await request(ctx.app)
       .post(`/api/projects/${id}/plan/${plan.body.id}/executions`)
       .set(bearer(ctx.tokens.qa))
-      .send({ executedOn: isoDaysAgo(2), responsible: 'QA', result: 'aprobada' });
+      .send({ executedOn: isoDaysAgo(2), responsibleId: memberId, result: 'aprobada' });
 
     const health = await request(ctx.app).get(`/api/projects/${id}/health`).set(bearer(ctx.tokens.miembro));
     // 3 métricas verdes + 1 roja + plan verde = (4 × 100 + 0) / 5 = 80, limitado a 79 por el defecto crítico
