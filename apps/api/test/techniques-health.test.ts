@@ -189,8 +189,9 @@ describe('M4. Reportes de salud', () => {
       QualiTrack: 'amarillo',
     });
     const byName = (name: string) => res.body.find((p: { name: string }) => p.name === name);
-    // 8 defectos ÷ 11 historias = 0.73 y 4.3 días de corrección (amarillos), plan al 75 %: (4 × 100 + 3 × 50) ÷ 7 = 79.
-    expect(byName('QualiTrack')).toMatchObject({ health: { index: 79 }, criticalOpen: 0 });
+    // Registro al 18/11: 14 defectos ÷ 11 historias = 1.27 y 10.3 días de corrección (rojos), plan al 75 % (amarillo):
+    // (4 × 100 + 50 + 0 + 0) ÷ 7 = 64.
+    expect(byName('QualiTrack')).toMatchObject({ health: { index: 64 }, criticalOpen: 0 });
     const report = await request(demo.app)
       .post(`/api/projects/${byName('Portal de Servicio Social').id}/reports`)
       .set(bearer(demo.tokens.qa));

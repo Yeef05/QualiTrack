@@ -1,0 +1,29 @@
+# Despliegue en Render (Blueprint): un servicio web con la API y el frontend compilado, y PostgreSQL.
+# Pasos y variables en el README, sección "Producción".
+services:
+  - type: web
+    name: qualitrack
+    runtime: node
+    plan: free
+    # vite y TypeScript son dependencias de desarrollo: hacen falta para compilar el frontend.
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 22.12.0
+      - key: JWT_SECRET
+        generateValue: true
+      # Contraseña de los usuarios de ejemplo; se captura en Render y no se sube al repositorio.
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: qualitrack-db
+          property: connectionString
+
+databases:
+  - name: qualitrack-db
+    plan: free
