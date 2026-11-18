@@ -76,6 +76,26 @@ describe('M5. Usuarios y acceso', () => {
     expect(shortPassword.status).toBe(400);
   });
 
+  it('DEF-012: los errores al dar de alta un usuario están en español y dicen cómo corregir', async () => {
+    const invalid = await request(ctx.app)
+      .post('/api/users')
+      .set(bearer(ctx.tokens.admin))
+      .send({ name: 'A', email: 'sin-arroba', password: '12345678' });
+    expect(invalid.status).toBe(400);
+    const byPath = Object.fromEntries(invalid.body.details.map((d: { path: string; message: string }) => [d.path, d.message]));
+    expect(byPath).toEqual({
+      name: 'Escribe al menos 2 caracteres',
+      email: 'Escribe un correo válido, por ejemplo nombre@dominio.mx',
+      role: 'Este campo es obligatorio',
+    });
+    const duplicated = await request(ctx.app)
+      .post('/api/users')
+      .set(bearer(ctx.tokens.admin))
+      .send({ name: 'Repetida', email: 'nueva@qualitrack.local', password: '12345678', role: 'miembro' });
+    expect(duplicated.status).toBe(409);
+    expect(duplicated.body.error).toBe('Ya existe un usuario con ese correo; usa otro o pide que inicie sesión con el suyo');
+  });
+
   it('responde 404 en rutas de API inexistentes y expone /api/health', async () => {
     expect((await request(ctx.app).get('/api/no-existe')).status).toBe(404);
     expect((await request(ctx.app).get('/api/health')).body).toEqual({ status: 'ok' });

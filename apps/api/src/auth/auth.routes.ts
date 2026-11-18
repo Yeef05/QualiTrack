@@ -60,6 +60,11 @@ export function usersRouter(db: Db): Router {
 
   router.post('/', async (req, res) => {
     const input = userInput.parse(req.body);
+    const existing = await db.query('SELECT 1 FROM users WHERE email = $1', [input.email]);
+    if (existing.rows.length > 0) {
+      // DEF-012: antes respondía el genérico "Ya existe un registro con esos datos".
+      throw new HttpError(409, 'Ya existe un usuario con ese correo; usa otro o pide que inicie sesión con el suyo');
+    }
     const hash = await bcrypt.hash(input.password, 10);
     const { rows } = await db.query<UserRow>(
       'INSERT INTO users (name, email, password_hash, role) VALUES ($1, $2, $3, $4) RETURNING *',
