@@ -122,6 +122,19 @@ export function sum(values: (number | null)[]): number | null {
   return present.length ? present.reduce((a, b) => a + b, 0) : null;
 }
 
+/**
+ * Número escrito en un campo; undefined si el campo quedó vacío, para que la API pida el dato.
+ * DEF-011: Number('') es 0, así que un peor o mejor borrado se guardaba como 0 sin avisar.
+ */
+export function parseNumber(text: string): number | undefined {
+  return text.trim() === '' ? undefined : Number(text);
+}
+
+/** "1 abierto", "2 abiertos". */
+export function countLabel(n: number, singular: string, pluralForm = `${singular}s`): string {
+  return `${n} ${n === 1 ? singular : pluralForm}`;
+}
+
 export function todayIso(now: Date = new Date()): string {
   const local = new Date(now.getTime() - now.getTimezoneOffset() * 60_000);
   return local.toISOString().slice(0, 10);

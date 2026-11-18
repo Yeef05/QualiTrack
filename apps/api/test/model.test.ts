@@ -95,4 +95,14 @@ describe('CU-03. Modelo de calidad por proyecto (RF-10 a RF-14)', () => {
     expect(res.status).toBe(204);
     expect(byCode(await model(a), 'funciones_terminadas')).toMatchObject({ worst: 70, best: 100, active: true, customized: false });
   });
+
+  it('DEF-010: el modelo de un proyecto archivado no se puede cambiar ni restaurar', async () => {
+    const { id } = await createProject(ctx, { name: 'Modelo archivado' });
+    await setModel(id, funciones, { worst: 80, best: 95, active: true });
+    await request(ctx.app).post(`/api/projects/${id}/archive`).set(bearer(ctx.tokens.qa)).send({ archived: true });
+    expect((await setModel(id, funciones, { worst: 60, best: 90, active: true })).status).toBe(409);
+    const reset = await request(ctx.app).delete(`/api/projects/${id}/model/${funciones}`).set(bearer(ctx.tokens.qa));
+    expect(reset.status).toBe(409);
+    expect(byCode(await model(id), 'funciones_terminadas')).toMatchObject({ worst: 80, best: 95, customized: true });
+  });
 });

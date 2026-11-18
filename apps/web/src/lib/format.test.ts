@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   average,
+  countLabel,
+  parseNumber,
   FOUND_BY_LABEL,
   SEVERITY_LABEL,
   TSP_TYPE_LABEL,
@@ -74,6 +76,21 @@ describe('utilidades', () => {
     expect(canManage('lider_qa')).toBe(true);
     expect(canManage('miembro')).toBe(false);
     expect(canManage(undefined)).toBe(false);
+  });
+});
+
+describe('números escritos en formularios', () => {
+  it('DEF-011: un campo vacío no se convierte en 0', () => {
+    expect(parseNumber('')).toBeUndefined();
+    expect(parseNumber('   ')).toBeUndefined();
+    expect(parseNumber('0')).toBe(0);
+    expect(parseNumber('85.5')).toBe(85.5);
+  });
+
+  it('usa singular con 1 y plural con los demás', () => {
+    expect(countLabel(1, 'abierto')).toBe('1 abierto');
+    expect(countLabel(0, 'abierto')).toBe('0 abiertos');
+    expect(countLabel(3, 'abierto')).toBe('3 abiertos');
   });
 });
 
