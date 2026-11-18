@@ -376,8 +376,10 @@ form.form {
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
 }
 
+/* DEF-014: sin min-width 0, una opción larga ensanchaba la celda y la lista se salía de la tarjeta en celular. */
 label.field {
   display: grid;
+  min-width: 0;
   gap: 6px;
   font-size: 0.82rem;
   font-weight: 600;
@@ -387,6 +389,9 @@ label.field {
 input,
 select,
 textarea {
+  min-width: 0;
+  max-width: 100%;
+  text-overflow: ellipsis;
   font: inherit;
   font-size: 0.92rem;
   font-weight: 400;
