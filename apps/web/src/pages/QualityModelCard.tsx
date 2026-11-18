@@ -3,7 +3,7 @@ import { api, errorMessage, fieldErrors } from '../api/client';
 import type { Direction, Metric, ProjectMetric } from '../api/types';
 import { useAuth } from '../auth/AuthContext';
 import { ErrorAlert, Field } from '../components/Field';
-import { canManage, formatBest, formatWorst } from '../lib/format';
+import { canManage, formatBest, formatWorst, parseNumber } from '../lib/format';
 import { useApi } from '../lib/useApi';
 
 interface ThresholdProps {
@@ -51,7 +51,14 @@ function ModelRow({ projectId, metric, canEdit, onSaved }: RowProps) {
     }
   }
 
-  const save = () => run(() => api(path, { method: 'PUT', body: { worst: Number(worst), best: Number(best), active } }));
+  const save = () => {
+    const thresholds = { worst: parseNumber(worst), best: parseNumber(best) };
+    if (thresholds.worst === undefined || thresholds.best === undefined) {
+      setMessage('Escribe el valor peor y el mejor antes de guardar');
+      return;
+    }
+    return run(() => api(path, { method: 'PUT', body: { ...thresholds, active } }));
+  };
   const reset = () => run(() => api(path, { method: 'DELETE' }));
 
   return (
@@ -107,7 +114,7 @@ function OwnMetricForm({ projectId, onSaved }: { projectId: number; onSaved: () 
     setErrors({});
     setMessage(null);
     try {
-      const thresholds = { worst: Number(values.worst), best: Number(values.best) };
+      const thresholds = { worst: parseNumber(values.worst), best: parseNumber(values.best) };
       const created = await api<Metric>('/metrics', { method: 'POST', body: { ...values, ...thresholds, active: false } });
       await api(`/projects/${projectId}/model/${created.id}`, { method: 'PUT', body: { ...thresholds, active: true } });
       setValues(EMPTY_METRIC);
@@ -162,9 +169,16 @@ function OwnMetricForm({ projectId, onSaved }: { projectId: number; onSaved: () 
 }
 
 /** CU-03: modelo de calidad del proyecto. Cada proyecto guarda el suyo (RF-14). */
-export function QualityModelCard({ projectId, onChanged }: { projectId: number; onChanged: () => void }) {
+interface CardProps {
+  projectId: number;
+  archived: boolean;
+  onChanged: () => void;
+}
+
+export function QualityModelCard({ projectId, archived, onChanged }: CardProps) {
   const { user } = useAuth();
-  const canEdit = canManage(user?.role);
+  // DEF-010: un proyecto archivado muestra su modelo de solo lectura, igual que sus mediciones.
+  const canEdit = canManage(user?.role) && !archived;
   const model = useApi<ProjectMetric[]>(`/projects/${projectId}/model`);
   const rows = (model.data ?? []).filter((m) => canEdit || m.active);
   const saved = () => {

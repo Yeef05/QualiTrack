@@ -131,4 +131,17 @@ describe('CU-11. Registrar un defecto del proyecto', () => {
     expect(res.status).toBe(409);
     expect((await request(ctx.app).get('/api/projects/9999/defects').set(bearer(ctx.tokens.miembro))).status).toBe(404);
   });
+
+  it('DEF-009: tampoco permite cerrar defectos de un proyecto archivado', async () => {
+    const { id } = await createProject(ctx, { name: 'Archivado con defecto abierto' });
+    const { body } = await request(ctx.app).post(`/api/projects/${id}/defects`).set(bearer(ctx.tokens.miembro)).send(defect());
+    await request(ctx.app).post(`/api/projects/${id}/archive`).set(bearer(ctx.tokens.qa)).send({ archived: true });
+    const res = await request(ctx.app)
+      .post(`/api/projects/${id}/defects/${body.id}/close`)
+      .set(bearer(ctx.tokens.miembro))
+      .send({ closedOn: todayIso() });
+    expect(res.status).toBe(409);
+    const list = await request(ctx.app).get(`/api/projects/${id}/defects`).set(bearer(ctx.tokens.miembro));
+    expect(list.body.items[0].closedOn).toBeNull();
+  });
 });

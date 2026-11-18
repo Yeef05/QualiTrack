@@ -3,7 +3,7 @@ import { api, errorMessage, fieldErrors } from '../api/client';
 import type { Defect, DefectSummary, FoundBy, Project, Severity } from '../api/types';
 import { ErrorAlert, Field } from '../components/Field';
 import { StatusDot } from '../components/Status';
-import { formatDate, formatNumber, FOUND_BY_LABEL, SEVERITY_LABEL, todayIso, TSP_TYPE_LABEL } from '../lib/format';
+import { countLabel, formatDate, formatNumber, FOUND_BY_LABEL, SEVERITY_LABEL, todayIso, TSP_TYPE_LABEL } from '../lib/format';
 import { useApi } from '../lib/useApi';
 
 interface DefectsResponse {
@@ -16,7 +16,7 @@ const show = (value: number | null, suffix = '') => (value === null ? '—' : `$
 /** Las 4 métricas del modelo que calcula el registro (RF-37); también alimentan la pestaña Métricas. */
 function DefectKpis({ summary, deliveredStories }: { summary: DefectSummary; deliveredStories: number }) {
   const kpis: [string, string, string][] = [
-    ['Críticos abiertos', show(summary.criticalOpen), `${summary.open} abiertos de ${summary.total}`],
+    ['Críticos abiertos', show(summary.criticalOpen), `${countLabel(summary.open, 'abierto')} de ${summary.total}`],
     ['Densidad de defectos', show(summary.density), `${summary.total} ÷ ${deliveredStories} historias entregadas`],
     [
       'Eficiencia de QA',

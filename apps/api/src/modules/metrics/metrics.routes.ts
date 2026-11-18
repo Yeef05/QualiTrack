@@ -70,16 +70,24 @@ export function measurementsRouter(db: Db): Router {
     res.json(await projectModel(db, projectId));
   });
 
+  // DEF-010: el modelo de un proyecto archivado se podía cambiar y restaurar; igual que las mediciones, queda fijo.
+  const editableModel = async (projectId: number) => {
+    const project = await getProject(db, projectId);
+    if (project.archived) {
+      throw new HttpError(409, 'El proyecto está archivado; restáuralo para cambiar su modelo de calidad');
+    }
+  };
+
   router.put('/model/:metricId', canManage, async (req, res) => {
     const projectId = paramId(req);
-    await getProject(db, projectId);
+    await editableModel(projectId);
     const input = projectMetricInput.parse(req.body);
     res.json(await setProjectMetric(db, projectId, paramId(req, 'metricId'), input));
   });
 
   router.delete('/model/:metricId', canManage, async (req, res) => {
     const projectId = paramId(req);
-    await getProject(db, projectId);
+    await editableModel(projectId);
     await resetProjectMetric(db, projectId, paramId(req, 'metricId'));
     res.status(204).end();
   });

@@ -7,6 +7,7 @@ describe('DEF-006: barra de defectos críticos del reporte', () => {
     expect(criticalFreeText(0)).toBe('Sí · 0 abiertos');
     expect(criticalFreeBar(2)).toBe(0);
     expect(criticalFreeText(2)).toBe('No · 2 abiertos');
+    expect(criticalFreeText(1)).toBe('No · 1 abierto');
     expect(criticalFreeBar(null)).toBeNull();
     expect(criticalFreeText(null)).toBe('Sin datos');
   });

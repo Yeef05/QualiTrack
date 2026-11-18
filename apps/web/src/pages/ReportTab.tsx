@@ -3,7 +3,7 @@ import { api, errorMessage } from '../api/client';
 import type { Health, HealthReport, Project } from '../api/types';
 import { ErrorAlert } from '../components/Field';
 import { HealthDonut, ProgressBar, StatusDot } from '../components/Status';
-import { formatDate, formatPercent, formatValue, STATUS_LABEL, todayIso } from '../lib/format';
+import { countLabel, formatDate, formatPercent, formatValue, STATUS_LABEL, todayIso } from '../lib/format';
 import { useApi } from '../lib/useApi';
 
 function Bar({ label, value, text }: { label: string; value: number | null; text: string }) {
@@ -24,7 +24,7 @@ export function criticalFreeText(critical: number | null): string {
   if (critical === null) {
     return 'Sin datos';
   }
-  return critical === 0 ? 'Sí · 0 abiertos' : `No · ${critical} abiertos`;
+  return `${critical === 0 ? 'Sí' : 'No'} · ${countLabel(critical, 'abierto')}`;
 }
 
 function HealthBars({ health }: { health: Health }) {

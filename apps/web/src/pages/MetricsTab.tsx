@@ -175,7 +175,7 @@ export function MetricsTab({ projectId, archived }: { projectId: number; archive
           />
         </div>
       )}
-      <QualityModelCard projectId={projectId} onChanged={refresh} />
+      <QualityModelCard projectId={projectId} archived={archived} onChanged={refresh} />
     </>
   );
 }
