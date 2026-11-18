@@ -18,6 +18,8 @@ describe('M1. Proyectos y periodos', () => {
   it('no permite registrar el mismo proyecto dos veces en un periodo', async () => {
     const res = await request(ctx.app).post('/api/projects').set(bearer(ctx.tokens.qa)).send(sampleProject);
     expect(res.status).toBe(409);
+    // DEF-013: el mensaje dice qué cambiar.
+    expect(res.body.error).toBe('Ya hay un proyecto llamado "Proyecto de prueba" en el periodo 2026-2; cambia el nombre o el periodo');
   });
 
   it('sí permite el mismo proyecto en otro periodo', async () => {

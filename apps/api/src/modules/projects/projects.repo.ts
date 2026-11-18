@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { Db } from '../../db';
 import { memberName } from '../../auth/team';
-import { notFound } from '../../errors';
+import { HttpError, notFound } from '../../errors';
 import { PERIOD_RE } from '../../validation';
 
 export interface Project {
@@ -87,10 +87,23 @@ export async function getProject(db: Db, id: number): Promise<Project> {
   return toProject(rows[0]);
 }
 
+/** DEF-013: el duplicado decía "Ya existe un registro con esos datos" sin decir qué cambiar. */
+async function uniqueInPeriod(db: Db, input: ProjectInput, exceptId = 0) {
+  const { rows } = await db.query('SELECT 1 FROM projects WHERE name = $1 AND period = $2 AND id <> $3', [
+    input.name,
+    input.period,
+    exceptId,
+  ]);
+  if (rows.length > 0) {
+    throw new HttpError(409, `Ya hay un proyecto llamado "${input.name}" en el periodo ${input.period}; cambia el nombre o el periodo`);
+  }
+}
+
 const qaLeadName = (db: Db, input: ProjectInput) =>
   input.qaLeadId === null ? Promise.resolve('') : memberName(db, input.qaLeadId, 'qaLeadId');
 
 export async function createProject(db: Db, input: ProjectInput): Promise<Project> {
+  await uniqueInPeriod(db, input);
   const qaLead = await qaLeadName(db, input);
   const { rows } = await db.query<ProjectRow>(
     `INSERT INTO projects (name, description, period, repository_url, team, qa_lead, qa_lead_id, delivered_stories)
@@ -101,6 +114,8 @@ export async function createProject(db: Db, input: ProjectInput): Promise<Projec
 }
 
 export async function updateProject(db: Db, id: number, input: ProjectInput): Promise<Project> {
+  await getProject(db, id); // 404 antes que 409 si el proyecto no existe
+  await uniqueInPeriod(db, input, id);
   const qaLead = await qaLeadName(db, input);
   const { rows } = await db.query<ProjectRow>(
     `UPDATE projects SET name = $2, description = $3, period = $4, repository_url = $5, team = $6, qa_lead = $7,

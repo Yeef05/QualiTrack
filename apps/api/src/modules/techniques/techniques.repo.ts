@@ -116,6 +116,14 @@ export async function listPlan(db: Db, projectId: number, today: string): Promis
 }
 
 export async function addPlanItem(db: Db, projectId: number, input: z.infer<typeof planInput>): Promise<number> {
+  const existing = await db.query('SELECT 1 FROM technique_plans WHERE project_id = $1 AND technique_id = $2', [
+    projectId,
+    input.techniqueId,
+  ]);
+  if (existing.rows.length > 0) {
+    // DEF-013: antes respondía el genérico "Ya existe un registro con esos datos".
+    throw new HttpError(409, 'Esa técnica ya está en el plan; registra una ejecución en lugar de agregarla otra vez');
+  }
   const { rows } = await db.query<{ id: number }>(
     'INSERT INTO technique_plans (project_id, technique_id, frequency, responsible) VALUES ($1, $2, $3, $4) RETURNING id',
     [projectId, input.techniqueId, input.frequency, input.responsible],

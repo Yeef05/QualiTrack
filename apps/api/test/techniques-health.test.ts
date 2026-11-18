@@ -38,6 +38,8 @@ describe('M3. Técnicas de SQA', () => {
     planId = res.body.id;
     const dup = await request(ctx.app).post(`/api/projects/${projectId}/plan`).set(bearer(ctx.tokens.qa)).send(body);
     expect(dup.status).toBe(409);
+    // DEF-013: el mensaje dice qué hacer.
+    expect(dup.body.error).toBe('Esa técnica ya está en el plan; registra una ejecución en lugar de agregarla otra vez');
     const unknown = await request(ctx.app)
       .post(`/api/projects/${projectId}/plan`)
       .set(bearer(ctx.tokens.qa))
