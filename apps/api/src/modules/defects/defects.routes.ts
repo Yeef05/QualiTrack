@@ -13,6 +13,12 @@ function notFuture(date: string, what: string) {
   }
 }
 
+function notArchived(project: { archived: boolean }, message: string) {
+  if (project.archived) {
+    throw new HttpError(409, message);
+  }
+}
+
 /** /api/projects/:id/defects: registro de defectos del proyecto (CU-11). Cualquier integrante registra y cierra. */
 export function defectsRouter(db: Db): Router {
   const router = Router({ mergeParams: true });
@@ -25,9 +31,7 @@ export function defectsRouter(db: Db): Router {
 
   router.post('/defects', async (req, res) => {
     const project = await getProject(db, paramId(req));
-    if (project.archived) {
-      throw new HttpError(409, 'El proyecto está archivado; no admite nuevos defectos');
-    }
+    notArchived(project, 'El proyecto está archivado; no admite nuevos defectos');
     const input = defectInput.parse(req.body);
     notFuture(input.foundOn, 'registro');
     res.status(201).json(await createDefect(db, project.id, input, currentUser(res).id));
@@ -35,7 +39,8 @@ export function defectsRouter(db: Db): Router {
 
   router.post('/defects/:defectId/close', async (req, res) => {
     const projectId = paramId(req);
-    await getProject(db, projectId);
+    // DEF-009: la pantalla ocultaba "Cerrar" en un proyecto archivado, pero la API sí lo permitía.
+    notArchived(await getProject(db, projectId), 'El proyecto está archivado; restáuralo para cerrar sus defectos');
     const input = closeInput.parse(req.body);
     notFuture(input.closedOn, 'cierre');
     res.json(await closeDefect(db, projectId, paramId(req, 'defectId'), input));
