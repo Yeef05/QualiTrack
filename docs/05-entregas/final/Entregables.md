@@ -18,4 +18,4 @@ Lo que el Agreement del equipo (19/10/2026, sección "Productos que se entregar�
 
 **Repositorio:** https://github.com/Yeef05/QualiTrack · etiqueta `v1.0-final` (código de la versión 1.0). Después de la etiqueta, `main` agrega la configuración de Render, las pruebas E2E y estos documentos, sin cambios en el código de la aplicación.
 
-**Hoja de revisiones y pruebas:** QualiTrack_23_RevisionesYPruebas.xlsx (Drive, ciclo 4) tiene el detalle de cada revisión, caso de prueba y paso de la prueba de humo.
+**Hoja de revisiones y pruebas:** QualiTrack_Final_10_RevisionesYPruebas.xlsx, en la misma carpeta, tiene el detalle de cada revisión, caso de prueba, paso de la prueba de humo y flujo E2E.
