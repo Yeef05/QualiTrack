@@ -5,7 +5,7 @@ Lo que el Agreement del equipo (19/10/2026, sección "Productos que se entregar�
 | # | Producto (Agreement) | Archivo | Fuente en el repositorio |
 | --- | --- | --- | --- |
 | 1 | Aplicación web desplegada | https://qualitrack-x1u0.onrender.com | Código en `apps/`, configuración en `render.yaml` · etiqueta `v1.0-final` |
-| 2 | Manual de usuario | QualiTrack_Final_08_ManualUsuario | [docs/06-manual/ManualUsuario.md](../../06-manual/ManualUsuario.md) |
+| 2 | Manual de usuario | QualiTrack_Final_08_ManualUsuario.pdf (y la versión editable en Google Docs) | [docs/06-manual/ManualUsuario.html](../../06-manual/ManualUsuario.html), que se imprime a PDF, y [ManualUsuario.md](../../06-manual/ManualUsuario.md) |
 | 3 | README con instalación y ejecución | QualiTrack_Final_09_README | [README.md](../../../README.md) |
 | 4 | Plan del proyecto y de SQA | QualiTrack_Final_01_PlanProyecto_SQA | [PlanProyecto.md](../../03-planeacion-tsp/PlanProyecto.md) y [PlanSQA.md](../../04-sqa/PlanSQA.md) |
 | 5 | Especificación de requisitos | QualiTrack_Final_02_EspecificacionRequisitos | [EspecificacionRequisitos.md](../../01-requisitos/EspecificacionRequisitos.md), [CasosDeUso.md](../../01-requisitos/CasosDeUso.md) y [HistoriasUsuario.md](../../01-requisitos/HistoriasUsuario.md) |
