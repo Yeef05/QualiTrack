@@ -82,8 +82,10 @@ Al 18 de noviembre: 109 pruebas en verde (68 de la API y 41 de la web), cobertur
 
 ## Documentación
 
-Índice completo en [`docs/README.md`](docs/README.md), separado en requisitos, diseño, planeación TSP, SQA y entregas.
+Índice completo en [`docs/README.md`](docs/README.md), separado en requisitos, diseño, planeación TSP, SQA, entregas y manual.
 
+- [Manual de usuario](docs/06-manual/ManualUsuario.md): cómo se usa cada pantalla, con capturas
+- [Reporte de pruebas](docs/04-sqa/ReportePruebas.md): pruebas automáticas, E2E, casos manuales y humo
 - [Plan de SQA](docs/04-sqa/PlanSQA.md) (ISO/IEC 29110, perfil de entrada, y material de la clase)
 - [Modelo de métricas para proyectos chicos](docs/02-diseno/decisiones/ADR-004-modelo-metricas.md): de dónde sale cada criterio
 - [Bitácora de SQA](docs/04-sqa/BitacoraSQA.md) · [Registro de defectos](docs/04-sqa/RegistroDefectos.md) · [Mediciones](docs/04-sqa/Mediciones.md) · [Lista de revisión](docs/04-sqa/ListaRevision.md) · [Revisiones y casos de prueba](docs/04-sqa/RevisionesBeta.md)
