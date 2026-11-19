@@ -59,6 +59,33 @@ test('captura de Usuarios (Administrador)', async ({ page }) => {
   await shot(page, '11-usuarios', true);
 });
 
+test('capturas del Miembro', async ({ page }) => {
+  await login(page, 'miembro@qualitrack.local');
+  await expect(page.getByRole('row').nth(1)).toBeVisible();
+  await shot(page, '13-miembro-dashboard');
+  await openDemoProject(page);
+  await openTab(page, 'Técnicas');
+  await expect(page.getByRole('heading', { name: 'Registrar ejecución' })).toBeVisible();
+  await shot(page, '14-miembro-tecnicas', true);
+});
+
+test('capturas de edición y ejecución (Líder de QA)', async ({ page }) => {
+  await login(page);
+  await openDemoProject(page);
+  await page.getByRole('button', { name: 'Editar' }).click();
+  await expect(page.getByRole('button', { name: 'Guardar cambios' })).toBeVisible();
+  await shot(page, '15-editar-proyecto');
+  await page.getByRole('button', { name: 'Cancelar' }).click();
+  await openTab(page, 'Técnicas');
+  const card = page.locator('.card', { has: page.getByRole('heading', { name: 'Registrar ejecución' }) });
+  await card.scrollIntoViewIfNeeded();
+  await card.screenshot({ path: `${DIR}/16-registrar-ejecucion.png` });
+  await openTab(page, 'Defectos');
+  const form = page.locator('.card', { has: page.getByRole('heading', { name: 'Registrar defecto' }) });
+  await form.scrollIntoViewIfNeeded();
+  await form.screenshot({ path: `${DIR}/17-registrar-defecto.png` });
+});
+
 test('captura en celular', async ({ browser }) => {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, colorScheme: 'light' });
   const page = await context.newPage();
