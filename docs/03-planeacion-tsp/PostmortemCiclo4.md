@@ -15,7 +15,7 @@ Cierre del ciclo del [plan del ciclo 4](PlanCiclo4.md) y del proyecto. Los datos
 | Cumplimiento del plan de técnicas | ≥ 90 % | 75 % | −15 puntos |
 | Criterios de aceptación cumplidos | 100 % | 100 % (33 de 33, con prueba automática y manual) | 0 |
 | Pruebas automáticas | — | 109 (68 API + 41 web); eran 100 en la Beta | +9 |
-| Sistema en línea con PostgreSQL | 13/11 | Configuración lista (`render.yaml`) y modo de producción probado; falta crear el servicio en Render | — |
+| Sistema en línea con PostgreSQL | 13/11 | En línea el 19/11 en Render, con su PostgreSQL | 6 días tarde |
 
 ## 2. Defectos del ciclo
 
@@ -70,7 +70,7 @@ Sin las dos métricas en rojo, el índice sería (6 × 100 + 50) ÷ 7 = 93.
 - Cada defecto se cerró con una prueba de regresión que cita su ID.
 - ESLint siguió funcionando como compuerta (HAL-003).
 - El modelo de calidad de QualiTrack, aplicado a sí mismo, mostró un problema de proceso que el producto terminado no muestra: el índice bajó aunque no quedó ningún defecto abierto.
-- La prueba de humo en un clon nuevo y la prueba del modo de producción con el driver de PostgreSQL pasaron antes de desplegar.
+- La prueba de humo en un clon nuevo y la prueba del modo de producción con el driver de PostgreSQL pasaron antes de desplegar, y el primer despliegue en Render arrancó sin errores: las 5 migraciones se aplicaron y `/api/health` respondió a la primera.
 
 ## 6. Qué no funcionó (cambiar)
 

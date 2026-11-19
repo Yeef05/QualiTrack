@@ -1,6 +1,6 @@
 # Entrega final · QualiTrack
 
-**Materia:** Calidad de Software · **Docente:** Mtra. María de León Sigg · **Fecha:** jueves 19 de noviembre de 2026 · **Equipo:** QualiTrack · **Versión:** etiqueta `v1.0-final`
+**Materia:** Calidad de Software · **Docente:** Mtra. María de León Sigg · **Fecha:** jueves 19 de noviembre de 2026 · **Equipo:** QualiTrack · **Versión:** etiqueta `v1.0-final` · **En línea:** https://qualitrack-x1u0.onrender.com
 
 **Qué entregamos:** QualiTrack 1.0 registra proyectos por periodo, da seguimiento a sus métricas con un modelo definido (valor peor y mejor con fuente), gestiona el plan de técnicas de SQA y sus ejecuciones, lleva el registro de defectos y genera el reporte de salud de cada proyecto. Los 11 casos de uso están implementados y los 14 defectos registrados están cerrados.
 
@@ -13,7 +13,7 @@
 | Gestión de técnicas de SQA | CU-06 y CU-07: plan con frecuencia, ejecuciones con responsable y cumplimiento del plan |
 | Reportes del estado de salud | CU-08 y CU-09: índice de 0 a 100, historial, exportación a PDF y dashboard por periodo |
 
-Cambios desde la Beta: DEF-007 y DEF-008 (responsables elegidos de la lista de usuarios), 6 defectos de la revisión del código de la Beta y de los casos de prueba, y la configuración para desplegar en Render.
+Cambios desde la Beta: DEF-007 y DEF-008 (responsables elegidos de la lista de usuarios), 6 defectos de la revisión del código de la Beta y de los casos de prueba, y el despliegue en Render con PostgreSQL (19/11). Lo desplegado es `v1.0-final` más un cambio en `render.yaml` para que Render genere la contraseña de los usuarios de ejemplo; el código es el mismo.
 
 ## Resultados del aseguramiento de la calidad
 

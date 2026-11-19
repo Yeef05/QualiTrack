@@ -5,6 +5,8 @@ Permite registrar proyectos por periodo, dar seguimiento a sus métricas de cali
 
 Proyecto de la materia **Calidad de Software** (SQA26) · Docente: Mtra. María de León Sigg.
 
+**En línea:** https://qualitrack-x1u0.onrender.com (Render, plan gratuito: si nadie lo usa en 15 minutos se duerme y la primera visita tarda cerca de un minuto).
+
 | Rol | Integrante |
 | --- | --- |
 | Líder del proyecto | Camila Rachel Sánchez Molina |
