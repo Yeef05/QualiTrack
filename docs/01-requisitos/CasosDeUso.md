@@ -14,6 +14,8 @@ Especificación de requisitos por casos de uso (producto de trabajo de la tarea 
 
 ## Diagrama
 
+Versión en imagen para documentos que no dibujan Mermaid: [img/DiagramaCasosDeUso.png](img/DiagramaCasosDeUso.png).
+
 ```mermaid
 flowchart LR
   QA([Líder de QA])
