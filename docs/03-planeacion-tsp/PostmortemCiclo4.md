@@ -7,7 +7,7 @@ Cierre del ciclo del [plan del ciclo 4](PlanCiclo4.md) y del proyecto. Los datos
 | Medida | Plan | Real | Diferencia |
 | --- | --- | --- | --- |
 | Horas totales | 37.5 | | |
-| Tareas con evidencia de estar hechas | 17 | 6 hechas (2, 5, 6, 7, 14 y 17), 3 parciales (10, 13 y 15) y 8 sin evidencia en el repositorio | −11 |
+| Tareas con evidencia de estar hechas | 17 | 7 hechas (2, 5, 6, 7, 12, 14 y 17), 3 parciales (10, 13 y 15) y 7 sin evidencia en el repositorio | −10 |
 | Defectos abiertos de gravedad crítica o mayor | 0 | 0 | 0 |
 | DEF-007 y DEF-008 cerrados | 7/11 | 18/11 | 11 días tarde |
 | PR aprobados por otro integrante | Todos los del ciclo | 0 | — |
