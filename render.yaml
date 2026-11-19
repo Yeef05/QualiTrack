@@ -16,9 +16,10 @@ services:
         value: 22.12.0
       - key: JWT_SECRET
         generateValue: true
-      # Contraseña de los usuarios de ejemplo; se captura en Render y no se sube al repositorio.
+      # Contraseña de los usuarios de ejemplo: Render la genera y se consulta en Environment del servicio.
+      # Solo se usa al crear la base; cambiarla después no cambia la de los usuarios ya creados.
       - key: ADMIN_PASSWORD
-        sync: false
+        generateValue: true
       - key: DATABASE_URL
         fromDatabase:
           name: qualitrack-db
