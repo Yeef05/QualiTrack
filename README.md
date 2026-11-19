@@ -59,7 +59,7 @@ Con `DATABASE_URL` la API usa PostgreSQL real y sirve también el frontend compi
 **Render.** El archivo [`render.yaml`](render.yaml) crea el servicio web y la base de datos PostgreSQL:
 
 1. En Render: *New → Blueprint* y elegir este repositorio.
-2. Capturar `ADMIN_PASSWORD` (contraseña de los usuarios de ejemplo). `JWT_SECRET` se genera solo y `DATABASE_URL` sale de la base de datos.
+2. Desplegar. `JWT_SECRET` y `ADMIN_PASSWORD` (contraseña de los usuarios de ejemplo) se generan solos; la contraseña se consulta en *Environment* del servicio `qualitrack`. `DATABASE_URL` sale de la base de datos.
 3. Al terminar el despliegue, abrir `/api/health` (debe responder `{"status":"ok"}`) y repetir la prueba de humo.
 
 Si el registro dice que el servidor no admite SSL, agrega la variable `PGSSL=false`.
