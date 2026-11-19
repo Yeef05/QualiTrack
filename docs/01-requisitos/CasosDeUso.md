@@ -43,15 +43,15 @@ flowchart LR
 
 ## Resumen y estado
 
-| CU | Nombre | Actor | Historias | Estado al 19/10 |
+| CU | Nombre | Actor | Historias | Estado final (19/11) |
 | --- | --- | --- | --- | --- |
-| CU-01 | Registrar un proyecto del periodo | Líder de QA | HU-01, HU-03 | Implementado |
+| CU-01 | Registrar un proyecto del periodo | Líder de QA | HU-01, HU-03 | Implementado; responsable de QA elegido de la lista de usuarios desde el 18/11 (DEF-007) |
 | CU-02 | Concluir el seguimiento de un proyecto | Líder de QA | HU-03 | Implementado |
 | CU-03 | Definir el modelo de calidad del proyecto | Líder de QA | HU-04 | **Implementado** en la Beta: modelo editable por proyecto y métricas propias |
 | CU-04 | Registrar una medición de calidad | Integrante | HU-05 | Implementado |
 | CU-05 | Revisar el estado de calidad de un proyecto | Integrante | HU-06 | Implementado |
 | CU-06 | Planear las técnicas de SQA del proyecto | Líder de QA | HU-07 | Implementado |
-| CU-07 | Registrar la aplicación de una técnica | Integrante | HU-08 | Implementado |
+| CU-07 | Registrar la aplicación de una técnica | Integrante | HU-08 | Implementado; responsable elegido de la lista de usuarios desde el 18/11 (DEF-008) |
 | CU-08 | Generar el reporte de salud de un proyecto | Integrante | HU-09 | Implementado |
 | CU-09 | Identificar los proyectos que requieren atención | Integrante | HU-02 | Implementado |
 | CU-10 | Dar acceso a un integrante | Administrador | HU-10 | **Implementado** en la Beta (pantalla Usuarios) |
