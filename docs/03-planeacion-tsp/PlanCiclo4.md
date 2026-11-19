@@ -44,7 +44,7 @@ Los responsables y revisores siguen los roles del [Plan SQA](../04-sqa/PlanSQA.m
 | 14 | Congelar código, auditoría final, bitácora SQA final y mediciones | Postmortem | Flavio | Camila | 17/11 | 3 | | Hecha 18/11 |
 | 15 | Postmortem del ciclo 4, reporte final y ensayo de la demo final | Postmortem | Camila | Todos | 18/11 | 3 | | Parcial: postmortem y reporte de estado hechos el 18/11 por Flavio |
 | 16 | Anotar las horas de la semana en el registro de tiempos (cada viernes: 7/11 y 14/11) | Postmortem | Todos | Camila | 14/11 | 1 | | |
-| 17 | Etiqueta `v1.0-final` y entrega en Classroom | Postmortem | Responsable de colaboración | Flavio | 19/11 | 0.5 | | Etiqueta `v1.0-final` el 18/11 |
+| 17 | Etiqueta `v1.0-final` y entrega en Classroom | Postmortem | Responsable de colaboración | Flavio | 19/11 | 0.5 | | Parcial: etiqueta `v1.0-final` el 18/11; falta la entrega en Classroom |
 | | **Total** | | | | | **37.5** | | |
 
 ### Carga por persona (horas plan)
