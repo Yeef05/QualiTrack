@@ -16,13 +16,15 @@
     "typecheck": "npm run typecheck -w apps/api && npm run typecheck -w apps/web",
     "test": "npm run test -w apps/api && npm run test -w apps/web",
     "test:coverage": "npm run test:coverage -w apps/api && npm run test:coverage -w apps/web",
-    "check": "npm run lint && npm run typecheck && npm run test:coverage && npm run build"
+    "check": "npm run lint && npm run typecheck && npm run test:coverage && npm run build",
+    "e2e": "playwright test"
   },
   "engines": {
     "node": ">=20.19"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.65.1",
     "concurrently": "^10.0.6",
     "eslint": "^10.13.0",
     "eslint-plugin-react-hooks": "^7.1.1",
