@@ -65,19 +65,19 @@ Comprobaciones a mano, por ejemplo: con 4 defectos y 8 historias, la pestaña De
 
 ## Prueba de humo
 
-| Paso | Local (18/11) | Con PostgreSQL (18/11) |
-| --- | --- | --- |
-| Clonar en una carpeta nueva, `npm ci` y `npm run check` | Pasa: 109 pruebas, cobertura 97.8 % API y 98.9 % web, build correcto | — |
-| Abrir la página e iniciar sesión | Pasa | Pasa |
-| Recorrer Métricas, Técnicas, Defectos y Reporte | Pasa; en consola solo aparecen los 400/403/409 de los casos negativos | Pasa (API) |
-| Registrar una medición | Pasa | Pasa |
-| Registrar y cerrar un defecto | Pasa | Pasa: con el crítico abierto el índice bajó a 63 y volvió a subir al cerrarlo |
-| Generar el reporte y guardarlo | Pasa | Pasa |
-| Exportar a PDF | No se probó | No se probó |
-| Modo oscuro, modo claro y ancho de celular | Pasa después de DEF-014 | — |
-| Salir y volver a entrar | Pasa: sin sesión, `/proyectos/1` regresa al inicio de sesión | — |
+| Paso | Local (18/11) | Con PostgreSQL (18/11) | Render (19/11) |
+| --- | --- | --- | --- |
+| Clonar en una carpeta nueva, `npm ci` y `npm run check` | Pasa: 109 pruebas, cobertura 97.8 % API y 98.9 % web, build correcto | — | Pasa: Render instaló y compiló `0e0ab7b`; CI #14 en verde sobre el mismo commit |
+| Abrir la página e iniciar sesión | Pasa | Pasa | Abre el inicio de sesión con v1.0 y sin errores en consola; falta entrar |
+| Recorrer Métricas, Técnicas, Defectos y Reporte | Pasa; en consola solo aparecen los 400/403/409 de los casos negativos | Pasa (API) | |
+| Registrar una medición | Pasa | Pasa | |
+| Registrar y cerrar un defecto | Pasa | Pasa: con el crítico abierto el índice bajó a 63 y volvió a subir al cerrarlo | |
+| Generar el reporte y guardarlo | Pasa | Pasa | |
+| Exportar a PDF | No se probó | No se probó | |
+| Modo oscuro, modo claro y ancho de celular | Pasa después de DEF-014 | — | Inicio de sesión a 375 px sin desbordarse |
+| Salir y volver a entrar | Pasa: sin sesión, `/proyectos/1` regresa al inicio de sesión | — | Sin sesión, `/proyectos/1` abre el inicio de sesión y la API responde 401 |
 
-La columna "Con PostgreSQL" es el modo de producción (`NODE_ENV=production`, `npm run build` y `npm start`) con el driver `pg`, contra un servidor que habla el protocolo de PostgreSQL (`pglite-socket`). No es todavía el servidor de Render; esa prueba se repite al desplegar.
+La columna "Con PostgreSQL" es el modo de producción (`NODE_ENV=production`, `npm run build` y `npm start`) con el driver `pg`, contra un servidor que habla el protocolo de PostgreSQL (`pglite-socket`). La columna "Render" es el despliegue en https://qualitrack-x1u0.onrender.com con su PostgreSQL: las 5 migraciones se aplicaron al arrancar y `/api/health` responde `ok`. Los pasos que piden iniciar sesión se corren con la contraseña de `ADMIN_PASSWORD` del servicio.
 
 ## Exploración (Plan SQA §8.1)
 

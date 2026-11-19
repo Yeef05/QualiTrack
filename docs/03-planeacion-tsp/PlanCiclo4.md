@@ -37,7 +37,7 @@ Los responsables y revisores siguen los roles del [Plan SQA](../04-sqa/PlanSQA.m
 | 7 | Pruebas E2E (Playwright) de 3 flujos: registrar proyecto y medición, registrar y cerrar defecto, generar reporte | Pruebas | Jorge | Flavio | 12/11 | 5 | | Sin pruebas E2E en el repositorio |
 | 8 | Prueba con 3 usuarios de otro equipo, 5 tareas cada uno (métrica "Tareas completadas sin ayuda") | Pruebas | Flavio | Camila | 12/11 | 2 | | |
 | 9 | Seguimiento a mitad del ciclo: avance de tareas y horas, y ajuste del plan | Plan | Camila | Responsable de colaboración | 10/11 | 1 | | |
-| 10 | Desplegar con PostgreSQL real y repetir la prueba de humo ahí | Pruebas | David | Flavio | 13/11 | 4 | | Listo para desplegar (`render.yaml`); modo de producción probado el 18/11 |
+| 10 | Desplegar con PostgreSQL real y repetir la prueba de humo ahí | Pruebas | David | Flavio | 13/11 | 4 | | En línea el 19/11 en https://qualitrack-x1u0.onrender.com con PostgreSQL de Render. Prueba de humo sin sesión correcta; falta la parte que pide iniciar sesión |
 | 11 | Conectar SonarCloud (`sonar-project.properties` con la organización real y secreto `SONAR_TOKEN`) | Pruebas | David | Martin | 13/11 | 1 | | Sin conectar: `sonar-project.properties` sigue con la organización de ejemplo |
 | 12 | Manual de usuario de la versión final (pantallas de la Beta y modo claro/oscuro) | Requisitos | Camila | Jorge | 14/11 | 3 | | |
 | 13 | Exploración de 30 min por integrante con una misión (Plan SQA §8.1); lo encontrado va al registro de defectos | Pruebas | Todos | Flavio | 14/11 | 2.5 | | Parcial: sesión de Flavio el 18/11 |

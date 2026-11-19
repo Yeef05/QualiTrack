@@ -110,7 +110,7 @@ Registro cronológico de las actividades de aseguramiento y control de la calida
 | Revisión de R2, R6 y R7 | R2 y R6 con hallazgos (plural "1 abiertos", ya corregido); R7 rechazada por DEF-014 (lista que se sale de la tarjeta en celular) | 7 de 7 revisiones hechas: 5 rechazadas y 2 con hallazgos ([revisiones](RevisionesBeta.md)). No cuentan como revisión cruzada: las hizo la misma cuenta que integró el código |
 | Casos de prueba manuales CP-01 a CP-33 | 33 de 33 criterios cumplidos. CP-02 y CP-19 rechazaban el duplicado con un mensaje genérico (DEF-013) | DEF-013 corregido con prueba. La métrica "Criterios de aceptación cumplidos" queda en 100 % con prueba automática y manual |
 | Prueba de humo en un clon nuevo | `npm ci` y `npm run check` correctos: 109 pruebas, cobertura 97.8 % API y 98.9 % web. Recorrido completo en el navegador, en claro, oscuro y celular | La exportación a PDF no se probó a mano |
-| Modo de producción con el driver de PostgreSQL | Migraciones 001 a 005, datos de ejemplo, frontend compilado y escrituras correctas con `NODE_ENV=production` | Se agrega `render.yaml`. Falta desplegar en Render y repetir ahí la prueba de humo |
+| Modo de producción con el driver de PostgreSQL | Migraciones 001 a 005, datos de ejemplo, frontend compilado y escrituras correctas con `NODE_ENV=production` | Se agrega `render.yaml`. El despliegue en Render se hizo el 19/11 |
 | Índice de salud de QualiTrack con su propio modelo | 64/100 (antes 79): densidad 1.27 y tiempo de corrección 10.3 días en rojo, plan de técnicas en 75 % | Se entrega con 0 defectos abiertos. El índice baja por cómo se trabajó, no por el estado del producto, y así se explica en el postmortem del ciclo 4 |
 | Versión | La interfaz decía "v0.4 Beta"; ahora dice "v1.0". Paquetes en 1.0.0 | Etiqueta `v1.0-final` en `main` |
 
@@ -123,3 +123,12 @@ Registro cronológico de las actividades de aseguramiento y control de la calida
 | Registro de defectos al día | Sí: 14 registrados, 14 cerrados, 0 críticos abiertos |
 | Historias terminadas según la definición | **No:** las 11 cumplen sus criterios y tienen pruebas, pero ningún PR tuvo la aprobación de otro integrante |
 | `main` protegida | Sin evidencia en el repositorio |
+| Sistema en línea | Sí, desde el 19/11: https://qualitrack-x1u0.onrender.com |
+
+## 19/11/2026 · Despliegue en Render
+
+| Actividad SQA | Resultado | Decisión / acción |
+| --- | --- | --- |
+| Despliegue con el Blueprint (`render.yaml`) | Servicio web y PostgreSQL gratuitos de Render sobre `0e0ab7b`. Las migraciones 001 a 005 se aplicaron al arrancar y `/api/health` respondió `ok` | `ADMIN_PASSWORD` pasa de capturarse a mano a generarse en Render (`fix/render-admin-password`); se consulta en *Environment* del servicio. CI #14 en verde sobre el mismo commit |
+| Prueba de humo sin sesión | La página abre el inicio de sesión con v1.0 y sin errores en consola; sin sesión, la API responde 401 y `/proyectos/1` regresa al inicio de sesión; los errores de validación salen en español; a 375 px no hay desbordamiento | Falta la parte que pide iniciar sesión ([revisiones](RevisionesBeta.md), prueba de humo) |
+| Riesgo del plan gratuito | El servicio se duerme tras 15 minutos sin uso y la base gratuita se borra el 19/12/2026 | Abrir la URL unos minutos antes de la demo |
