@@ -107,7 +107,7 @@ Son prácticas ligeras que caben en un equipo chico. Cada una alimenta una métr
 3. **Análisis de causa de defectos.** Al cerrar cada ciclo se agrupan los defectos por tipo TSP (Pareto). A los más frecuentes se les hace un diagrama de Ishikawa para decidir qué práctica cambiar.
 4. **Matriz de trazabilidad.** Historia → criterio → prueba → resultado. Ya existe dentro de `HistoriasUsuario.md`; mantenerla al día da el valor de "Criterios de aceptación cumplidos".
 5. **Registro de tiempos de TSP.** Permite calcular el **desperdicio** (tiempo corrigiendo defectos ÷ tiempo total, lámina 44) después de liberar.
-6. **Pruebas de flujo completo (E2E)** de los 3 flujos principales, para cubrir las páginas que no cuentan en la cobertura web. Al 18/11 se cubren con los casos de prueba manuales.
+6. **Pruebas de flujo completo (E2E)** de los 3 flujos principales, para cubrir las páginas que no cuentan en la cobertura web. Desde el 19/11 están en `e2e/flujos.spec.ts` (Playwright) y corren en CI; antes se cubrían con los casos de prueba manuales.
 7. **Revisión del despliegue.** Desplegar en un servicio con PostgreSQL real (`render.yaml`) y repetir la prueba de humo ahí.
 
 ## 9. Estándares

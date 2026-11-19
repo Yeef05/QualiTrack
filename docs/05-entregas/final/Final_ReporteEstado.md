@@ -32,7 +32,7 @@ Cambios desde la Beta: DEF-007 y DEF-008 (responsables elegidos de la lista de u
 | Práctica | Evidencia |
 | --- | --- |
 | Revisión de código con lista | 7 revisiones de la Beta: 5 rechazadas, 2 con hallazgos ([revisiones](../../04-sqa/RevisionesBeta.md)) |
-| Casos de prueba por criterio | 33 casos manuales y 109 pruebas automáticas; cobertura de líneas 97.8 % API y 98.9 % web |
+| Casos de prueba por criterio | 33 casos manuales, 109 pruebas automáticas (cobertura de líneas 97.8 % API y 98.9 % web) y 3 flujos E2E en Playwright |
 | Registro de defectos | 14 defectos con tipo TSP, gravedad, fase y prueba de regresión; Pareto por tipo |
 | Análisis estático como compuerta | 3 hallazgos de complejidad atendidos antes del commit (HAL-001 a HAL-003) |
 | Prueba de humo | Clon nuevo, instalación y recorrido completo; modo de producción con el driver de PostgreSQL |
@@ -42,7 +42,7 @@ Cambios desde la Beta: DEF-007 y DEF-008 (responsables elegidos de la lista de u
 ## Lo que no se cumplió
 
 - Revisión cruzada en PR y `main` protegida: ninguna historia cumple la definición de terminado del Plan SQA.
-- Pruebas E2E automáticas, prueba con 3 usuarios de otro equipo y SonarCloud.
+- Prueba con 3 usuarios de otro equipo y SonarCloud. Las pruebas E2E sí se hicieron, pero el día de la entrega.
 - Registro de horas reales y de juntas del equipo.
 
 Bitácora completa: [Bitácora de SQA](../../04-sqa/BitacoraSQA.md).

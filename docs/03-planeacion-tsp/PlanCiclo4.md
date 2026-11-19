@@ -34,7 +34,7 @@ Los responsables y revisores siguen los roles del [Plan SQA](../04-sqa/PlanSQA.m
 | 4 | Proteger `main`: los PR requieren 1 aprobación y CI en verde | Pruebas | Responsable de colaboración | David | 04/11 | 0.5 | | |
 | 5 | DEF-007: elegir al "Responsable de QA" del proyecto de la lista de usuarios | Implementación | Martin | Flavio | 07/11 | 3 | | Hecha 18/11 por Flavio |
 | 6 | DEF-008: elegir al responsable de cada ejecución de la lista de usuarios (el de la sesión por omisión) | Implementación | David | Camila | 07/11 | 2 | | Hecha 18/11 por Flavio |
-| 7 | Pruebas E2E (Playwright) de 3 flujos: registrar proyecto y medición, registrar y cerrar defecto, generar reporte | Pruebas | Jorge | Flavio | 12/11 | 5 | | Sin pruebas E2E en el repositorio |
+| 7 | Pruebas E2E (Playwright) de 3 flujos: registrar proyecto y medición, registrar y cerrar defecto, generar reporte | Pruebas | Jorge | Flavio | 12/11 | 5 | | Hecha 19/11 por Flavio, 7 días tarde: `e2e/flujos.spec.ts` con F1 a F3, en CI como trabajo aparte |
 | 8 | Prueba con 3 usuarios de otro equipo, 5 tareas cada uno (métrica "Tareas completadas sin ayuda") | Pruebas | Flavio | Camila | 12/11 | 2 | | |
 | 9 | Seguimiento a mitad del ciclo: avance de tareas y horas, y ajuste del plan | Plan | Camila | Responsable de colaboración | 10/11 | 1 | | |
 | 10 | Desplegar con PostgreSQL real y repetir la prueba de humo ahí | Pruebas | David | Flavio | 13/11 | 4 | | En línea el 19/11 en https://qualitrack-x1u0.onrender.com con PostgreSQL de Render. Prueba de humo sin sesión correcta; falta la parte que pide iniciar sesión |

@@ -74,8 +74,9 @@ Si el registro dice que el servidor no admite SSL, agrega la variable `PGSSL=fal
 | `npm run typecheck` | Tipos de TypeScript en API y web | 0 errores |
 | `npm run test:coverage` | Pruebas unitarias y de integración (Vitest) | Cobertura ≥ 70 % (el comando falla si baja) |
 | `npm run check` | Todo lo anterior y el build | Debe pasar antes de abrir un PR |
+| `npm run e2e` | 3 flujos completos en Chrome con Playwright (`e2e/flujos.spec.ts`): registrar un proyecto; registrar mediciones y guardar el reporte; registrar y cerrar un defecto crítico | Los 3 en verde. Necesita Google Chrome instalado |
 
-El pipeline de GitHub Actions (`.github/workflows/ci.yml`) corre `lint`, `typecheck`, `test:coverage` y `build` en cada pull request. SonarCloud no está conectado: falta poner la organización real en `sonar-project.properties` y el secreto `SONAR_TOKEN`.
+El pipeline de GitHub Actions (`.github/workflows/ci.yml`) corre `lint`, `typecheck`, `test:coverage` y `build` en cada pull request, y después los 3 flujos E2E en un trabajo aparte. SonarCloud no está conectado: falta poner la organización real en `sonar-project.properties` y el secreto `SONAR_TOKEN`.
 
 Al 18 de noviembre: 109 pruebas en verde (68 de la API y 41 de la web), cobertura de líneas 97.8 % en la API y 98.9 % en la web.
 
